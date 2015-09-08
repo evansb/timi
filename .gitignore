@@ -8,3 +8,5 @@ plugins/
 www/css/*
 www/img/*
 www/js/*
+
+.idea/*
