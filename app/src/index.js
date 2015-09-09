@@ -14,12 +14,12 @@ services.forEach((service) => {
 });
 
 // Load Controllers
-controllers.forEach((service) => {
+controllers.forEach((controller) => {
   app.controller(controller.name, controller.fn);
 });
 
 // Load Directives
-directives.forEach((service) => {
+directives.forEach((directive) => {
   app.directive(directive.name, directive.fn);
 });
 
