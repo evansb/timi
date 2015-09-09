@@ -1,20 +1,7 @@
 
-import 'angular';
-import 'angular-animate'
-import 'angular-sanitize'
-import 'angular-ui-router'
-import 'ionic';
+import app      from './app';
+import route    from './route';
+import startup  from './startup';
 
-angular.module('timi', ['ionic'])
-.run(function($ionicPlatform) {
-  $ionicPlatform.ready(function() {
-    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-    // for form inputs)
-    if(window.cordova && window.cordova.plugins.Keyboard) {
-      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-    }
-    if(window.StatusBar) {
-      StatusBar.styleDefault();
-    }
-  });
-})
+app.config(route)   // Setup routes
+  .run(startup)    // Initialize the app
