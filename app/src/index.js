@@ -1,20 +1,27 @@
+import app          from './app';
+import route        from './route';
+import startup      from './startup';
+import directives   from './directives';
+import controllers  from './controllers';
+import services     from './services';
 
-import 'angular';
-import 'angular-animate'
-import 'angular-sanitize'
-import 'angular-ui-router'
-import 'ionic';
+// Setup routes
+app.config(route)
 
-angular.module('assignment-3', ['ionic'])
-.run(function($ionicPlatform) {
-  $ionicPlatform.ready(function() {
-    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-    // for form inputs)
-    if(window.cordova && window.cordova.plugins.Keyboard) {
-      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-    }
-    if(window.StatusBar) {
-      StatusBar.styleDefault();
-    }
-  });
-})
+// Load Services
+services.forEach((service) => {
+  app.service(service.name, service.fn);
+});
+
+// Load Controllers
+controllers.forEach((service) => {
+  app.controller(controller.name, controller.fn);
+});
+
+// Load Directives
+directives.forEach((service) => {
+  app.directive(directive.name, directive.fn);
+});
+
+// Initialize the app
+app.run(startup)

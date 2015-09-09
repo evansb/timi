@@ -1,7 +1,7 @@
 {
-  "name": "assignment-3",
+  "name": "timi",
   "version": "1.0.0",
-  "description": "assignment-3: An Ionic project",
+  "description": "Smarter Doodle",
   "devDependencies": {
     "babelify": "^6.3.0",
     "bower": "^1.3.3",
