@@ -3,6 +3,7 @@ var gutil       = require('gulp-util');
 var babel       = require('gulp-babel');
 var nodemon     = require('gulp-nodemon');
 var sourcemaps  = require('gulp-sourcemaps');
+var watch       = require('gulp-watch');
 
 // Babelify, bundle and watch javascript files.
 gulp.task('compile', function() {
@@ -28,4 +29,9 @@ gulp.task('watch', function() {
   gulp.watch('./src/**/*.js', ['compile']);
 });
 
+gulp.task('watchSharon', function() {
+  watch('./src/**/*.js', ['compile']);
+});
+
+gulp.task('sharon', ['compile', 'watch' ]);
 gulp.task('default', ['compile', 'watch', 'serve']);
