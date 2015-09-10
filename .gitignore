@@ -12,3 +12,5 @@ www/js/*
 www/views/*
 
 .idea/*
+
+npm-debug.log

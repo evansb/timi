@@ -27,7 +27,6 @@
     "gulp-eslint": "^1.0.0",
     "gulp-nodemon": "^2.0.4",
     "gulp-sourcemaps": "^1.5.2",
-    "gulp-util": "^3.0.6",
-    "gulp-watch": "^4.3.5"
+    "gulp-util": "^3.0.6"
   }
 }
