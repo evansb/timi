@@ -1,2 +1,4 @@
 
-export default []
+import fullButton from './fullButton'
+
+export default [fullButton]
