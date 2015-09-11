@@ -11,4 +11,9 @@ export default ($stateProvider, $urlRouterProvider) => {
     url: '/signup',
     templateUrl: 'views/signup.html'
   });
+
+  $stateProvider.state('forgot', {
+    url: '/forgot',
+    templateUrl: 'views/forgot.html'
+  });
 }
