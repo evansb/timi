@@ -13,14 +13,14 @@ var timeslotSchema = Joi.object().keys({
   event_id: Joi.number().integer().positive().required(),
   start: Joi.date().required(),
   end: Joi.date().required()
-}).min(1).unique();
+});
 
 var eventSchema = Joi.object().keys({
   name: Joi.string().max(50),
   deadline: Joi.date().min(new Date()),
   owner_id: Joi.number().integer().positive().required(),
   participants: Joi.array().items(Joi.number().integer().positive()).min(1).unique(),
-  timeslots: Joi.array().items(timeslotSchema)
+  timeslots: Joi.array().items(timeslotSchema).min(1).unique()
 });
 
 var availabilitySchema = Joi.object().keys({
