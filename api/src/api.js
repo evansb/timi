@@ -65,7 +65,20 @@ exports.newEvent = (request, reply) => {
 };
 
 exports.userNewEventAvailabilities = (request, reply) => {
-
+  var user = request.payload['user'];
+  var availabilities = request.payload['availabilities'];
+  if (!user || !availabilities) {
+    reply(Boom.badRequest('Please specify the put in details'));
+  } else {
+    try {
+      validates.userId(user);
+      validates.availabilities(availabilities);
+      transactions.userNewEventAvailabilities(user, availabilities);
+      reply('Successfully submitted availabilities!');
+    } catch (err) {
+      reply(Boom.badData(err.details[0].message));
+    }
+  }
 };
 
 exports.userUpdateEventAvailabilities = (request, reply) => {

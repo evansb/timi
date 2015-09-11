@@ -24,7 +24,6 @@ var eventSchema = Joi.object().keys({
 });
 
 var availabilitySchema = Joi.object().keys({
-  user_id: Joi.number().integer().positive().required(),
   timeslot_id: Joi.number().integer().positive().required(),
   weight: Joi.number().integer().positive().required()
 });
@@ -43,6 +42,10 @@ exports.userEmail = (email) => {
   Joi.attempt(email, emailSchema);
 }
 
-exports.userAvailabilities = (availabilities) => {
+exports.userId = (id) => {
+  Joi.attempt(id, Joi.number().integer().positive().required());
+}
+
+exports.availabilities = (availabilities) => {
   Joi.attempt(availabilities, emailSchema);
 }
