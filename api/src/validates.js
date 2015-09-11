@@ -47,5 +47,5 @@ exports.userId = (id) => {
 }
 
 exports.availabilities = (availabilities) => {
-  Joi.assert(availabilities, emailSchema);
+  Joi.assert(availabilities, availabilitiesSchema);
 }

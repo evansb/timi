@@ -4,6 +4,7 @@ import User from './user';
 
 var Availability = bookshelf.Model.extend({
   tableName: 'availabilities',
+  idAttribute: null,
   user: function() {
     return this.belongsTo(User, 'user_id');
   },

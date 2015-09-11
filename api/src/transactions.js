@@ -26,16 +26,25 @@ exports.newEvent = (params) => {
           return new EventUser(eventUser, {hasTimestamps: true}).save(null, {transacting: t});
         });
         return Promise.all(createSlots, createParticipants);
-      })
-      .then((p) => {t.commit();})
-      .catch((err) => {t.rollback(err);});
+      }).then((p) => {
+        t.commit();
+      }).catch((err) => {
+        t.rollback(err);
+        throw error;
+      });
   });
 };
 
-exports.userNewEventAvailabilities = (user, availabilities) => {
+exports.newAvailabilities = (user, availabilities) => {
   bookshelf.transaction(function (t) {
-    Availability.forEach((availability) => {
-      new Availability(availability, {hasTimestamps: true}).save('user_id', user.id, {transacting: t}).then(() => {});
+    Promise.map(availabilities, (availability) => {
+      availability['user_id'] = user;
+      return new Availability(availability, {hasTimestamps: true}).save(null, {transacting: t});
+    }).then(() => {
+      t.commit();
+    }).catch((err) => {
+      t.rollback(err);
+      throw error;
     });
   });
 };

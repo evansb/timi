@@ -66,7 +66,7 @@ exports.newEvent = (request, reply) => {
   }
 };
 
-exports.userNewEventAvailabilities = (request, reply) => {
+exports.newAvailabilities = (request, reply) => {
   var user = request.payload['user'];
   var availabilities = request.payload['availabilities'];
   if (!user || !availabilities) {
@@ -75,7 +75,7 @@ exports.userNewEventAvailabilities = (request, reply) => {
     try {
       validates.userId(user);
       validates.availabilities(availabilities);
-      transactions.userNewEventAvailabilities(user, availabilities);
+      transactions.newAvailabilities(user, availabilities);
       reply('Successfully submitted availabilities!');
     } catch (err) {
       throw err;
@@ -84,10 +84,22 @@ exports.userNewEventAvailabilities = (request, reply) => {
   }
 };
 
-exports.userUpdateEventAvailabilities = (request, reply) => {
+exports.updateAvailabilities = (request, reply) => {
 
 };
 
-exports.userEventConfirmations = (request, reply) => {
-
+exports.newConfirmations = (request, reply) => {
+  var user = request.payload['user'];
+  var confirmations = request.payload['confirmations'];
+  if (!user || !confirmations) {
+    reply(Boom.badRequest('Please specify the put in details'));
+  } else {
+    try {
+      validates.userId(user);
+      reply('Successfully submitted availabilities!');
+    } catch (err) {
+      throw err;
+      reply(Boom.badData(err));
+    }
+  }
 };
