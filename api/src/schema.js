@@ -10,6 +10,7 @@ bookshelf.knex.schema
   })
   .createTable('events',  (t) => {
     t.increments().primary();
+    t.string('name').notNullable();
     t.timestamp('deadline');
     t.integer('owner_id').unsigned().notNullable().references('users.id').onDelete('cascade').onUpdate('cascade');
     t.timestamps();

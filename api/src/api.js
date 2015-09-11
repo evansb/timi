@@ -50,13 +50,11 @@ exports.userResetPassword = (request, reply) => {
 
 exports.newEvent = (request, reply) => {
   var event = request.payload['event'];
-  if (!event || !timeslots) {
+  if (!event) {
     reply(Boom.badRequest('Please specify the put in details'));
   } else {
     try {
-      var timeslots = event['timeslots'];
-      delete event['timeslots'];
-      validates.new_event(event, timeslots);
+      validates.new_event(event);
       reply('Successfully created event ' + event.name);
     } catch (err) {
       reply(Boom.badData(err.details[0].message));
