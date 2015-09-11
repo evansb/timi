@@ -37,7 +37,7 @@ exports.newEvent = (user, params) => {
 };
 
 exports.newAvailabilities = (user, params) => {
-  bookshelf.transaction(function (t) {
+  bookshelf.transaction((t) => {
     Promise.map(params, (availability) => {
       availability['user_id'] = user.get('id');
       return new Availability(availability, {hasTimestamps: true}).save(null, {transacting: t});

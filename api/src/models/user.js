@@ -3,19 +3,19 @@ import Event from './event';
 
 var User = bookshelf.Model.extend({
   tableName: 'users',
-  basic_info: function() {
+  basic_info: () => {
     return {email: this.get('email'), name: this.get('name')};
   },
-  own_events: function() {
+  own_events: () => {
     return this.hasMany(Event, 'owner_id');
   },
-  invited_events: function() {
+  invited_events: () => {
     this.belongsToMany(Event, 'events_users', 'user_id', 'event_id');
   },
-  participated_events: function() {
+  participated_events: () => {
     this.invited_events.where('participated', true);
   },
-  unparticipated_events: function() {
+  unparticipated_events: () => {
     this.invited_events.where('participated', false);
   }
 });

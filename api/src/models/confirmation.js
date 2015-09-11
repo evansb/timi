@@ -4,10 +4,10 @@ import User from './user';
 
 var Confirmation = bookshelf.Model.extend({
   tableName: 'confirmations',
-  user: function() {
+  user: () => {
     return this.belongsTo(User, 'user_id');
   },
-  timeslot: function() {
+  timeslot: () => {
     return this.belongsTo(Timeslot, 'timeslot_id');
   }
 });

@@ -5,10 +5,10 @@ import User from './user';
 var EventUser = bookshelf.Model.extend({
   tableName: 'events_users',
   idAttribute: null,
-  event: function() {
+  event: () => {
     return this.belongsTo(Event, 'event_id');
   },
-  user: function() {
+  user: () => {
     return this.belongsTo(User, 'user_id');
   }
 });
