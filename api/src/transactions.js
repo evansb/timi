@@ -9,13 +9,13 @@ exports.newEvent = (params) => {
       participants = params['participants'];
   delete params['timeslots'];
   delete params['participants'];
-  new Event(params, true).save().then((event) => {
+  new Event(params, true).save({transacting: t}).then((event) => {
     var eventId =  event.get('id');
     timeslots.forEach(function(timeslot) {
-      new Timeslot(timeslot, true).save('event_id', eventId).then(function(){});
+      new Timeslot(timeslot, true).save('event_id', eventId, {transacting: t}).then(function(){});
     });
     participants.forEach(function(participant) {
-      new EventUser({user_id: participant}, true).save('event_id', eventId).then(function(){});
+      new EventUser({user_id: participant}, true).save('event_id', eventId, {transacting: t}).then(function(){});
     });
   }).catch(function(err){
     console.log(err);
