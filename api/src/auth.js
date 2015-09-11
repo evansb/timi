@@ -15,8 +15,7 @@ var validate = (request, email, password, callback) => {
 };
 
 module.exports = (server) => {
-  Promise.promisifyAll(server);
-  server.registerAsync(Basic).then(() => {
+  server.register(Basic, () => {
     server.auth.strategy('simple', 'basic', true, { validateFunc: validate });
   });
 };

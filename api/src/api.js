@@ -7,6 +7,27 @@ import validates from './validates';
 import transactions from './transactions';
 import Promise from 'bluebird';
 
+exports.me = (request, reply) => {
+  var user = request.auth.credentials['user'];
+  reply(user.basic_info());
+};
+
+exports.myEvents = (request, reply) => {
+  var user = request.auth.credentials['user'];
+  Promise.all([user.related(['ownEvents']).fetch(), user.related(['invitedEvents']).fetch()]).then((events) => {
+    reply({ownEvents: JSON.stringify(events[0]), invitedEvents: JSON.stringify(events[1])});
+  })
+};
+
+exports.myEventsAvailabilities = (request, reply) => {
+  var user = request.auth.credentials['user'];
+  Event.where('id', request.params['eventId']).fetch().then((event) => {
+    return user.availableForEvent(event).fetch();
+  }).then((slots) => {
+    reply(JSON.stringify(slots));
+  });
+};
+
 exports.newUser = (request, reply) => {
   var user = request.payload['user'];
   if (!user) {
@@ -35,11 +56,11 @@ exports.newUser = (request, reply) => {
 };
 
 exports.userInfo = (request, reply) => {
-  var email = request.params['email'];
-  if (!email) {
-    reply(Boom.badRequest('Please specify the user email'));
+  var user = request.auth.credentials['user'];
+  if(user.get('id') === request.params['userId']) {
+    reply.redirect('/me');
   } else {
-    User.where('email', email).fetch().then((user) => {
+    User.where('id', request.params['userId']).fetch().then((user) => {
       if (user) {
         reply(user.basic_info());
       } else {
@@ -47,6 +68,27 @@ exports.userInfo = (request, reply) => {
       }
     });
   }
+};
+
+exports.userEventsAvailabilities = (request, reply) => {
+  //var user = request.auth.credentials['user'];
+  var viewedUserId = parseInt(request.params['userId']);
+  if(user.get('id') === viewedUserId) {
+    throw 'You are looking at yourself';
+  }
+  Event.where('id', request.params['eventId']).fetch().then((event) => {
+    return user.belongToEvent(event).then((result) => {
+      if(!result) {
+        throw 'You are not in this event';
+      }
+    }).then(() => {
+      return User.where('id', viewedUserId).fetch();
+    }).then((user) => {
+      return user.availableForEvent(event).fetch();
+    });
+  }).then((slots) => {
+    reply(JSON.stringify(slots));
+  });
 };
 
 exports.userResetEmail = (request, reply) => {

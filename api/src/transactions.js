@@ -31,7 +31,7 @@ exports.newEvent = (user, params) => {
         t.commit();
       }).catch((err) => {
         t.rollback(err);
-        throw error;
+        throw err;
       });
   });
 };
@@ -45,7 +45,7 @@ exports.newAvailabilities = (user, params) => {
       t.commit();
     }).catch((err) => {
       t.rollback(err);
-      throw error;
+      throw err;
     });
   });
 };
