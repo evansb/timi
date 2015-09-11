@@ -2,8 +2,8 @@ import bookshelf from '../config/bookshelf';
 import Timeslot from './timeslot';
 import User from './user';
 
-var Availability = bookshelf.Model.extend({
-  tableName: 'availabilities',
+var Confirmation = bookshelf.Model.extend({
+  tableName: 'confirmations',
   user: function() {
     return this.belongsTo(User, 'user_id');
   },
@@ -12,4 +12,4 @@ var Availability = bookshelf.Model.extend({
   }
 });
 
-module.exports = Availability;
+module.exports = Confirmation;
