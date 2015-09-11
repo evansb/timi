@@ -21,7 +21,8 @@ $ionicons-font-path: "../bower_components/ionic/fonts" !default;
 
 // Include all of Ionic
 @import "../bower_components/ionic/scss/ionic";
-@import "common.scss";
+@import "../bower_components/Ionicons/scss/ionicons";
+@import "./common";
 
 .padding-big {
   padding-left: 40px !important;
@@ -67,5 +68,24 @@ $ionicons-font-path: "../bower_components/ionic/fonts" !default;
   a {
     text-decoration: none;
     color:
+  }
+}
+
+.timi-message-modal {
+  background-color: transparent;
+  .modal-body {
+    background-color: rgba(0,0,0,0.6) !important;
+    height: 50px !important;
+    max-height: 50px !important;
+    color: white;
+    padding-top: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 5px;
+    font-size: 1.2em;
+
+    .x-icon {
+      text-align: right;
+    }
   }
 }

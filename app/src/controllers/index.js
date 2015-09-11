@@ -1,2 +1,4 @@
 
-export default []
+import MessageModalController from './messageModal';
+
+export default [MessageModalController]
