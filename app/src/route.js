@@ -4,6 +4,11 @@ export default ($stateProvider, $urlRouterProvider) => {
 
   $stateProvider.state('home', {
     url: '/',
+    templateUrl: 'views/home.html'
+  });
+
+  $stateProvider.state('login', {
+    url: '/login',
     templateUrl: 'views/login.html'
   });
 

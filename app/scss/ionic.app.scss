@@ -100,3 +100,13 @@ $ionicons-font-path: "../bower_components/ionic/fonts" !default;
     font-size: 1.3em;
   }
 }
+
+.timi-button-small {
+  @extend .button;
+  border: none;
+  background-color: #eeeeee !important;
+}
+
+.timi-list-title {
+  padding-left: 0.5em;
+}
