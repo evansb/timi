@@ -21,4 +21,9 @@ export default ($stateProvider, $urlRouterProvider) => {
     url: '/forgot',
     templateUrl: 'views/forgot.html'
   });
+
+  $stateProvider.state('invitation', {
+    url: '/invitation',
+    templateUrl: 'views/invitation.html'
+  });
 }

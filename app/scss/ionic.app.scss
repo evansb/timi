@@ -110,3 +110,28 @@ $ionicons-font-path: "../bower_components/ionic/fonts" !default;
 .timi-list-title {
   padding-left: 0.5em;
 }
+
+.timi-slot {
+  @extend .card;
+  .date-big {
+    font-size: 1.3em;
+  }
+  .month-big {
+    font-size: 1.3em;
+  }
+  .day-big {
+    font-size: 1.2em;
+  }
+  .x-icon {
+    text-align: center;
+    font-size: 2em;
+  }
+}
+
+.timi-event-header {
+  h1 {
+    font-size: 2em;
+    padding-left: 0.5em;
+
+  }
+}
