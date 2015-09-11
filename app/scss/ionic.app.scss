@@ -15,8 +15,57 @@ $royal:                           #886aea !default;
 $dark:                            #444 !default;
 */
 
+$timi-button-light: #eeeeee;
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../bower_components/ionic/fonts" !default;
 
 // Include all of Ionic
 @import "../bower_components/ionic/scss/ionic";
+@import "common.scss";
+
+.padding-big {
+  padding-left: 40px !important;
+  padding-right: 40px !important;
+}
+
+.only-bottom-border {
+  border-left: none;
+  border-right: none;
+  border-top: none;
+}
+
+.timi-logo {
+  @extend .padding-big;
+}
+
+.timi-login-form {
+  @extend .padding-big;
+  margin-bottom: 2em;
+  label {
+    @extend .only-bottom-border;
+    width: 100% !important;
+    padding-left: 0;
+    padding-bottom: 0;
+    border-bottom: 1.5px solid black;
+  }
+  label.password {
+    margin-top: 1em;
+  }
+}
+
+.timi-login-button {
+  @extend .padding-big;
+  button {
+    width: 100%;
+  }
+}
+
+.timi-forgot-password-sign-up {
+  @extend .padding-big;
+  font-size: 0.8em;
+
+  a {
+    text-decoration: none;
+    color:
+  }
+}
