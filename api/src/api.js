@@ -10,16 +10,17 @@ exports.newUser = (request, reply) => {
   if (!user) {
     reply(Boom.badRequest('Please specify the email and password'));
   } else {
-    User.where('email', payload.email).fetch().then((existing_user) => {
+    User.where('email', user.email).fetch().then((existing_user) => {
       if (existing_user) {
         reply(Boom.notAcceptable('Exists!'));
       } else {
         try {
           validates.newUser(user);
-          User.forge(user).save();
+          new User(user, {hasTimestamps: true}).save().then(()=>{});
           reply('Successfully created user ' + user.email);
         } catch (err) {
-          reply(Boom.badData(err.details[0].message));
+          throw err;
+          reply(Boom.badData(err));
         }
       }
     });
@@ -59,7 +60,8 @@ exports.newEvent = (request, reply) => {
       transactions.newEvent(event);
       reply('Successfully created event ' + event.name);
     } catch (err) {
-      reply(Boom.badData(err.details[0].message));
+      throw err;
+      reply(Boom.badData(err));
     }
   }
 };
@@ -76,7 +78,8 @@ exports.userNewEventAvailabilities = (request, reply) => {
       transactions.userNewEventAvailabilities(user, availabilities);
       reply('Successfully submitted availabilities!');
     } catch (err) {
-      reply(Boom.badData(err.details[0].message));
+      throw err;
+      reply(Boom.badData(err));
     }
   }
 };

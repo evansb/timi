@@ -2,6 +2,7 @@ import Joi from 'joi';
 import User from './models/user';
 
 var emailSchema = Joi.string().email();
+var idSchema = Joi.number().integer().positive();
 
 var userSchema = Joi.object().keys({
   email: emailSchema.required(),
@@ -10,17 +11,16 @@ var userSchema = Joi.object().keys({
 });
 
 var timeslotSchema = Joi.object().keys({
-  event_id: Joi.number().integer().positive().required(),
   start: Joi.date().required(),
   end: Joi.date().required()
 });
 
 var eventSchema = Joi.object().keys({
-  name: Joi.string().max(50),
+  name: Joi.string().max(50).required(),
   deadline: Joi.date().min(new Date()),
   owner_id: Joi.number().integer().positive().required(),
-  participants: Joi.array().items(Joi.number().integer().positive()).min(1).unique(),
-  timeslots: Joi.array().items(timeslotSchema).min(1).unique()
+  participants: Joi.array().items(idSchema).min(1).unique().required(),
+  timeslots: Joi.array().items(timeslotSchema).min(1).unique().required()
 });
 
 var availabilitySchema = Joi.object().keys({
@@ -31,21 +31,21 @@ var availabilitySchema = Joi.object().keys({
 var availabilitiesSchema = Joi.array().items(availabilitySchema);
 
 exports.newUser = (user) => {
-  Joi.attempt(user, userSchema);
+  Joi.assert(user, userSchema);
 };
 
 exports.newEvent = (event) => {
-  Joi.attempt(event, eventSchema);
+  Joi.assert(event, eventSchema);
 };
 
 exports.userEmail = (email) => {
-  Joi.attempt(email, emailSchema);
+  Joi.assert(email, emailSchema);
 }
 
 exports.userId = (id) => {
-  Joi.attempt(id, Joi.number().integer().positive().required());
+  Joi.assert(id, idSchema.required());
 }
 
 exports.availabilities = (availabilities) => {
-  Joi.attempt(availabilities, emailSchema);
+  Joi.assert(availabilities, emailSchema);
 }
