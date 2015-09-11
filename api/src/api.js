@@ -4,7 +4,7 @@ import Timeslot from './models/timeslot';
 import Boom from 'boom';
 import validates from './validates';
 
-exports.new_user = (request, reply) => {
+exports.newUser = (request, reply) => {
   var user = request.payload['user'];
   if (!user) {
     reply(Boom.badRequest('Please specify the email and password'));
@@ -25,7 +25,7 @@ exports.new_user = (request, reply) => {
   }
 };
 
-exports.user_info = (request, reply) => {
+exports.userInfo = (request, reply) => {
   var email = request.params['email'];
   if (!email) {
     reply(Boom.badRequest('Please specify the user email'));
@@ -40,15 +40,15 @@ exports.user_info = (request, reply) => {
   }
 };
 
-exports.user_reset_email = (request, reply) => {
+exports.userResetEmail = (request, reply) => {
 
 };
 
-exports.user_reset_password = (request, reply) => {
+exports.userResetPassword = (request, reply) => {
 
 };
 
-exports.new_event = (request, reply) => {
+exports.newEvent = (request, reply) => {
   var event = request.payload['event'];
   if (!event || !timeslots) {
     reply(Boom.badRequest('Please specify the put in details'));
@@ -64,14 +64,14 @@ exports.new_event = (request, reply) => {
   }
 };
 
-exports.user_new_event_availabilities = (request, reply) => {
+exports.userNewEventAvailabilities = (request, reply) => {
 
 };
 
-exports.user_update_event_availabilities = (request, reply) => {
+exports.userUpdateEventAvailabilities = (request, reply) => {
 
 };
 
-exports.user_event_confirmations = (request, reply) => {
+exports.userEventConfirmations = (request, reply) => {
 
 };
