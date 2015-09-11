@@ -1,4 +1,5 @@
 {
-  "name": "assignment-3",
-  "app_id": ""
+  "name": "timi",
+  "app_id": "",
+  "documentRoot": "app"
 }

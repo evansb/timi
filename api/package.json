@@ -1,7 +1,7 @@
 {
-  "name": "assignment-3-api",
+  "name": "timi-api",
   "version": "0.0.1",
-  "description": "All in one business card storage",
+  "description": "Smarter Doodle",
   "main": "index.js",
   "scripts": {
     "test": "npm test"

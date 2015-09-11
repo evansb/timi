@@ -1,5 +1,6 @@
 
 import Hapi from "hapi";
+import NUSMods from './vendor/nusmods';
 
 var server = new Hapi.Server();
 
@@ -17,5 +18,7 @@ server.route({
 });
 
 server.start(() => {
+  let nusmods = new NUSMods('http://modsn.us/racU2');
+  nusmods.scrap();
   console.log('Server running at ', server.info.uri)
 });
