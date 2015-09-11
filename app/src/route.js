@@ -6,4 +6,9 @@ export default ($stateProvider, $urlRouterProvider) => {
     url: '/',
     templateUrl: 'views/login.html'
   });
+
+  $stateProvider.state('signup', {
+    url: '/signup',
+    templateUrl: 'views/signup.html'
+  });
 }
