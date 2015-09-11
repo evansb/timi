@@ -8,7 +8,7 @@ var validate = function (request, email, password, callback) {
       return callback(null, false);
     }
     Bcrypt.compare(password, user.attributes.password, function (err, isValid) {
-      callback(err, isValid, { id: user.id, name: user.name });
+      callback(err, isValid, { user: user });
     });
   });
 };
@@ -16,17 +16,5 @@ var validate = function (request, email, password, callback) {
 module.exports = function(server) {
   server.register(Basic, function (err) {
     server.auth.strategy('simple', 'basic', false, { validateFunc: validate });
-  });
-
-
-  server.route({
-    method: 'POST',
-    path: '/api/user/create',
-    //config: {
-    //  auth: 'simple'
-    //},
-    handler: (request, reply) => {
-      reply(request.payload.email);
-    }
   });
 };

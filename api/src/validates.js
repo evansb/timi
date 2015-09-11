@@ -18,7 +18,6 @@ var timeslotSchema = Joi.object().keys({
 var eventSchema = Joi.object().keys({
   name: Joi.string().max(50).required(),
   deadline: Joi.date().min(new Date()),
-  owner_id: Joi.number().integer().positive().required(),
   participants: Joi.array().items(idSchema).min(1).unique().required(),
   timeslots: Joi.array().items(timeslotSchema).min(1).unique().required()
 });

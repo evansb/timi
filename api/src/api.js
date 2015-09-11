@@ -2,8 +2,10 @@ import User from './models/user';
 import Event from './models/event';
 import Timeslot from './models/timeslot';
 import Boom from 'boom';
+import Bcrypt from 'bcrypt';
 import validates from './validates';
 import transactions from './transactions';
+import Promise from 'bluebird';
 
 exports.newUser = (request, reply) => {
   var user = request.payload['user'];
@@ -16,7 +18,12 @@ exports.newUser = (request, reply) => {
       } else {
         try {
           validates.newUser(user);
-          new User(user, {hasTimestamps: true}).save().then(()=>{});
+          Promise.promisifyAll(Bcrypt);
+
+          Bcrypt.hashAsync(user.password, 5).then((pw) => {
+            new User(user, {hasTimestamps: true}).save('password', pw);
+          });
+
           reply('Successfully created user ' + user.email);
         } catch (err) {
           throw err;
@@ -51,13 +58,14 @@ exports.userResetPassword = (request, reply) => {
 };
 
 exports.newEvent = (request, reply) => {
+  var user = request.auth.credentials['user'];
   var event = request.payload['event'];
   if (!event) {
     reply(Boom.badRequest('Please specify the put in details'));
   } else {
     try {
       validates.newEvent(event);
-      transactions.newEvent(event);
+      transactions.newEvent(user, event);
       reply('Successfully created event ' + event.name);
     } catch (err) {
       throw err;
@@ -67,13 +75,12 @@ exports.newEvent = (request, reply) => {
 };
 
 exports.newAvailabilities = (request, reply) => {
-  var user = request.payload['user'];
+  var user = request.auth.credentials['user'];
   var availabilities = request.payload['availabilities'];
   if (!user || !availabilities) {
     reply(Boom.badRequest('Please specify the put in details'));
   } else {
     try {
-      validates.userId(user);
       validates.availabilities(availabilities);
       transactions.newAvailabilities(user, availabilities);
       reply('Successfully submitted availabilities!');
@@ -89,7 +96,7 @@ exports.updateAvailabilities = (request, reply) => {
 };
 
 exports.newConfirmations = (request, reply) => {
-  var user = request.payload['user'];
+  var user = request.auth.credentials['user'];
   var confirmations = request.payload['confirmations'];
   if (!user || !confirmations) {
     reply(Boom.badRequest('Please specify the put in details'));

@@ -6,9 +6,10 @@ import Timeslot from './models/timeslot';
 import EventUser from './models/event_user';
 import Availability from './models/availability';
 
-exports.newEvent = (params) => {
+exports.newEvent = (user, params) => {
   var timeslots = params['timeslots'],
       participants = params['participants'];
+  params['owner_id'] = user.get('id');
   delete params['timeslots'];
   delete params['participants'];
 
@@ -35,10 +36,10 @@ exports.newEvent = (params) => {
   });
 };
 
-exports.newAvailabilities = (user, availabilities) => {
+exports.newAvailabilities = (user, params) => {
   bookshelf.transaction(function (t) {
-    Promise.map(availabilities, (availability) => {
-      availability['user_id'] = user;
+    Promise.map(params, (availability) => {
+      availability['user_id'] = user.get('id');
       return new Availability(availability, {hasTimestamps: true}).save(null, {transacting: t});
     }).then(() => {
       t.commit();
