@@ -6,7 +6,12 @@
     <div class="title">
     </div>
     <div class="buttons">
-      <button class="button button-clear" ng-click="next()">Next</button>
+      <div ng-if="step != 3">
+        <button class="button button-clear" ng-click="next()">Next</button>
+      </div>
+      <div ng-if="step == 3">
+        <button class="button button-clear">Home</button>
+      </div>
     </div>
   </ion-header-bar>
   <ion-content>

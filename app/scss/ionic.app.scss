@@ -39,6 +39,11 @@ $ionicons-font-path: "../bower_components/ionic/fonts" !default;
   padding-right: 20px !important;
 }
 
+.padding-small {
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+}
+
 .only-bottom-border {
   border-left: none;
   border-right: none;
@@ -144,6 +149,44 @@ $ionicons-font-path: "../bower_components/ionic/fonts" !default;
   h1 {
     font-size: 2em;
     padding-left: 0.5em;
+  }
+}
 
+.timi-stacked-form {
+  @extend .padding-small;
+  label {
+    @extend .only-bottom-border;
+    width: 100% !important;
+    padding-left: 0;
+    padding-bottom: 0;
+  }
+  input {
+    border-bottom: 1px solid black !important;
+  }
+}
+
+.timi-participant-list {
+  @extend .padding-small;
+}
+
+.timi-person-card {
+  @extend .card;
+}
+
+.timi-create-link {
+  @extend .padding-medium;
+  h3 {
+    margin-top: 2em;
+    margin-bottom: 2em;
+  }
+
+  .link {  
+    margin-top: 2em;
+  }
+
+  .link a {
+    text-decoration: none;
+    color: rgb(133,100,100);
+    font-size: 1.5em;
   }
 }
