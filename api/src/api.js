@@ -40,16 +40,38 @@ exports.user_info = (request, reply) => {
   }
 };
 
+exports.user_reset_email = (request, reply) => {
+
+};
+
+exports.user_reset_password = (request, reply) => {
+
+};
+
 exports.new_event = (request, reply) => {
   var event = request.payload['event'];
-  if (!event) {
+  if (!event || !timeslots) {
     reply(Boom.badRequest('Please specify the put in details'));
   } else {
     try {
-      validates.new_event(event);
+      var timeslots = event['timeslots'];
+      delete event['timeslots'];
+      validates.new_event(event, timeslots);
       reply('Successfully created event ' + event.name);
     } catch (err) {
       reply(Boom.badData(err.details[0].message));
     }
   }
+};
+
+exports.user_new_event_availabilities = (request, reply) => {
+
+};
+
+exports.user_update_event_availabilities = (request, reply) => {
+
+};
+
+exports.user_event_confirmations = (request, reply) => {
+
 };

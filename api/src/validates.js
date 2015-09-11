@@ -23,9 +23,7 @@ exports.new_user = (user) => {
   Joi.attempt(user, user_schema);
 };
 
-exports.new_event = (event) => {
-  var timeslots = event['timeslots'];
-  delete event['timeslots'];
+exports.new_event = (event, timeslots) => {
   Joi.attempt(event, event_schema);
   timeslots.forEach(function (timeslot) {
     Joi.attempt(timeslot, timeslot_schema);
