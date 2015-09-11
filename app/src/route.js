@@ -26,4 +26,9 @@ export default ($stateProvider, $urlRouterProvider) => {
     url: '/invitation',
     templateUrl: 'views/invitation.html'
   });
+
+  $stateProvider.state('create', {
+    url: '/create',
+    templateUrl: 'views/create.html'
+  });
 }

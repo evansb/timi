@@ -34,6 +34,11 @@ $ionicons-font-path: "../bower_components/ionic/fonts" !default;
   padding-right: 40px !important;
 }
 
+.padding-medium {
+  padding-left: 20px !important;
+  padding-right: 20px !important;
+}
+
 .only-bottom-border {
   border-left: none;
   border-right: none;
@@ -56,6 +61,13 @@ $ionicons-font-path: "../bower_components/ionic/fonts" !default;
   }
   label.password {
     margin-top: 1em;
+  }
+}
+
+.timi-inline-form {
+  @extend .padding-medium;
+  span {
+    font-size: 0.85em !important;
   }
 }
 
