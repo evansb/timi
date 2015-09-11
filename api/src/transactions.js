@@ -17,7 +17,5 @@ exports.newEvent = (params) => {
     participants.forEach((participant) => {
       new EventUser({user_id: participant}, true).save('event_id', eventId, {transacting: t}).then(() => {});
     });
-  }).catch((err) => {
-    console.log(err);
   });
 }

@@ -3,6 +3,7 @@ import Event from './models/event';
 import Timeslot from './models/timeslot';
 import Boom from 'boom';
 import validates from './validates';
+import transactions from './transactions';
 
 exports.newUser = (request, reply) => {
   var user = request.payload['user'];
@@ -14,7 +15,7 @@ exports.newUser = (request, reply) => {
         reply(Boom.notAcceptable('Exists!'));
       } else {
         try {
-          validates.new_user(user);
+          validates.newUser(user);
           User.forge(user).save();
           reply('Successfully created user ' + user.email);
         } catch (err) {
@@ -54,7 +55,8 @@ exports.newEvent = (request, reply) => {
     reply(Boom.badRequest('Please specify the put in details'));
   } else {
     try {
-      validates.new_event(event);
+      validates.newEvent(event);
+      transactions.newEvent(event);
       reply('Successfully created event ' + event.name);
     } catch (err) {
       reply(Boom.badData(err.details[0].message));
