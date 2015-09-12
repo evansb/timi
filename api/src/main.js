@@ -41,7 +41,7 @@ server.route({
 
 server.route({
   method: 'POST',
-  path: '/api/users/new',
+  path: '/api/users',
   handler: api.newUser
 });
 
@@ -56,7 +56,7 @@ server.route({
 
 server.route({
   method: 'GET',
-  path: '/api/user/{userId}/events/{eventId}',
+  path: '/api/users/{userId}/events/{eventId}',
   config: {
     auth: 'simple'
   },
@@ -65,7 +65,7 @@ server.route({
 
 server.route({
   method: 'POST',
-  path: '/api/events/new',
+  path: '/api/events',
   config: {
     auth: 'simple',
     handler: api.newEvent
