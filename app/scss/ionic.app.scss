@@ -15,8 +15,178 @@ $royal:                           #886aea !default;
 $dark:                            #444 !default;
 */
 
+$timi-button-light: #eeeeee;
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../bower_components/ionic/fonts" !default;
 
 // Include all of Ionic
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700,600,300);
 @import "../bower_components/ionic/scss/ionic";
+@import "../bower_components/Ionicons/scss/ionicons";
+@import "./common";
+
+* {
+  font-family: 'Open Sans', sans-serif !important;
+}
+
+.padding-big {
+  padding-left: 40px !important;
+  padding-right: 40px !important;
+}
+
+.padding-medium {
+  padding-left: 20px !important;
+  padding-right: 20px !important;
+}
+
+.padding-small {
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+}
+
+.only-bottom-border {
+  border-left: none;
+  border-right: none;
+  border-top: none;
+}
+
+.timi-logo {
+  @extend .padding-big;
+}
+
+.timi-login-form {
+  @extend .padding-big;
+  margin-bottom: 2em;
+  label {
+    @extend .only-bottom-border;
+    width: 100% !important;
+    padding-left: 0;
+    padding-bottom: 0;
+    border-bottom: 1.5px solid black;
+  }
+  label.password {
+    margin-top: 1em;
+  }
+}
+
+.timi-inline-form {
+  @extend .padding-medium;
+  span {
+    font-size: 0.85em !important;
+  }
+}
+
+.timi-full-button {
+  @extend .padding-big;
+  button {
+    width: 100%;
+  }
+}
+
+.timi-forgot-password-sign-up {
+  @extend .padding-big;
+  font-size: 0.8em;
+
+  a {
+    text-decoration: none;
+    color:
+  }
+}
+
+.timi-message-modal {
+  background-color: transparent;
+  .modal-body {
+    background-color: rgba(0,0,0,0.6) !important;
+    height: 50px !important;
+    max-height: 50px !important;
+    color: white;
+    padding-top: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 5px;
+    font-size: 1.2em;
+
+    .x-icon {
+      text-align: right;
+    }
+  }
+}
+
+.timi-forgot-message {
+  h1 {
+    font-size: 1.3em;
+  }
+}
+
+.timi-button-small {
+  @extend .button;
+  border: none;
+  background-color: #eeeeee !important;
+}
+
+.timi-list-title {
+  padding-left: 0.5em;
+}
+
+.timi-slot {
+  @extend .card;
+  .date-big {
+    font-size: 1.3em;
+  }
+  .month-big {
+    font-size: 1.3em;
+  }
+  .day-big {
+    font-size: 1.2em;
+  }
+  .x-icon {
+    text-align: center;
+    font-size: 2em;
+  }
+}
+
+.timi-event-header {
+  h1 {
+    font-size: 2em;
+    padding-left: 0.5em;
+  }
+}
+
+.timi-stacked-form {
+  @extend .padding-small;
+  label {
+    @extend .only-bottom-border;
+    width: 100% !important;
+    padding-left: 0;
+    padding-bottom: 0;
+  }
+  input {
+    border-bottom: 1px solid black !important;
+  }
+}
+
+.timi-participant-list {
+  @extend .padding-small;
+}
+
+.timi-person-card {
+  @extend .card;
+}
+
+.timi-create-link {
+  @extend .padding-medium;
+  h3 {
+    margin-top: 2em;
+    margin-bottom: 2em;
+  }
+
+  .link {  
+    margin-top: 2em;
+  }
+
+  .link a {
+    text-decoration: none;
+    color: rgb(133,100,100);
+    font-size: 1.5em;
+  }
+}
