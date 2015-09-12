@@ -18,6 +18,7 @@ exports.newEvent = (user, params) => {
       .save(null, {transacting: t})
       .then((event) => {
         var eventId = event.get('id');
+        participants.push(event.get('owner_id'));
         var createSlots = Promise.map(timeslots, (timeslot) => {
           timeslot['event_id'] = eventId;
           return new Timeslot(timeslot, {hasTimestamps: true}).save(null, {transacting: t});
