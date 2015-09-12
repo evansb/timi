@@ -1,1 +1,25 @@
-<p>Hello World!</p>
+<ion-view class="timi-home" ng-controller="HomeController">
+  <!-- Header -->
+  <ion-header-bar>
+    <div class="bar bar-header bar-light">
+      <h1 class="title">Your Events</h1>
+      <button class="timi-button-small icon ion-plus-round"></buton>
+    </div>
+  </ion-header-bar>
+  <ion-content>
+    <h3 class="timi-list-title">Event Invites</h3>
+    <div class="list">
+      <timi-event-card
+        ng-repeat="event in invites"
+        ng-model="event">
+      </timi-event-card>
+    </div>
+    <h3 class="timi-list-title">Scheduled Events</h3>
+    <div class="list">
+      <timi-event-card
+        ng-repeat="event in scheduled"
+        ng-model="event">
+      </timi-event-card>
+    </div>
+  </ion-content>
+</ion-view>
