@@ -1,5 +1,6 @@
 import validate from './validate';
 import api from './api';
+import UserController from './controllers/users_controller';
 
 module.exports = [
   {
@@ -16,7 +17,7 @@ module.exports = [
     config: {
       auth: 'simple'
     },
-    handler: api.me
+    handler: UserController.me
   },
 
   {
@@ -25,7 +26,7 @@ module.exports = [
     config: {
       auth: 'simple'
     },
-    handler: api.myEvents
+    handler: UserController.myEvents
   },
 
   {
@@ -34,7 +35,7 @@ module.exports = [
     config: {
       auth: 'simple',
       validate: validate.myEventsAvailabilities,
-      handler: api.myEventsAvailabilities
+      handler: UserController.myEventsAvailabilities
     }
   },
 
@@ -44,7 +45,7 @@ module.exports = [
     config: {
       auth: false,
       validate: validate.newUser,
-      handler: api.newUser
+      handler: UserController.newUser
     }
   },
 
@@ -54,7 +55,7 @@ module.exports = [
     config: {
       auth: 'simple',
       validate: validate.userInfo,
-      handler: api.userInfo
+      handler: UserController.userInfo
     }
   },
 
@@ -64,7 +65,7 @@ module.exports = [
     config: {
       auth: 'simple',
       validate: validate.userEventsAvailabilities,
-      handler: api.userEventsAvailabilities
+      handler: UserController.userEventsAvailabilities
     }
   },
 
