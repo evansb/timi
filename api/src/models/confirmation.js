@@ -2,13 +2,13 @@ import bookshelf from '../config/bookshelf';
 import Timeslot from './timeslot';
 import User from './user';
 
-var Confirmation = bookshelf.Model.extend({
+var Confirmation = bookshelf.model('Confirmation', {
   tableName: 'confirmations',
-  user: () => {
-    return this.belongsTo(User, 'user_id');
+  user: function () {
+    return this.belongsTo('User', 'user_id');
   },
-  timeslot: () => {
-    return this.belongsTo(Timeslot, 'timeslot_id');
+  timeslot: function () {
+    return this.belongsTo('Timeslot', 'timeslot_id');
   }
 });
 

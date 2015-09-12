@@ -2,13 +2,13 @@ import bookshelf from '../config/bookshelf';
 import Timeslot from './timeslot';
 import User from './user';
 
-var Event = bookshelf.Model.extend({
+var Event = bookshelf.model('Event', {
   tableName: 'events',
   timeslots: function () {
-    return this.hasMany(Timeslot, 'event_id');
+    return this.hasMany('Timeslot', 'event_id');
   },
   result: function () {
-    return this.hasMany(Timeslot, 'event_id').query(function(qb) {
+    return this.timeslots().query(function(qb) {
       qb.leftJoin('availabilities','availabilities.timeslot_id', 'timeslots.id').
         select('timeslots').
         count('availabilities as available_count').
@@ -16,22 +16,22 @@ var Event = bookshelf.Model.extend({
         orderBy('available_count', 'desc');
     });
   },
-  owner: () => {
-    return this.belongsTo(User, 'owner_id');
+  owner: function () {
+    return this.belongsTo('User', 'owner_id');
   },
-  participants: () => {
-    return this.belongsToMany(User, 'events_users', 'event_id', 'user_id');
+  participants: function () {
+    return this.belongsToMany('User', 'events_users', 'event_id', 'user_id');
   },
-  important_participants: () => {
+  important_participants: function () {
     return this.participants().where('important', true);
   },
-  normal_participants: () => {
+  normal_participants: function () {
     return this.participants().where('important', false);
   },
-  participated_participants: () => {
+  participated_participants: function () {
     return this.participants().where('participated', true);
   },
-  unparticipated_participants: () => {
+  unparticipated_participants: function () {
     return this.participants().where('participated', false);
   }
 });

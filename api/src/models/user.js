@@ -10,10 +10,10 @@ var User = bookshelf.model('User', {
     return {email: this.get('email'), name: this.get('name')};
   },
   ownEvents: function () {
-    return this.hasMany(Event, 'owner_id');
+    return this.hasMany('Event', 'owner_id');
   },
   invitedEvents: function () {
-    return this.belongsToMany(Event, 'events_users', 'user_id', 'event_id');
+    return this.belongsToMany('Event', 'events_users', 'user_id', 'event_id');
   },
   participated_events: function (){
     this.invited_events.where('participated', true);
@@ -22,7 +22,7 @@ var User = bookshelf.model('User', {
     this.invited_events.where('participated', false);
   },
   availableForEvent: function (event) {
-    return this.belongsToMany(Timeslot, 'availabilities', 'user_id', 'timeslot_id').withPivot(['weight']).query({where: {event_id: event.get('id')}});
+    return this.belongsToMany('Timeslot', 'availabilities', 'user_id', 'timeslot_id').withPivot(['weight']).query({where: {event_id: event.get('id')}});
   },
   belongToEvent: function (event) {
     return EventUser.query({where: {event_id: event.get('id'), user_id: this.get('id')}}).count().then((count) => {
