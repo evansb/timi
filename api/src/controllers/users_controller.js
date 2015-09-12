@@ -33,8 +33,8 @@ class UserController {
   }
 
   static myEventsAvailabilities(request, reply) {
-    let user = request.auth.credentials['user'];
-    let eventId = request.params['eventId'];
+    let user = request.auth.credentials['user'],
+        eventId = request.params['eventId'];
     _permit(user, eventId)
       .then((user) => {
         return user.availableForEvent(eventId);
@@ -60,8 +60,8 @@ class UserController {
 
   // Bad practice, will change in the future
   static userInfo(request, reply) {
-    let user = request.auth.credentials['user'];
-    let viewedUserId = request.params['userId'];
+    let user = request.auth.credentials['user'],
+        viewedUserId = request.params['userId'];
     User.where('id', viewedUserId).fetch()
       .then((user) => {
         if(user) {
@@ -77,9 +77,9 @@ class UserController {
 
   // Bad practice, will change in the future
   static userEventsAvailabilities(request, reply) {
-    let user = request.auth.credentials['user'];
-    let viewedUserId = request.params['userId'];
-    let eventId = request.params['eventId'];
+    let user = request.auth.credentials['user'],
+        viewedUserId = request.params['userId'],
+        eventId = request.params['eventId'];
 
     _permit(user, eventId)
       .then(() => {
