@@ -1,4 +1,4 @@
-import bookshelf from 'bookshelf';
+import Bookshelf from 'bookshelf';
 
 var knex = require('knex')({
   client: 'postgresql',
@@ -11,4 +11,8 @@ var knex = require('knex')({
   }
 });
 
-module.exports = bookshelf(knex);
+var bookshelf = Bookshelf(knex);
+bookshelf.plugin('registry');
+bookshelf.plugin('visibility');
+
+module.exports = bookshelf;

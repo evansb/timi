@@ -79,7 +79,7 @@ exports.userEventsAvailabilities = (request, reply) => {
   Event.where('id', request.params['eventId']).fetch().then((event) => {
     return user.belongToEvent(event).then((result) => {
       if(!result) {
-        throw 'You are not in this event';
+        throw 'Sorry, you do not have this permission';
       }
     }).then(() => {
       return User.where('id', viewedUserId).fetch();
@@ -116,8 +116,24 @@ exports.newEvent = (request, reply) => {
   }
 };
 
+exports.eventTimeslots = (request, reply) => {
+  var user = request.auth.credentials['user'];
+  var eventId = parseInt(request.params['eventId']);
+  Event.where('id', request.params['eventId']).fetch().then((event) => {
+    user.belongToEvent(event).then((result) => {
+      if (!result) {
+        throw 'Sorry, you do not have this permission';
+      }
+    });
+    return event.timeslots().fetch();
+  }).then((slots) => {
+    reply(JSON.stringify(slots));
+  });
+};
+
 exports.newAvailabilities = (request, reply) => {
   var user = request.auth.credentials['user'];
+  var eventId = parseInt(request.params['eventId']);
   var availabilities = request.payload['availabilities'];
   if (!user || !availabilities) {
     reply(Boom.badRequest('Please specify the put in details'));
@@ -131,6 +147,41 @@ exports.newAvailabilities = (request, reply) => {
       reply(Boom.badData(err));
     }
   }
+};
+
+exports.eventResult = (request, reply) => {
+  var user = request.auth.credentials['user'];
+  var eventId = parseInt(request.params['eventId']);
+  Event.where('id', request.params['eventId']).fetch().then((event) => {
+    return user.belongToEvent(event).then((result) => {
+      if (event.get('owner_id') !== user.get('id') && !result) {
+        throw 'Sorry, you do not have this permission';
+      }
+    }).then(() => {
+      return event.result().fetch();
+    });
+  }).then((slots) => {
+    reply(JSON.stringify(slots));
+  });
+};
+
+exports.eventTimeslotAvailabilities = (request, reply) => {
+  var user = request.auth.credentials['user'];
+  var eventId = parseInt(request.params['eventId']);
+  var timeslotId = parseInt(request.params['timeslotId']);
+  Event.where('id', request.params['eventId']).fetch().then((event) => {
+    return user.belongToEvent(event).then((result) => {
+      if (event.get('owner_id') !== user.get('id') && !result) {
+        throw 'Sorry, you do not have this permission';
+      }
+    }).then(() => {
+      return event.timeslots().query({where:{id: timeslotId}}).fetch();
+    });
+  }).then((slots) => {
+    return slots.first().availabilities().fetch();
+  }).then((users) => {
+    reply(JSON.stringify(users));
+  });
 };
 
 exports.updateAvailabilities = (request, reply) => {
