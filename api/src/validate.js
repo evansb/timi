@@ -11,8 +11,8 @@ var userSchema = Joi.object().keys({
 });
 
 var timeslotSchema = Joi.object().keys({
-  start: Joi.date().required(),
-  end: Joi.date().required()
+  start: Joi.date().required().min(new Date()),
+  end: Joi.date().required().min(Joi.ref('start'))
 });
 
 var eventSchema = Joi.object().keys({
