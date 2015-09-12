@@ -57,7 +57,7 @@ exports.newUser = (request, reply) => {
 
 exports.userInfo = (request, reply) => {
   var user = request.auth.credentials['user'];
-  if(user.get('id') === request.params['userId']) {
+  if (user.get('id') === request.params['userId']) {
     reply.redirect('/me');
   } else {
     User.where('id', request.params['userId']).fetch().then((user) => {
@@ -73,12 +73,12 @@ exports.userInfo = (request, reply) => {
 exports.userEventsAvailabilities = (request, reply) => {
   //var user = request.auth.credentials['user'];
   var viewedUserId = parseInt(request.params['userId']);
-  if(user.get('id') === viewedUserId) {
+  if (user.get('id') === viewedUserId) {
     throw 'You are looking at yourself';
   }
   Event.where('id', request.params['eventId']).fetch().then((event) => {
     return user.belongToEvent(event).then((result) => {
-      if(!result) {
+      if (!result) {
         throw 'Sorry, you do not have this permission';
       }
     }).then(() => {
@@ -165,6 +165,26 @@ exports.eventResult = (request, reply) => {
   });
 };
 
+exports.eventParticipants = (request, reply) => {
+  var user = request.auth.credentials['user'];
+  var eventId = parseInt(request.params['eventId']);
+  Event.where('id', request.params['eventId']).fetch().
+    then((event) => {
+      return user.belongToEvent(event).
+        then((result) => {
+          if (event.get('owner_id') !== user.get('id') && !result) {
+            throw 'Sorry, you do not have this permission';
+          }
+        }).then(() => {
+          return event.participants().fetch();
+        });
+    }).then((result) => {
+      reply({
+        participants: JSON.stringify(result)
+      });
+    });
+};
+
 exports.eventTimeslotAvailabilities = (request, reply) => {
   var user = request.auth.credentials['user'];
   var eventId = parseInt(request.params['eventId']);
@@ -175,7 +195,7 @@ exports.eventTimeslotAvailabilities = (request, reply) => {
         throw 'Sorry, you do not have this permission';
       }
     }).then(() => {
-      return event.timeslots().query({where:{id: timeslotId}}).fetch();
+      return event.timeslots().query({where: {id: timeslotId}}).fetch();
     });
   }).then((slots) => {
     return slots.first().availabilities().fetch();

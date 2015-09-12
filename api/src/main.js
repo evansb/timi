@@ -92,6 +92,15 @@ server.route({
 
 server.route({
   method: 'GET',
+  path: '/api/events/{eventId}/participants',
+  config: {
+    auth: 'simple',
+    handler: api.eventParticipants
+  }
+});
+
+server.route({
+  method: 'GET',
   path: '/api/events/{eventId}/result',
   config: {
     auth: 'simple',
