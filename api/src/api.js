@@ -3,7 +3,6 @@ import Event from './models/event';
 import Timeslot from './models/timeslot';
 import Boom from 'boom';
 import Bcrypt from 'bcrypt';
-import validates from './validates';
 import transactions from './transactions';
 import Promise from 'bluebird';
 
@@ -38,7 +37,6 @@ exports.newUser = (request, reply) => {
         reply(Boom.notAcceptable('Exists!'));
       } else {
         try {
-          validates.newUser(user);
           Promise.promisifyAll(Bcrypt);
 
           Bcrypt.hashAsync(user.password, 5).then((pw) => {
@@ -71,14 +69,14 @@ exports.userInfo = (request, reply) => {
 };
 
 exports.userEventsAvailabilities = (request, reply) => {
-  //var user = request.auth.credentials['user'];
+  var user = request.auth.credentials['user'];
   var viewedUserId = parseInt(request.params['userId']);
   if (user.get('id') === viewedUserId) {
     throw 'You are looking at yourself';
   }
   Event.where('id', request.params['eventId']).fetch().then((event) => {
     return user.belongToEvent(event).then((result) => {
-      if (!result) {
+      if (event.get('owner_id') !== user.get('id') && !result) {
         throw 'Sorry, you do not have this permission';
       }
     }).then(() => {
@@ -102,17 +100,12 @@ exports.userResetPassword = (request, reply) => {
 exports.newEvent = (request, reply) => {
   var user = request.auth.credentials['user'];
   var event = request.payload['event'];
-  if (!event) {
-    reply(Boom.badRequest('Please specify the put in details'));
-  } else {
-    try {
-      validates.newEvent(event);
-      transactions.newEvent(user, event);
-      reply('Successfully created event ' + event.name);
-    } catch (err) {
-      throw err;
-      reply(Boom.badData(err));
-    }
+  try {
+    transactions.newEvent(user, event);
+    reply('Successfully created event ' + event.name);
+  } catch (err) {
+    throw err;
+    reply(Boom.badData(err));
   }
 };
 
@@ -139,7 +132,6 @@ exports.newAvailabilities = (request, reply) => {
     reply(Boom.badRequest('Please specify the put in details'));
   } else {
     try {
-      validates.availabilities(availabilities);
       transactions.newAvailabilities(user, availabilities);
       reply('Successfully submitted availabilities!');
     } catch (err) {

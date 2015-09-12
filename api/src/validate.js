@@ -2,7 +2,7 @@ import Joi from 'joi';
 import User from './models/user';
 
 var emailSchema = Joi.string().email();
-var idSchema = Joi.number().integer().positive();
+var idSchema = Joi.number().integer().positive().required();
 
 var userSchema = Joi.object().keys({
   email: emailSchema.required(),
@@ -29,22 +29,67 @@ var availabilitySchema = Joi.object().keys({
 
 var availabilitiesSchema = Joi.array().items(availabilitySchema);
 
-exports.newUser = (user) => {
-  Joi.assert(user, userSchema);
+exports.newUser = {
+  payload: {
+    user: userSchema
+  }
 };
 
-exports.newEvent = (event) => {
-  Joi.assert(event, eventSchema);
+exports.userInfo = {
+  params: {
+    userId: idSchema
+  }
 };
 
-exports.userEmail = (email) => {
-  Joi.assert(email, emailSchema);
-}
+exports.myEventsAvailabilities = {
+  params: {
+    eventId: idSchema
+  }
+};
 
-exports.userId = (id) => {
-  Joi.assert(id, idSchema.required());
-}
+exports.userEventsAvailabilities = {
+  params: {
+    userId: idSchema,
+    eventId: idSchema
+  }
+};
 
-exports.availabilities = (availabilities) => {
-  Joi.assert(availabilities, availabilitiesSchema);
-}
+exports.newEvent = {
+  payload: {
+    event: eventSchema
+  }
+};
+
+exports.newAvailabilities = {
+  params: {
+    eventId: idSchema
+  },
+  payload: {
+    availabilities: availabilitiesSchema
+  }
+};
+
+exports.eventTimeslots = {
+  params: {
+    eventId: idSchema
+  }
+};
+
+exports.eventParticipants = {
+  params: {
+    eventId: idSchema
+  }
+};
+
+exports.eventResult = {
+  params: {
+    eventId: idSchema
+  }
+};
+
+exports.eventTimeslotAvailabilities = {
+  params: {
+    eventId: idSchema,
+    timeslotId: idSchema
+  }
+};
