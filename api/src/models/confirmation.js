@@ -4,6 +4,7 @@ import User from './user';
 
 var Confirmation = bookshelf.model('Confirmation', {
   tableName: 'confirmations',
+  hidden: ['created_at', 'updated_at'],
   user: function () {
     return this.belongsTo('User', 'user_id');
   },

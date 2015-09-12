@@ -4,7 +4,8 @@ import User from './user';
 
 var Availability = bookshelf.model('Availability', {
   tableName: 'availabilities',
-  //idAttribute: null,
+  idAttribute: null,
+  hidden: ['created_at', 'updated_at'],
   user: function () {
     return this.belongsTo('User', 'user_id');
   },
