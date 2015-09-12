@@ -1,6 +1,8 @@
-
 import Hapi from "hapi";
 import NUSMods from './vendor/nusmods';
+import auth from './auth';
+import api from './api';
+import routes from './routes';
 
 var server = new Hapi.Server();
 
@@ -9,13 +11,11 @@ server.connection({
   port: 8000
 });
 
-server.route({
-  method: 'GET',
-  path: '/api/v1/status',
-  handler: (request, reply) => {
-    reply('running');
-  }
-});
+auth(server);
+
+for (var route in routes) {
+  server.route(routes[route]);
+}
 
 server.start(() => {
   let nusmods = new NUSMods('http://modsn.us/racU2');
