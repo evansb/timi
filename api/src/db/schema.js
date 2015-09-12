@@ -1,4 +1,4 @@
-import bookshelf from './config/bookshelf';
+import bookshelf from '../config/bookshelf';
 
 bookshelf.knex.schema
   .createTable('users', (t) => {
