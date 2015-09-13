@@ -6,8 +6,8 @@ import routes     from './routes';
 var server = new Hapi.Server();
 
 server.connection({
-  host: 'localhost',
-  port: 8000
+  host: process.env.API_HOST,
+  port: process.env.API_PORT
 });
 
 auth(server);
