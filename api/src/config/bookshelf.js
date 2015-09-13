@@ -1,7 +1,9 @@
 import Bookshelf from 'bookshelf';
 
+console.log(process.env);
+
 var knex = require('knex')({
-  client: 'postgresql',
+  client: 'pg',
   connection: {
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
