@@ -1,18 +1,7 @@
 import Promise from 'bluebird';
 import Boom from 'boom';
 import User from '../models/user';
-
-// PRIVATE
-let _permit = (user, eventId) => {
-  return user.belongToEvent(eventId)
-    .then((result) => {
-      if(!result) {
-        throw new Error('You are not in this event');
-      } else {
-        return user;
-      }
-    });
-}
+import common from './_common';
 
 class UsersController {
   static me(request, reply) {
@@ -35,7 +24,7 @@ class UsersController {
   static myEventsAvailabilities(request, reply) {
     let user = request.auth.credentials['user'],
         eventId = request.params['eventId'];
-    _permit(user, eventId)
+    common.permit(user, eventId)
       .then((user) => {
         return user.availableForEvent(eventId);
       })
@@ -81,7 +70,7 @@ class UsersController {
         viewedUserId = request.params['userId'],
         eventId = request.params['eventId'];
 
-    _permit(user, eventId)
+    common.permit(user, eventId)
       .then(() => {
         return User.where('id', viewedUserId).fetch();
       })

@@ -1,20 +1,8 @@
 import Promise from 'bluebird';
 import Boom from 'boom';
-import Event from '../models/event';
 import transactions from '../transactions';
-
-
-// PRIVATE
-let _permit = (user, eventId) => {
-  return user.belongToEvent(eventId)
-    .then((result) => {
-      if (!result) {
-        throw new Error('You are not in this event');
-      } else {
-        return user;
-      }
-    });
-};
+import Event from '../models/event';
+import common from './_common';
 
 class EventsController {
   static newEvent(request, reply) {
@@ -43,7 +31,7 @@ class EventsController {
     let user = request.auth.credentials['user'],
       eventId = request.params['eventId'],
       availabilities = request.payload['availabilities'];
-    _permit(user, eventId)
+    common.permit(user, eventId)
       .then((user) => {
         return transactions.newAvailabilities(user.get('id'), eventId, availabilities);
       })
@@ -58,7 +46,7 @@ class EventsController {
   static eventTimeslots(request, reply) {
     let user = request.auth.credentials['user'],
       eventId = request.params['eventId'];
-    _permit(user, eventId)
+    common.permit(user, eventId)
       .then((user) => {
         return Event.where('id', eventId).fetch().then((event) => {
           return event.getTimeslots();
@@ -75,7 +63,7 @@ class EventsController {
   static eventParticipants(request, reply) {
     let user = request.auth.credentials['user'],
       eventId = request.params['eventId'];
-    _permit(user, eventId)
+    common.permit(user, eventId)
       .then((user) => {
         return Event.where('id', eventId).fetch().then((event) => {
           return event.getParticipants();
@@ -92,7 +80,7 @@ class EventsController {
   static eventResult(request, reply) {
     let user = request.auth.credentials['user'],
       eventId = request.params['eventId'];
-    _permit(user, eventId)
+    common.permit(user, eventId)
       .then((user) => {
         return Event.where('id', eventId).fetch().then((event) => {
           return event.result();
@@ -110,7 +98,7 @@ class EventsController {
     let user = request.auth.credentials['user'],
       eventId = request.params['eventId'],
       timeslotId = request.params['timeslotId'];
-    _permit(user, eventId)
+    common.permit(user, eventId)
       .then((user) => {
         return Event.where('id', eventId).fetch().then((event) => {
           return event.getTimeslot(timeslotId);
