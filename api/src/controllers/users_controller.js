@@ -49,7 +49,7 @@ class UserController {
 
   static newUser(request, reply) {
     let user = request.payload.user;
-    new User(user, {hasTimestamps: true}).trySave()
+    new User(user, { hasTimestamps: true }).trySave()
       .then((_user) => {
         reply(JSON.stringify(_user));
       })
