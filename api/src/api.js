@@ -3,7 +3,7 @@ import Boom from 'boom';
 import transactions from './transactions';
 
 exports.newEvent = (request, reply) => {
-  var user = request.auth.credentials.user;
+  var user = request.auth.credentials;
   var event = request.payload.event;
   try {
     transactions.newEvent(user, event);
@@ -14,7 +14,7 @@ exports.newEvent = (request, reply) => {
 };
 
 exports.eventTimeslots = (request, reply) => {
-  let user = request.auth.credentials.user;
+  let user = request.auth.credentials;
   let eventId = parseInt(request.params.eventId);
   Event.where('id', eventId).fetch().then((event) => {
     user.belongToEvent(event).then((result) => {
@@ -29,7 +29,7 @@ exports.eventTimeslots = (request, reply) => {
 };
 
 exports.newAvailabilities = (request, reply) => {
-  var user = request.auth.credentials.user;
+  var user = request.auth.credentials;
   var availabilities = request.payload.availabilities;
   if (!user || !availabilities) {
     reply(Boom.badRequest('Please specify the put in details'));
@@ -44,7 +44,7 @@ exports.newAvailabilities = (request, reply) => {
 };
 
 exports.eventResult = (request, reply) => {
-  var user = request.auth.credentials.user;
+  var user = request.auth.credentials;
   var eventId = parseInt(request.params.eventId);
   Event.where('id', eventId).fetch().then((event) => {
     return user.belongToEvent(event).then((result) => {
@@ -60,7 +60,7 @@ exports.eventResult = (request, reply) => {
 };
 
 exports.eventParticipants = (request, reply) => {
-  var user = request.auth.credentials.user;
+  var user = request.auth.credentials;
   var eventId = parseInt(request.params.eventId);
   Event.where('id', eventId).fetch().
     then((event) => {
@@ -80,7 +80,7 @@ exports.eventParticipants = (request, reply) => {
 };
 
 exports.eventTimeslotAvailabilities = (request, reply) => {
-  var user = request.auth.credentials.user;
+  var user = request.auth.credentials;
   var eventId = parseInt(request.params.eventId);
   var timeslotId = parseInt(request.params.timeslotId);
   Event.where('id', eventId).fetch().then((event) => {
@@ -103,7 +103,7 @@ exports.updateAvailabilities = () => {
 };
 
 exports.newConfirmations = (request, reply) => {
-  var user = request.auth.credentials.user;
+  var user = request.auth.credentials;
   var confirmations = request.payload.confirmations;
   if (!user || !confirmations) {
     reply(Boom.badRequest('Please specify the put in details'));

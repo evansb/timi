@@ -1,6 +1,7 @@
-import Promise from 'bluebird';
-import Boom from 'boom';
-import User from '../models/user';
+import Promise    from 'bluebird';
+import Boom       from 'boom';
+import Bcrypt     from 'bcrypt';
+import User       from '../models/user';
 
 // PRIVATE
 let _permit = (user, eventId) => {
@@ -16,12 +17,34 @@ let _permit = (user, eventId) => {
 
 class UserController {
   static me(request, reply) {
-    let user = request.auth.credentials.user;
+    let user = request.auth.credentials;
     reply(JSON.stringify(user));
   }
 
+  static login(request, reply) {
+    let { email, password } = request.payload;
+    User.query({where: {email: email}}).fetch().then((user) => {
+      if (!user) {
+        reply(Boom.forbidden('Wrong username or password'));
+      }
+      Bcrypt.compare(password, user.attributes.password, (err, isValid) => {
+        if (err) {
+          reply(Boom.badImplementation('Internal server error'));
+        } else if (isValid) {
+          request.auth.session.set(user);
+          reply(user);
+        }
+      });
+    });
+  }
+
+  static logout(request, reply) {
+    request.auth.session.clear();
+    reply({ status: 'logged_out' });
+  }
+
   static myEvents(request, reply) {
-    let user = request.auth.credentials.user;
+    let user = request.auth.credentials;
     Promise
       .all([user.ownEvents(), user.invitedEvents()])
       .then((events) => {
@@ -33,7 +56,7 @@ class UserController {
   }
 
   static myEventsAvailabilities(request, reply) {
-    let user = request.auth.credentials.user,
+    let user = request.auth.credentials,
         eventId = request.params.eventId;
     _permit(user, eventId)
       .then((_user) => {
@@ -78,7 +101,7 @@ class UserController {
 
   // Bad practice, will change in the future
   static userEventsAvailabilities(request, reply) {
-    let user = request.auth.credentials.user,
+    let user = request.auth.credentials,
         viewedUserId = request.params.userId,
         eventId = request.params.eventId;
 

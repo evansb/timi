@@ -1,4 +1,4 @@
-import Basic    from 'hapi-auth-basic';
+import Cookie   from 'hapi-auth-cookie';
 import Bcrypt   from 'bcrypt';
 import User     from './models/user';
 
@@ -14,7 +14,16 @@ var validate = (request, email, password, callback) => {
 };
 
 module.exports = (server) => {
-  server.register(Basic, () => {
-    server.auth.strategy('simple', 'basic', true, { validateFunc: validate });
+  let oneDay = 24 * 60 * 60 * 1000;
+  server.register(Cookie, (err) => {
+    if (err) {
+      throw err;
+    }
+    server.auth.strategy('session', 'cookie', {
+      password: 'opensesame',
+      cookie: 'session',
+      isSecure: false,
+      ttl: oneDay
+    });
   });
 };
