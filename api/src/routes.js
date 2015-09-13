@@ -1,22 +1,21 @@
 import validate from './validate';
-import api from './api';
-import UserController from './controllers/users_controller';
+import UserController   from './controllers/user';
+import EventController  from './controllers/event';
 
 module.exports = [
   {
     method: 'GET',
-    path: '/api/test',
-    handler: (request, reply) => {
-      reply.view('test');
-    }
+    path: '/api/me',
+    config: {
+      auth: 'session'
+    },
+    handler: UserController.getCurrent
   },
-
   {
     method: 'POST',
     path: '/api/me/login',
     handler: UserController.login
   },
-
   {
     method: 'POST',
     path: '/api/me/logout',
@@ -25,32 +24,22 @@ module.exports = [
     },
     handler: UserController.logout
   },
-
-  {
-    method: 'GET',
-    path: '/api/me',
-    config: {
-      auth: 'session'
-    },
-    handler: UserController.me
-  },
-
   {
     method: 'GET',
     path: '/api/me/events',
     config: {
       auth: 'session'
     },
-    handler: UserController.myEvents
+    handler: UserController.getCurrentEvents
   },
 
   {
     method: 'GET',
-    path: '/api/me/events/{eventId}',
+    path: '/api/me/events/{eventId}/availabilities',
     config: {
       auth: 'session',
       validate: validate.myEventsAvailabilities,
-      handler: UserController.myEventsAvailabilities
+      handler: UserController.getCurrentAvailability
     }
   },
 
@@ -60,7 +49,7 @@ module.exports = [
     config: {
       auth: false,
       validate: validate.newUser,
-      handler: UserController.newUser
+      handler: UserController.create
     }
   },
 
@@ -70,7 +59,7 @@ module.exports = [
     config: {
       auth: 'session',
       validate: validate.userInfo,
-      handler: UserController.userInfo
+      handler: UserController.getUser
     }
   },
 
@@ -80,7 +69,7 @@ module.exports = [
     config: {
       auth: 'session',
       validate: validate.userEventsAvailabilities,
-      handler: UserController.userEventsAvailabilities
+      handler: UserController.getUserAvailabilities
     }
   },
 
@@ -90,17 +79,17 @@ module.exports = [
     config: {
       auth: 'session',
       validate: validate.newEvent,
-      handler: api.newEvent
+      handler: EventController.create
     }
   },
 
   {
     method: 'POST',
-    path: '/api/events/{eventId}',
+    path: '/api/events/{eventId}/availabilities',
     config: {
       auth: 'session',
       validate: validate.newAvailabilities,
-      handler: api.newAvailabilities
+      handler: EventController.createAvailabilities
     }
   },
 
@@ -110,7 +99,7 @@ module.exports = [
     config: {
       auth: 'session',
       validate: validate.eventTimeslots,
-      handler: api.eventTimeslots
+      handler: EventController.getTimeSlots
     }
   },
 
@@ -120,7 +109,7 @@ module.exports = [
     config: {
       auth: 'session',
       validate: validate.eventParticipants,
-      handler: api.eventParticipants
+      handler: EventController.getParticipants
     }
   },
 
@@ -130,7 +119,7 @@ module.exports = [
     config: {
       auth: 'session',
       validate: validate.eventResult,
-      handler: api.eventResult
+      handler: EventController.getResult
     }
   },
 
@@ -140,7 +129,7 @@ module.exports = [
     config: {
       auth: 'session',
       validate: validate.eventTimeslotAvailabilities,
-      handler: api.eventTimeslotAvailabilities
+      handler: EventController.getTimeslotAvailabilities
     }
   }
 ];

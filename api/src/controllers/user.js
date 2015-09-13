@@ -3,7 +3,6 @@ import Boom       from 'boom';
 import Bcrypt     from 'bcrypt';
 import User       from '../models/user';
 
-// PRIVATE
 let _permit = (user, eventId) => {
   return user.belongToEvent(eventId)
     .then((result) => {
@@ -15,10 +14,11 @@ let _permit = (user, eventId) => {
     });
 };
 
-class UserController {
-  static me(request, reply) {
+export default class UserController {
+
+  static getCurrent(request, reply) {
     let user = request.auth.credentials;
-    reply(JSON.stringify(user));
+    reply(user);
   }
 
   static login(request, reply) {
@@ -44,34 +44,25 @@ class UserController {
     reply({ status: 'logged_out' });
   }
 
-  static myEvents(request, reply) {
+
+  static getCurrentEvents(request, reply) {
     let user = request.auth.credentials;
     Promise
       .all([user.ownEvents(), user.invitedEvents()])
-      .then((events) => {
-        reply({ownEvents: JSON.stringify(events[0]), invitedEvents: JSON.stringify(events[1])});
-      })
-      .catch((err) => {
-        reply(Boom.badRequest(err));
-      });
+      .then((events) => reply(events[0].concat(events[1])))
+      .catch((err) => reply(Boom.badRequest(err)));
   }
 
-  static myEventsAvailabilities(request, reply) {
-    let user = request.auth.credentials,
-        eventId = request.params.eventId;
+  static getCurrentAvailability(request, reply) {
+    let user = request.auth.credentials;
+    let eventId = request.params.eventId;
     _permit(user, eventId)
-      .then((_user) => {
-        return _user.availableForEvent(eventId);
-      })
-      .then((slots) => {
-        reply(JSON.stringify(slots));
-      })
-      .catch((err) => {
-        reply(Boom.badRequest(err));
-      });
+      .then((_user) => _user.availableForEvent(eventId))
+      .then((slots) => reply(slots))
+      .catch((err) => reply(Boom.badImplementation(err)));
   }
 
-  static newUser(request, reply) {
+  static create(request, reply) {
     let user = request.payload.user;
     new User(user, { hasTimestamps: true }).trySave()
       .then((_user) => {
@@ -82,17 +73,14 @@ class UserController {
       });
   }
 
-  // Bad practice, will change in the future
-  static userInfo(request, reply) {
-    // Evan: What's this for?
-    // let user = request.auth.credentials.user;
-    let viewedUserId = request.params.userId;
-    User.where('id', viewedUserId).fetch()
+  static getUser(request, reply) {
+    let userId = request.params.userId;
+    User.where('id', userId).fetch()
       .then((_user) => {
         if(_user) {
-          reply(JSON.stringify(_user));
+          reply(_user);
         } else {
-          throw new Error('This user does not exist');
+          reply(Boom.notFound('User does not exist'));
         }
       })
       .catch((err) => {
@@ -100,46 +88,33 @@ class UserController {
       });
   }
 
-  // Bad practice, will change in the future
-  static userEventsAvailabilities(request, reply) {
-    let user = request.auth.credentials,
-        viewedUserId = request.params.userId,
-        eventId = request.params.eventId;
+  static getUserAvailabilities(request, reply) {
+    let user = request.auth.credentials;
+    let {userId, eventId} = request.params;
 
     _permit(user, eventId)
       .then(() => {
-        return User.where('id', viewedUserId).fetch();
+        return User.where('id', userId).fetch();
       })
       .then((viewedUser) => {
-        if(viewedUser) {
+        if (viewedUser) {
           return viewedUser.belongToEvent(eventId);
         } else {
-          throw new Error('This user does not exist');
+          reply(Boom.notFound('User does not exist'));
         }
       })
       .then((result) => {
-        if(!result) {
-          throw new Error('This user is not in this event');
+        if (!result) {
+          reply(Boom.notFound('User not in the event'));
         } else {
           return result.availableForEvent(eventId);
         }
       })
       .then((slots) => {
-        reply(JSON.stringify(slots));
+        reply(slots);
       })
       .catch((err) => {
-        reply(Boom.badRequest(err));
+        reply(Boom.badImplementation(err));
       });
   }
-/*
-  static userResetEmail (request, reply) {
-    //TODO
-  }
-
-  static userResetPassword (request, reply) {
-    //TODO
-  }
-*/
 }
-
-module.exports = UserController;

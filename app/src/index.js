@@ -1,3 +1,4 @@
+import 'es6-shim';
 import 'angular';
 import 'angular-animate';
 import 'angular-sanitize';
