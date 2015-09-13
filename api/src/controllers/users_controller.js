@@ -60,8 +60,9 @@ class UserController {
 
   // Bad practice, will change in the future
   static userInfo(request, reply) {
-    let user = request.auth.credentials.user,
-        viewedUserId = request.params.userId;
+    // Evan: What's this for?
+    // let user = request.auth.credentials.user;
+    let viewedUserId = request.params.userId;
     User.where('id', viewedUserId).fetch()
       .then((_user) => {
         if(_user) {

@@ -109,7 +109,7 @@ exports.newConfirmations = (request, reply) => {
     reply(Boom.badRequest('Please specify the put in details'));
   } else {
     try {
-      validates.userId(user);
+      // validates.userId(user);
       reply('Successfully submitted availabilities!');
     } catch (err) {
       reply(Boom.badData(err));
