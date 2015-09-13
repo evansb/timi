@@ -1,27 +1,47 @@
 
-import _ from 'lodash';
+import _ 				from 'lodash';
+import $timi from './timi';
 
-let directives = {};
-
-let dashify = (str) => {
-	return str.replace(/([A-Z])/g, ($1) => '-' + $1.toLowerCase());
-}
-
-let elementDirective = (name) => {
-  directives[name] = () => {
-    return {
-      restrict: 'E',
+let directives = {
+	timiEventCard: () => {
+	  return {
+	    restrict: 'E',
+	    templateUrl: __dirname + '/timi-event-card.html'
+	  };
+	},
+	timiEventHeader: () => {
+	  return {
+	    restrict: 'E',
+	    templateUrl: __dirname + '/timi-event-header.html'
+	  };
+	},
+	timiPersonCard: () => {
+	  return {
+	    restrict: 'E',
+	    templateUrl: __dirname + '/timi-person-card.html'
+	  };
+	},
+	timiSlotCard: () => {
+	  return {
+	    restrict: 'E',
+	    templateUrl: __dirname + '/timi-slot-card.html'
+	  };
+	},
+	timiFullButton: () => {
+	  return {
+	    restrict: 'E',
+	    templateUrl: __dirname + '/timi-full-button.html',
 			transclude: true,
-      templateUrl: __dirname + '/' + dashify(name) + '.html'
-    };
-  };
-}
+			scope: {
+				color: '@',
+				type: '@'
+			}
+	  };
+	}
+};
 
-_.forEach([
-  'timiEventCard',
-  'timiEventHeader',
-  'timiFullButton',
-  'timiPersonCard',
-  'timiSlotCard'], (name) => elementDirective(name));
+let services = { $timi };
 
-export default directives;
+let controllers = {};
+
+export default _.assign(directives, _.assign(services, controllers));

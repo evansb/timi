@@ -1,4 +1,4 @@
-<div class="row" ng-controller="NotificationController">
+<ion-view class="row" ng-controller="SignupController">
   <div class="col col-center">
     <!-- Logo -->
     <div class="row timi-logo">
@@ -7,29 +7,29 @@
       </div>
     </div>
 
-    <!-- Login/Logout form -->
-    <div class="row timi-login-form">
-      <div class="col text-center">
-        <div class="list">
-          <label class="item item-input item-stacked-label">
-            <input type="text" placeholder="Email">
-          </label>
-          <label class="item item-input item-stacked-label password">
-            <input type="text" placeholder="Password">
-          </label>
+    <!-- Signup Form -->
+      <div class="row timi-login-form">
+        <div class="col text-center">
+          <div class="list">
+              <label class="item item-input item-stacked-label">
+                <input type="text" ng-model="email" placeholder="Email">
+              </label>
+              <label class="item item-input item-stacked-label password">
+                <input type="password" ng-model="password" placeholder="Password">
+              </label>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Login Button -->
-    <timi-full-button type='light'>
-      Sign Up
-    </timi-full-button>
+      <!-- Signup Button -->
+      <timi-full-button color='light' type='submit' ng-click='signup()'>
+        Sign Up
+      </timi-full-button>
 
-    <!-- Login Using Google+ Button -->
-    <timi-full-button type='assertive'>
-      Sign up with Google+
-    </timi-full-button>
+      <!-- Signup Using Google+ Button -->
+      <timi-full-button color='assertive' type='submit'>
+        Sign up with Google+
+      </timi-full-button>
 
     <!-- Forgot password && Sign up -->
     <div class="row timi-forgot-password-sign-up">
@@ -39,4 +39,4 @@
       </div>
     </div>
   </div>
-</div>
+</ion-view>

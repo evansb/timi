@@ -1,3 +1,4 @@
 import SignupConfig         from './config';
+import SignupController     from './controller';
 
-export default { SignupConfig };
+export default { SignupConfig, SignupController };

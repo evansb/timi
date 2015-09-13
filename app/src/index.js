@@ -1,6 +1,7 @@
 import 'angular';
 import 'angular-animate';
 import 'angular-sanitize';
+import 'angular-resource';
 import 'angular-ui-router';
 import 'ionic';
 
@@ -9,7 +10,7 @@ import startup        from './startup';
 import common         from './common';
 import components     from './components';
 
-let app = angular.module('timi', ['ionic']);
+let app = angular.module('timi', ['ionic', 'ngResource']);
 
 components.push(common);
 
@@ -20,7 +21,7 @@ _.forEach(components, (component) => {
       app.controller(key, value);
     } else if (key.endsWith('Config')) {
       app.config(value);
-    } else if (key.endsWith('Service')) {
+    } else if (key.startsWith('$')) {
       app.service(key, value);
     } else if (key.endsWith('Factory')) {
       app.factory(key, value);
