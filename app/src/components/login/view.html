@@ -3,7 +3,7 @@
     <!-- Logo -->
     <div class="row timi-logo">
       <div class="col text-center padding-big">
-        <img class="full-image" src="../assets/logo.jpg" />
+        <img class="full-image" src="../assets/logo.png" />
       </div>
     </div>
 
@@ -12,10 +12,18 @@
       <div class="col text-center">
         <div class="list">
           <label class="item item-input item-stacked-label">
-            <input type="text" ng-model="email" placeholder="Email">
+            <input type="email"
+                   ng-model="email"
+                   ng-required="true"
+                   placeholder="Email">
           </label>
           <label class="item item-input item-stacked-label password">
-            <input type="password" ng-model="password" placeholder="Password">
+            <input type="password"
+                   ng-model="password"
+                   ng-required="true"
+                   ng-minlength="3"
+                   ng-maxlength="10"
+                   placeholder="Password">
           </label>
         </div>
       </div>

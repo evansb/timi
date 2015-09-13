@@ -64,13 +64,10 @@ export default class UserController {
 
   static create(request, reply) {
     let user = request.payload.user;
-    new User(user, { hasTimestamps: true }).trySave()
-      .then((_user) => {
-        reply(JSON.stringify(_user));
-      })
-      .catch((err) => {
-        reply(Boom.badRequest(err));
-      });
+    let newUser = new User(user, { hasTimestamps: true });
+    newUser.trySave()
+      .then(reply)
+      .catch((err) => reply(Boom.badRequest(err)));
   }
 
   static getUser(request, reply) {
