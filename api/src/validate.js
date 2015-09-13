@@ -30,9 +30,7 @@ var availabilitySchema = Joi.object().keys({
 var availabilitiesSchema = Joi.array().items(availabilitySchema);
 
 exports.newUser = {
-  payload: {
-    user: userSchema
-  }
+  payload: userSchema
 };
 
 exports.userInfo = {
@@ -55,9 +53,7 @@ exports.userEventsAvailabilities = {
 };
 
 exports.newEvent = {
-  payload: {
-    event: eventSchema
-  }
+  payload: eventSchema
 };
 
 exports.newAvailabilities = {

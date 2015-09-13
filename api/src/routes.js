@@ -1,13 +1,18 @@
 import validate from './validate';
 import api from './api';
-import UserController from './controllers/users_controller';
+import UsersController from './controllers/users_controller';
+import EventsController from './controllers/events_controller';
+
 
 module.exports = [
   {
     method: 'GET',
     path: '/api/test',
-    handler: (request, reply) => {
-      reply.view('test');
+    config: {
+      auth: false,
+      handler: (request, reply) => {
+        reply.view('test');
+      }
     }
   },
 
@@ -15,9 +20,9 @@ module.exports = [
     method: 'GET',
     path: '/api/me',
     config: {
-      auth: 'simple'
+      auth: 'simple',
+      handler: UsersController.me
     },
-    handler: UserController.me
   },
 
   {
@@ -26,7 +31,7 @@ module.exports = [
     config: {
       auth: 'simple'
     },
-    handler: UserController.myEvents
+    handler: UsersController.myEvents
   },
 
   {
@@ -35,7 +40,7 @@ module.exports = [
     config: {
       auth: 'simple',
       validate: validate.myEventsAvailabilities,
-      handler: UserController.myEventsAvailabilities
+      handler: UsersController.myEventsAvailabilities
     }
   },
 
@@ -45,7 +50,7 @@ module.exports = [
     config: {
       auth: false,
       validate: validate.newUser,
-      handler: UserController.newUser
+      handler: UsersController.newUser
     }
   },
 
@@ -55,7 +60,7 @@ module.exports = [
     config: {
       auth: 'simple',
       validate: validate.userInfo,
-      handler: UserController.userInfo
+      handler: UsersController.userInfo
     }
   },
 
@@ -65,7 +70,7 @@ module.exports = [
     config: {
       auth: 'simple',
       validate: validate.userEventsAvailabilities,
-      handler: UserController.userEventsAvailabilities
+      handler: UsersController.userEventsAvailabilities
     }
   },
 
@@ -75,17 +80,17 @@ module.exports = [
     config: {
       auth: 'simple',
       validate: validate.newEvent,
-      handler: api.newEvent
+      handler: EventsController.newEvent
     }
   },
 
   {
     method: 'POST',
-    path: '/api/events/{eventId}',
+    path: '/api/events/{eventId}/availabilities',
     config: {
       auth: 'simple',
       validate: validate.newAvailabilities,
-      handler: api.newAvailabilities
+      handler: EventsController.newAvailabilities
     }
   },
 
@@ -95,7 +100,7 @@ module.exports = [
     config: {
       auth: 'simple',
       validate: validate.eventTimeslots,
-      handler: api.eventTimeslots
+      handler: EventsController.eventTimeslots
     }
   },
 
@@ -105,7 +110,7 @@ module.exports = [
     config: {
       auth: 'simple',
       validate: validate.eventParticipants,
-      handler: api.eventParticipants
+      handler: EventsController.eventParticipants
     }
   },
 
@@ -115,7 +120,7 @@ module.exports = [
     config: {
       auth: 'simple',
       validate: validate.eventResult,
-      handler: api.eventResult
+      handler: EventsController.eventResult
     }
   },
 
@@ -125,7 +130,7 @@ module.exports = [
     config: {
       auth: 'simple',
       validate: validate.eventTimeslotAvailabilities,
-      handler: api.eventTimeslotAvailabilities
+      handler: EventsController.eventTimeslotAvailabilities
     }
   }
 ];

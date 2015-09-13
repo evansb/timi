@@ -14,7 +14,7 @@ let _permit = (user, eventId) => {
     });
 }
 
-class UserController {
+class UsersController {
   static me(request, reply) {
     let user = request.auth.credentials['user'];
     reply(JSON.stringify(user));
@@ -48,7 +48,7 @@ class UserController {
   }
 
   static newUser(request, reply) {
-    let user = request.payload['user'];
+    let user = request.payload;
     new User(user, {hasTimestamps: true}).trySave()
       .then((user) => {
         reply(JSON.stringify(user));
@@ -116,4 +116,4 @@ class UserController {
   }
 }
 
-module.exports = UserController;
+module.exports = UsersController;

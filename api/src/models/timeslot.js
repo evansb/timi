@@ -10,7 +10,7 @@ var Timeslot = bookshelf.model('Timeslot', {
     return this.belongsTo('Event', 'event_id');
   },
   availabilities: function () {
-    return this.belongsToMany('User', 'availabilities', 'timeslot_id', 'user_id');
+    return this.belongsToMany('User', 'availabilities', 'timeslot_id', 'user_id').withPivot('weight').fetch();
   }
 });
 
