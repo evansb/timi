@@ -1,5 +1,4 @@
 import Joi from 'joi';
-import User from './models/user';
 
 var emailSchema = Joi.string().email();
 var idSchema = Joi.number().integer().positive().required();

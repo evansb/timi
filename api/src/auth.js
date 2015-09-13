@@ -1,7 +1,6 @@
-import Basic from 'hapi-auth-basic';
-import Bcrypt from 'bcrypt';
-import User from './models/user';
-import Promise from 'bluebird';
+import Basic    from 'hapi-auth-basic';
+import Bcrypt   from 'bcrypt';
+import User     from './models/user';
 
 var validate = (request, email, password, callback) => {
   User.query({where: {email: email}}).fetch().then((user) => {

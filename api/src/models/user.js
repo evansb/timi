@@ -1,7 +1,4 @@
 import bookshelf from '../config/bookshelf';
-import Event from './event';
-import EventUser from './event_user';
-import Timeslot from './timeslot';
 import Bcrypt from 'bcrypt';
 import Promise from 'bluebird';
 
@@ -57,8 +54,10 @@ var User = bookshelf.model('User', {
   }
 });
 
+/*
 User.prototype.create = function (params) {
 
 };
+*/
 
 module.exports = User;

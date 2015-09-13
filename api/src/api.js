@@ -1,27 +1,22 @@
-import User from './models/user';
 import Event from './models/event';
-import Timeslot from './models/timeslot';
 import Boom from 'boom';
-import Bcrypt from 'bcrypt';
 import transactions from './transactions';
-import Promise from 'bluebird';
 
 exports.newEvent = (request, reply) => {
-  var user = request.auth.credentials['user'];
-  var event = request.payload['event'];
+  var user = request.auth.credentials.user;
+  var event = request.payload.event;
   try {
     transactions.newEvent(user, event);
     reply('Successfully created event ' + event.name);
   } catch (err) {
-    throw err;
     reply(Boom.badData(err));
   }
 };
 
 exports.eventTimeslots = (request, reply) => {
-  var user = request.auth.credentials['user'];
-  var eventId = parseInt(request.params['eventId']);
-  Event.where('id', request.params['eventId']).fetch().then((event) => {
+  let user = request.auth.credentials.user;
+  let eventId = parseInt(request.params.eventId);
+  Event.where('id', eventId).fetch().then((event) => {
     user.belongToEvent(event).then((result) => {
       if (!result) {
         throw 'Sorry, you do not have this permission';
@@ -34,9 +29,8 @@ exports.eventTimeslots = (request, reply) => {
 };
 
 exports.newAvailabilities = (request, reply) => {
-  var user = request.auth.credentials['user'];
-  var eventId = parseInt(request.params['eventId']);
-  var availabilities = request.payload['availabilities'];
+  var user = request.auth.credentials.user;
+  var availabilities = request.payload.availabilities;
   if (!user || !availabilities) {
     reply(Boom.badRequest('Please specify the put in details'));
   } else {
@@ -44,16 +38,15 @@ exports.newAvailabilities = (request, reply) => {
       transactions.newAvailabilities(user, availabilities);
       reply('Successfully submitted availabilities!');
     } catch (err) {
-      throw err;
       reply(Boom.badData(err));
     }
   }
 };
 
 exports.eventResult = (request, reply) => {
-  var user = request.auth.credentials['user'];
-  var eventId = parseInt(request.params['eventId']);
-  Event.where('id', request.params['eventId']).fetch().then((event) => {
+  var user = request.auth.credentials.user;
+  var eventId = parseInt(request.params.eventId);
+  Event.where('id', eventId).fetch().then((event) => {
     return user.belongToEvent(event).then((result) => {
       if (event.get('owner_id') !== user.get('id') && !result) {
         throw 'Sorry, you do not have this permission';
@@ -67,9 +60,9 @@ exports.eventResult = (request, reply) => {
 };
 
 exports.eventParticipants = (request, reply) => {
-  var user = request.auth.credentials['user'];
-  var eventId = parseInt(request.params['eventId']);
-  Event.where('id', request.params['eventId']).fetch().
+  var user = request.auth.credentials.user;
+  var eventId = parseInt(request.params.eventId);
+  Event.where('id', eventId).fetch().
     then((event) => {
       return user.belongToEvent(event).
         then((result) => {
@@ -87,10 +80,10 @@ exports.eventParticipants = (request, reply) => {
 };
 
 exports.eventTimeslotAvailabilities = (request, reply) => {
-  var user = request.auth.credentials['user'];
-  var eventId = parseInt(request.params['eventId']);
-  var timeslotId = parseInt(request.params['timeslotId']);
-  Event.where('id', request.params['eventId']).fetch().then((event) => {
+  var user = request.auth.credentials.user;
+  var eventId = parseInt(request.params.eventId);
+  var timeslotId = parseInt(request.params.timeslotId);
+  Event.where('id', eventId).fetch().then((event) => {
     return user.belongToEvent(event).then((result) => {
       if (event.get('owner_id') !== user.get('id') && !result) {
         throw 'Sorry, you do not have this permission';
@@ -105,13 +98,13 @@ exports.eventTimeslotAvailabilities = (request, reply) => {
   });
 };
 
-exports.updateAvailabilities = (request, reply) => {
+exports.updateAvailabilities = () => {
 
 };
 
 exports.newConfirmations = (request, reply) => {
-  var user = request.auth.credentials['user'];
-  var confirmations = request.payload['confirmations'];
+  var user = request.auth.credentials.user;
+  var confirmations = request.payload.confirmations;
   if (!user || !confirmations) {
     reply(Boom.badRequest('Please specify the put in details'));
   } else {
@@ -119,7 +112,6 @@ exports.newConfirmations = (request, reply) => {
       validates.userId(user);
       reply('Successfully submitted availabilities!');
     } catch (err) {
-      throw err;
       reply(Boom.badData(err));
     }
   }

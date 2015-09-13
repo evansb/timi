@@ -1,17 +1,13 @@
 import bookshelf from './config/bookshelf';
 import Promise from 'bluebird';
-import User from './models/user';
 import Event from './models/event';
 import Timeslot from './models/timeslot';
 import EventUser from './models/event_user';
 import Availability from './models/availability';
 
 exports.newEvent = (user, params) => {
-  var timeslots = params['timeslots'],
-      participants = params['participants'];
-  params['owner_id'] = user.get('id');
-  delete params['timeslots'];
-  delete params['participants'];
+  var {timeslots, participants} = params;
+  params.owner_id = user.get('id');
 
   bookshelf.transaction((t) => {
     new Event(params, {hasTimestamps: true})
@@ -20,7 +16,7 @@ exports.newEvent = (user, params) => {
         var eventId = event.get('id');
         participants.push(event.get('owner_id'));
         var createSlots = Promise.map(timeslots, (timeslot) => {
-          timeslot['event_id'] = eventId;
+          timeslot.event_id = eventId;
           return new Timeslot(timeslot, {hasTimestamps: true}).save(null, {transacting: t});
         });
         var createParticipants = Promise.map(participants, (participant) => {
@@ -28,7 +24,7 @@ exports.newEvent = (user, params) => {
           return new EventUser(eventUser, {hasTimestamps: true}).save(null, {transacting: t});
         });
         return Promise.all(createSlots, createParticipants);
-      }).then((p) => {
+      }).then(() => {
         t.commit();
       }).catch((err) => {
         t.rollback(err);
@@ -40,7 +36,7 @@ exports.newEvent = (user, params) => {
 exports.newAvailabilities = (user, params) => {
   bookshelf.transaction((t) => {
     Promise.map(params, (availability) => {
-      availability['user_id'] = user.get('id');
+      availability.user_id = user.get('id');
       return new Availability(availability, {hasTimestamps: true}).save(null, {transacting: t});
     }).then(() => {
       t.commit();

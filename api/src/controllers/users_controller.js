@@ -12,16 +12,16 @@ let _permit = (user, eventId) => {
         return user;
       }
     });
-}
+};
 
 class UserController {
   static me(request, reply) {
-    let user = request.auth.credentials['user'];
+    let user = request.auth.credentials.user;
     reply(JSON.stringify(user));
   }
 
   static myEvents(request, reply) {
-    let user = request.auth.credentials['user'];
+    let user = request.auth.credentials.user;
     Promise
       .all([user.ownEvents(), user.invitedEvents()])
       .then((events) => {
@@ -33,11 +33,11 @@ class UserController {
   }
 
   static myEventsAvailabilities(request, reply) {
-    let user = request.auth.credentials['user'],
-        eventId = request.params['eventId'];
+    let user = request.auth.credentials.user,
+        eventId = request.params.eventId;
     _permit(user, eventId)
-      .then((user) => {
-        return user.availableForEvent(eventId);
+      .then((_user) => {
+        return _user.availableForEvent(eventId);
       })
       .then((slots) => {
         reply(JSON.stringify(slots));
@@ -48,10 +48,10 @@ class UserController {
   }
 
   static newUser(request, reply) {
-    let user = request.payload['user'];
+    let user = request.payload.user;
     new User(user, {hasTimestamps: true}).trySave()
-      .then((user) => {
-        reply(JSON.stringify(user));
+      .then((_user) => {
+        reply(JSON.stringify(_user));
       })
       .catch((err) => {
         reply(Boom.badRequest(err));
@@ -60,12 +60,12 @@ class UserController {
 
   // Bad practice, will change in the future
   static userInfo(request, reply) {
-    let user = request.auth.credentials['user'],
-        viewedUserId = request.params['userId'];
+    let user = request.auth.credentials.user,
+        viewedUserId = request.params.userId;
     User.where('id', viewedUserId).fetch()
-      .then((user) => {
-        if(user) {
-          reply(JSON.stringify(user));
+      .then((_user) => {
+        if(_user) {
+          reply(JSON.stringify(_user));
         } else {
           throw new Error('This user does not exist');
         }
@@ -77,9 +77,9 @@ class UserController {
 
   // Bad practice, will change in the future
   static userEventsAvailabilities(request, reply) {
-    let user = request.auth.credentials['user'],
-        viewedUserId = request.params['userId'],
-        eventId = request.params['eventId'];
+    let user = request.auth.credentials.user,
+        viewedUserId = request.params.userId,
+        eventId = request.params.eventId;
 
     _permit(user, eventId)
       .then(() => {
@@ -106,7 +106,7 @@ class UserController {
         reply(Boom.badRequest(err));
       });
   }
-
+/*
   static userResetEmail (request, reply) {
     //TODO
   }
@@ -114,6 +114,7 @@ class UserController {
   static userResetPassword (request, reply) {
     //TODO
   }
+*/
 }
 
 module.exports = UserController;

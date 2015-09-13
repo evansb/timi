@@ -1,8 +1,7 @@
-import Hapi from "hapi";
-import NUSMods from './vendor/nusmods';
-import auth from './auth';
-import api from './api';
-import routes from './routes';
+import auth       from './auth';
+import Hapi       from 'hapi';
+import NUSMods    from './vendor/nusmods';
+import routes     from './routes';
 
 var server = new Hapi.Server();
 
@@ -20,5 +19,5 @@ for (var route in routes) {
 server.start(() => {
   let nusmods = new NUSMods('http://modsn.us/racU2');
   nusmods.scrap();
-  console.log('Server running at ', server.info.uri)
+  console.log('Server running at ', server.info.uri);
 });

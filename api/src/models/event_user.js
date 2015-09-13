@@ -1,6 +1,4 @@
 import bookshelf from '../config/bookshelf';
-import Event from './event';
-import User from './user';
 
 var EventUser = bookshelf.model('EventUser', {
   tableName: 'events_users',

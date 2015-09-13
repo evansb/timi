@@ -1,6 +1,4 @@
 import bookshelf from '../config/bookshelf';
-import Timeslot from './timeslot';
-import User from './user';
 
 var Event = bookshelf.model('Event', {
   tableName: 'events',
@@ -10,7 +8,7 @@ var Event = bookshelf.model('Event', {
   },
   result: function () {
     return this.timeslots().query(function(qb) {
-      qb.leftJoin('availabilities','availabilities.timeslot_id', 'timeslots.id').
+      qb.leftJoin('availabilities', 'availabilities.timeslot_id', 'timeslots.id').
         select('timeslots').
         count('availabilities as available_count').
         groupBy('timeslots.id').
