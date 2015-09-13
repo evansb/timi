@@ -1,16 +1,20 @@
-export default ($scope, $ionicModal) => {
-  $ionicModal.fromTemplateUrl(__dirname + '/messageModal.html', {
+let ModalNotificationController = ($scope, $ionicModal, $notification) => {
+  $ionicModal.fromTemplateUrl(__dirname + '/modal-notification.html', {
     scope: $scope,
     animation: 'slide-in-down'
   }).then((modal) => {
     $scope.modal = modal;
   });
 
-  $scope.openModal = () => {
-    $scope.modal.show();
-  };
+  $scope.$on('newNotification', (o, notification) => {
+    if (notification.type == 'modal') {
+      $scope.message = notification.message;
+      $scope.modal.show();
+    }
+  });
 
-  $scope.closeModal = () => {
+  $scope.close = () => {
+    $scope.message = '';
     $scope.modal.hide();
   };
 
@@ -23,3 +27,5 @@ export default ($scope, $ionicModal) => {
   // Execute action on remove modal
   $scope.$on('modal.removed', () => {});
 }
+
+export default { ModalNotificationController }

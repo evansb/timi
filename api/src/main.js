@@ -28,11 +28,11 @@ let options = {
   reporters: [
     {
       reporter: require('good-console'),
-      events: { log: '*', response: '*' }
+      events: { log: '*', response: '*', 'request': '*' }
     },
     {
       reporter: require('good-http'),
-      events: { error: '*' },
+      events: { error: '*', response: '*', request: '*' },
       config: {
         endpoint: 'http://' + process.env.API_HOST + ':' + process.env.API_PORT
       }
