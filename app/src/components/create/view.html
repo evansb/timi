@@ -4,6 +4,9 @@
       <button class='button button-clear' ng-click='previous()'>Back</button>
     </div>
     <div class='title'>
+      <i ng-repeat="i in [1,2,3]"
+         class="icon ion-ios-circle-{{(step >= i)?'filled':'outline'}}">
+      </i>
     </div>
     <div class='buttons'>
       <div ng-if='step != 3'>
