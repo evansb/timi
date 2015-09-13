@@ -99,7 +99,7 @@ module.exports = [
     config: {
       auth: 'session',
       validate: validate.eventTimeslots,
-      handler: EventController.getTimeSlots
+      handler: EventController.getTimeslots
     }
   },
 

@@ -1,5 +1,5 @@
-import Boom       from 'boom';
-import transactions from './transactions';
+import Boom         from 'boom';
+import transactions from '../transactions';
 
 export default class EventController {
 
