@@ -1,0 +1,28 @@
+<ion-view ng-controller='CreateController'>
+  <ion-header-bar align-title='center' class='bar-light'>
+    <div class='buttons'>
+      <button class='button button-clear' ng-click='previous()'>Back</button>
+    </div>
+    <div class='title'>
+    </div>
+    <div class='buttons'>
+      <div ng-if='step != 3'>
+        <button class='button button-clear' ng-click='next()'>Next</button>
+      </div>
+      <div ng-if='step == 3'>
+        <button class='button button-clear'>Home</button>
+      </div>
+    </div>
+  </ion-header-bar>
+  <ion-content>
+    <div ng-if='step == 1'>
+      <create-details></create-details>
+    </div>
+    <div ng-if='step == 2'>
+      <create-participants></create-participants>
+    </div>
+    <div ng-if='step == 3'>
+      <create-link></create-link>
+    </div>
+  </ion-content>
+</ion-view>
