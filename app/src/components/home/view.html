@@ -1,25 +1,45 @@
-<ion-view class='timi-home' ng-controller='HomeController'>
+<ion-view class="timi-home" ng-controller="HomeController">
   <!-- Header -->
-  <ion-header-bar>
-    <div class='bar bar-header bar-light'>
-      <h1 class='title'>Your Events</h1>
-      <button class='timi-button-small icon ion-plus-round'></buton>
+  <ion-header-bar class='bar-light' align-title="center">
+    <button class="button button-icon icon ion-compose"></button>
+    <div class='title'>
+      <i ng-if="context == 'invitation'"
+         class="icon ion-ios-circle-filled">
+      </i>
+      <i ng-if="context == 'scheduled'"
+         class="icon ion-ios-circle-outline">
+      </i>
+      <i ng-if="context == 'scheduled'"
+         class="icon ion-ios-circle-filled">
+      </i>
+      <i ng-if="context == 'invitation'"
+         class="icon ion-ios-circle-outline">
+      </i>
     </div>
+    <button class="button button-icon icon ion-more"></button>
   </ion-header-bar>
-  <ion-content>
-    <h3 class='timi-list-title'>Invites</h3>
-    <div class='list'>
-      <timi-event-card
-        ng-repeat='event in invites'
-        ng-model='event'>
-      </timi-event-card>
+
+  <ion-content class="timi-home padding-medium"
+               on-swipe-right="toInvitation()"
+               on-swipe-left="toScheduled()">
+    <div class="text-center">
+      <h3 class='timi-list-title'>
+        {{ (context == 'invitation')? 'Invites' : 'Scheduled' }}
+      </h3>
     </div>
-    <h3 class='timi-list-title'>Scheduled</h3>
     <div class='list'>
-      <timi-event-card
-        ng-repeat='event in scheduled'
-        ng-model='event'>
-      </timi-event-card>
+      <div ng-if="context == 'invitation'">
+        <timi-event-card
+          ng-repeat="event in invites"
+          ng-model='event'>
+        </timi-event-card>
+      </div>
+      <div ng-if="context != 'invitation'">
+        <timi-event-card
+          ng-repeat="event in scheduled"
+          ng-model='event'>
+        </timi-event-card>
+      </div>
     </div>
   </ion-content>
 </ion-view>

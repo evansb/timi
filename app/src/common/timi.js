@@ -24,10 +24,15 @@ export default function($resource) {
     }
   });
 
-  this.setActiveUser = function(user) {
+  this.setActiveUser = (user) => {
     activeUser = user;
   }
-  this.getActiveUser = function() {
+
+  this.getActiveUser = () => {
     return activeUser;
+  }
+
+  this.isLoggedIn = () => {
+    return activeUser != null;
   }
 }

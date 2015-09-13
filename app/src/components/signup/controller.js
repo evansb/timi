@@ -1,6 +1,11 @@
 import validator from 'validator'
 
 export default ($scope, $timi, $notification, $location) => {
+
+  if ($timi.isLoggedIn()) {
+    $location.path('home');
+  }
+
   $scope.signup = () => {
     if (!validator.isEmail($scope.email)) {
       let message = 'Invalid email address';
@@ -17,7 +22,7 @@ export default ($scope, $timi, $notification, $location) => {
       });
       newUser.$save((user) => {
         $timi.setActiveUser(user);
-        $location.path('/#/home');
+        $location.path('home');
       }, (err) => {
         if (err.status === 400) {
           let message = 'a user with that email already exists. try login?';

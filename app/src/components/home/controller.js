@@ -1,5 +1,15 @@
 
 export default ($scope) => {
+  $scope.context = 'invitation';
+
+  $scope.toInvitation = () => {
+    $scope.context = 'invitation';
+  };
+
+  $scope.toScheduled = () => {
+    $scope.context = 'scheduled';
+  };
+
   $scope.invites = [
     {
       title: 'CS3216 Assignment 3 Meeting',

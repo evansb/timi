@@ -1,5 +1,10 @@
 
 export default ($scope, $timi, $notification, $location) => {
+
+  if ($timi.isLoggedIn()) {
+    $location.path('home');
+  }
+
   $scope.login = () => {
     $timi.Self.login({
       email: $scope.email,
@@ -10,12 +15,6 @@ export default ($scope, $timi, $notification, $location) => {
     }, (err) => {
       let message = 'Invalid username/password';
       $notification.send({ type: 'modal', message: message});
-    })
-  };
-
-  $scope.logout = () => {
-    $timi.Self.logout(() => {
-      console.log('logged_out!');
     })
   };
 }
