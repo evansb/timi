@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" ng-controller="LoginController">
   <div class="col col-center">
     <!-- Logo -->
     <div class="row timi-logo">
@@ -12,22 +12,22 @@
       <div class="col text-center">
         <div class="list">
           <label class="item item-input item-stacked-label">
-            <input type="text" placeholder="Email">
+            <input type="text" ng-model="email" placeholder="Email">
           </label>
           <label class="item item-input item-stacked-label password">
-            <input type="text" placeholder="Password">
+            <input type="password" ng-model="password" placeholder="Password">
           </label>
         </div>
       </div>
     </div>
 
     <!-- Login Button -->
-    <timi-full-button type='light'>
+    <timi-full-button color='light' ng-click='login()'>
       Login
     </timi-full-button>
 
     <!-- Login Using Google+ Button -->
-    <timi-full-button type='assertive'>
+    <timi-full-button color='assertive'>
       Login with Google+
     </timi-full-button>
 

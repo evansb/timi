@@ -8,6 +8,22 @@ export default function($resource) {
     return $resource(base + url, params, methods);
   };
   this.User = resource('/users');
+
+  this.Self = resource('/me/:verb', { verb: '' }, {
+    login: {
+      method: 'POST',
+      params: {
+        verb: 'login'
+      }
+    },
+    logout: {
+      method: 'POST',
+      params: {
+        verb: 'logout'
+      }
+    }
+  });
+
   this.setActiveUser = function(user) {
     activeUser = user;
   }

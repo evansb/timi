@@ -23,18 +23,19 @@ class UserController {
 
   static login(request, reply) {
     let { email, password } = request.payload;
-    User.query({where: {email: email}}).fetch().then((user) => {
+    User.query({where: { email: email }}).fetch().then((user) => {
       if (!user) {
         reply(Boom.forbidden('Wrong username or password'));
+      } else {
+        Bcrypt.compare(password, user.attributes.password, (err, isValid) => {
+          if (err) {
+            reply(Boom.badImplementation('Internal server error'));
+          } else if (isValid) {
+            request.auth.session.set(user);
+            reply(user);
+          }
+        });
       }
-      Bcrypt.compare(password, user.attributes.password, (err, isValid) => {
-        if (err) {
-          reply(Boom.badImplementation('Internal server error'));
-        } else if (isValid) {
-          request.auth.session.set(user);
-          reply(user);
-        }
-      });
     });
   }
 
