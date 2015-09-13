@@ -1,34 +1,23 @@
+import _ from 'lodash';
 
 export default ($stateProvider, $urlRouterProvider) => {
   $urlRouterProvider.otherwise('/');
 
-  $stateProvider.state('home', {
-    url: '/',
-    templateUrl: 'views/home.html'
-  });
+  let routes = [];
 
-  $stateProvider.state('login', {
-    url: '/login',
-    templateUrl: 'views/login.html'
-  });
+  let basicRoute = (name, url, templateUrl) => {
+    routes.push({ name, url, templateUrl});
+  };
 
-  $stateProvider.state('signup', {
-    url: '/signup',
-    templateUrl: 'views/signup.html'
-  });
+  basicRoute('home'         ,'/'               ,'views/home.html');
+  basicRoute('login'        ,'/login'          ,'views/login.html');
+  basicRoute('signup'       ,'/signup'         ,'views/signup.html');
+  basicRoute('forgot'       ,'/forgot'         ,'views/forgot.html');
+  basicRoute('invitation'   ,'/invitation'     ,'views/forgot.html');
+  basicRoute('create'       ,'/create'         ,'views/create.html');
 
-  $stateProvider.state('forgot', {
-    url: '/forgot',
-    templateUrl: 'views/forgot.html'
-  });
-
-  $stateProvider.state('invitation', {
-    url: '/invitation',
-    templateUrl: 'views/invitation.html'
-  });
-
-  $stateProvider.state('create', {
-    url: '/create',
-    templateUrl: 'views/create.html'
+  _.forEach (routes, (route) => {
+    $stateProvider.state(route.name,
+      { url: route.url, templateUrl: route.templateUrl  });
   });
 }
