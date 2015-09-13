@@ -167,6 +167,10 @@ $ionicons-font-path: "../bower_components/ionic/fonts" !default;
 
 .timi-participant-list {
   @extend .padding-small;
+  small {
+    font-size: 0.7em;
+    color: gray;
+  }
 }
 
 .timi-person-card {
@@ -175,9 +179,13 @@ $ionicons-font-path: "../bower_components/ionic/fonts" !default;
 
 .timi-create-link {
   @extend .padding-medium;
-  h3 {
-    margin-top: 2em;
-    margin-bottom: 2em;
+  margin-top: 2em;
+
+  h1, h2, h3, p {
+    margin-bottom: 1.5em;
+  }
+  i {
+    font-size: 48px;
   }
 
   .link {

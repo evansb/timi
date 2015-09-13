@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-export default ($scope) => {
+export default ($scope, $location) => {
   $scope.slots = [
     {
       start: moment().add(3, 'days').add(1, 'hours'),
@@ -15,4 +15,8 @@ export default ($scope) => {
       end: moment().add(10, 'days').add(3, 'hours')
     }
   ];
+
+  $scope.backToHome = () => {
+    $location.path('home');
+  };
 }

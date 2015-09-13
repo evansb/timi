@@ -1,7 +1,8 @@
 <ion-view class="timi-home" ng-controller="HomeController">
   <!-- Header -->
   <ion-header-bar class='bar-light' align-title="center">
-    <button class="button button-icon icon ion-compose"></button>
+    <button class="button button-clear icon ion-more"
+            ng-click="goToSetting()"></button>
     <div class='title'>
       <i ng-if="context == 'invitation'"
          class="icon ion-ios-circle-filled">
@@ -16,10 +17,11 @@
          class="icon ion-ios-circle-outline">
       </i>
     </div>
-    <button class="button button-icon icon ion-more"></button>
+    <button class="button button-clear icon ion-compose"
+            ng-click="goToCreate()"></button>
   </ion-header-bar>
 
-  <ion-content class="timi-home padding-medium"
+  <ion-content class="padding-medium"
                on-swipe-right="toInvitation()"
                on-swipe-left="toScheduled()">
     <div class="text-center">

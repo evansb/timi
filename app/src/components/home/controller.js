@@ -1,5 +1,5 @@
 
-export default ($scope) => {
+export default ($scope, $location) => {
   $scope.context = 'invitation';
 
   $scope.toInvitation = () => {
@@ -8,6 +8,14 @@ export default ($scope) => {
 
   $scope.toScheduled = () => {
     $scope.context = 'scheduled';
+  };
+
+  $scope.goToCreate = () => {
+    $location.path('create');
+  };
+
+  $scope.goToSetting = () => {
+    $location.path('invitation');
   };
 
   $scope.invites = [
