@@ -1,26 +1,35 @@
-import app          from './app';
-import route        from './route';
-import startup      from './startup';
-import directives   from './directives';
-import controllers  from './controllers';
-import services     from './services';
+import 'es6-shim';
+import 'angular';
+import 'angular-animate';
+import 'angular-sanitize';
+import 'angular-resource';
+import 'angular-ui-router';
+import 'ionic';
 
-// Setup routes
-app.config(route)
+import _              from 'lodash'
+import startup        from './startup';
+import common         from './common';
+import components     from './components';
 
-// Load Services
-services.forEach((service) => {
-  app.service(service.name, service.fn);
-});
+let app = angular.module('timi', ['ionic', 'ngResource']);
 
-// Load Controllers
-controllers.forEach((controller) => {
-  app.controller(controller.name, controller.fn);
-});
+components.push(common);
 
-// Load Directives
-directives.forEach((directive) => {
-  app.directive(directive.name, directive.fn);
+// Load all components
+_.forEach(components, (component) => {
+  _.forEach(component, (value, key) => {
+    if (key.endsWith('Controller')) {
+      app.controller(key, value);
+    } else if (key.endsWith('Config')) {
+      app.config(value);
+    } else if (key.startsWith('$')) {
+      app.service(key, value);
+    } else if (key.endsWith('Factory')) {
+      app.factory(key, value);
+    } else {
+      app.directive(key, value);
+    }
+  });
 });
 
 // Initialize the app

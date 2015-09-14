@@ -1,0 +1,39 @@
+<ion-view ng-controller='CreateController' class="timi-create">
+  <ion-header-bar align-title='center' class='bar-energized'>
+    <div class='buttons'>
+      <div ng-if='step == 1'>
+        <button class='button button-clear' ng-click='backToHome()'>Return</button>
+      </div>
+      <div ng-if='step == 2'>
+        <button class='button button-clear' ng-click='previous()'>Back</button>
+      </div>
+    </div>
+    <div class='title'>
+      <i ng-repeat="i in [1,2,3]"
+         class="icon ion-ios-circle-{{(step >= i)?'filled':'outline'}}">
+      </i>
+    </div>
+    <div class='buttons'>
+      <div ng-if='step == 1'>
+        <button class='button button-clear' ng-click='next()'>Invite</button>
+      </div>
+      <div ng-if='step == 2'>
+        <button class='button button-clear' ng-click='next()'>Finish</button>
+      </div>
+      <div ng-if='step == 3'>
+        <button class='button button-clear' ng-click='backToHome()'>Home</button>
+      </div>
+    </div>
+  </ion-header-bar>
+  <ion-content>
+    <div ng-if='step == 1'>
+      <create-details></create-details>
+    </div>
+    <div ng-if='step == 2'>
+      <create-participants></create-participants>
+    </div>
+    <div ng-if='step == 3'>
+      <create-link></create-link>
+    </div>
+  </ion-content>
+</ion-view>

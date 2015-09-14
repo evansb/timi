@@ -1,7 +1,4 @@
 import bookshelf from '../config/bookshelf';
-import Event from './event';
-import Availability from './availability';
-import User from './user';
 
 var Timeslot = bookshelf.model('Timeslot', {
   tableName: 'timeslots',

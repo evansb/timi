@@ -1,41 +1,45 @@
 import validate from './validate';
-import api from './api';
-import UserController from './controllers/users_controller';
+import UserController   from './controllers/user';
+import EventController  from './controllers/event';
 
 module.exports = [
   {
     method: 'GET',
-    path: '/api/test',
-    handler: (request, reply) => {
-      reply.view('test');
-    }
-  },
-
-  {
-    method: 'GET',
     path: '/api/me',
     config: {
-      auth: 'simple'
+      auth: 'session'
     },
-    handler: UserController.me
+    handler: UserController.getCurrent
   },
-
+  {
+    method: 'POST',
+    path: '/api/me/login',
+    handler: UserController.login
+  },
+  {
+    method: 'POST',
+    path: '/api/me/logout',
+    config: {
+      auth: 'session'
+    },
+    handler: UserController.logout
+  },
   {
     method: 'GET',
     path: '/api/me/events',
     config: {
-      auth: 'simple'
+      auth: 'session'
     },
-    handler: UserController.myEvents
+    handler: UserController.getCurrentEvents
   },
 
   {
     method: 'GET',
-    path: '/api/me/events/{eventId}',
+    path: '/api/me/events/{eventId}/availabilities',
     config: {
-      auth: 'simple',
+      auth: 'session',
       validate: validate.myEventsAvailabilities,
-      handler: UserController.myEventsAvailabilities
+      handler: UserController.getCurrentAvailability
     }
   },
 
@@ -45,7 +49,7 @@ module.exports = [
     config: {
       auth: false,
       validate: validate.newUser,
-      handler: UserController.newUser
+      handler: UserController.create
     }
   },
 
@@ -53,9 +57,9 @@ module.exports = [
     method: 'GET',
     path: '/api/users/{userId}',
     config: {
-      auth: 'simple',
+      auth: 'session',
       validate: validate.userInfo,
-      handler: UserController.userInfo
+      handler: UserController.getUser
     }
   },
 
@@ -63,9 +67,9 @@ module.exports = [
     method: 'GET',
     path: '/api/users/{userId}/events/{eventId}',
     config: {
-      auth: 'simple',
+      auth: 'session',
       validate: validate.userEventsAvailabilities,
-      handler: UserController.userEventsAvailabilities
+      handler: UserController.getUserAvailabilities
     }
   },
 
@@ -73,19 +77,19 @@ module.exports = [
     method: 'POST',
     path: '/api/events',
     config: {
-      auth: 'simple',
+      auth: 'session',
       validate: validate.newEvent,
-      handler: api.newEvent
+      handler: EventController.create
     }
   },
 
   {
     method: 'POST',
-    path: '/api/events/{eventId}',
+    path: '/api/events/{eventId}/availabilities',
     config: {
-      auth: 'simple',
+      auth: 'session',
       validate: validate.newAvailabilities,
-      handler: api.newAvailabilities
+      handler: EventController.createAvailabilities
     }
   },
 
@@ -93,9 +97,9 @@ module.exports = [
     method: 'GET',
     path: '/api/events/{eventId}/timeslots',
     config: {
-      auth: 'simple',
+      auth: 'session',
       validate: validate.eventTimeslots,
-      handler: api.eventTimeslots
+      handler: EventController.getTimeslots
     }
   },
 
@@ -103,9 +107,9 @@ module.exports = [
     method: 'GET',
     path: '/api/events/{eventId}/participants',
     config: {
-      auth: 'simple',
+      auth: 'session',
       validate: validate.eventParticipants,
-      handler: api.eventParticipants
+      handler: EventController.getParticipants
     }
   },
 
@@ -113,9 +117,9 @@ module.exports = [
     method: 'GET',
     path: '/api/events/{eventId}/result',
     config: {
-      auth: 'simple',
+      auth: 'session',
       validate: validate.eventResult,
-      handler: api.eventResult
+      handler: EventController.getResult
     }
   },
 
@@ -123,9 +127,9 @@ module.exports = [
     method: 'GET',
     path: '/api/events/{eventId}/timeslots/{timeslotId}',
     config: {
-      auth: 'simple',
+      auth: 'session',
       validate: validate.eventTimeslotAvailabilities,
-      handler: api.eventTimeslotAvailabilities
+      handler: EventController.getTimeslotAvailabilities
     }
   }
 ];

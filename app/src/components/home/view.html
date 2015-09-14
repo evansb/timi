@@ -1,0 +1,47 @@
+<ion-view class="timi-home" ng-controller="HomeController">
+  <!-- Header -->
+  <ion-header-bar class='bar-energized' align-title="center">
+    <button class="button button-clear icon ion-more"
+            ng-click="goToSetting()"></button>
+    <div class='title'>
+      <i ng-if="context == 'invitation'"
+         class="icon ion-ios-circle-filled">
+      </i>
+      <i ng-if="context == 'scheduled'"
+         class="icon ion-ios-circle-outline">
+      </i>
+      <i ng-if="context == 'scheduled'"
+         class="icon ion-ios-circle-filled">
+      </i>
+      <i ng-if="context == 'invitation'"
+         class="icon ion-ios-circle-outline">
+      </i>
+    </div>
+    <button class="button button-clear icon ion-compose"
+            ng-click="goToCreate()"></button>
+  </ion-header-bar>
+
+  <ion-content class="padding-medium"
+               on-swipe-right="toInvitation()"
+               on-swipe-left="toScheduled()">
+    <div class="text-center">
+      <h3 class='timi-list-title energized'>
+        {{ (context == 'invitation')? 'Invites' : 'Scheduled' }}
+      </h3>
+    </div>
+    <div class='list'>
+      <div ng-if="context == 'invitation'">
+        <timi-event-card
+          ng-repeat="event in invites"
+          ng-model='event'>
+        </timi-event-card>
+      </div>
+      <div ng-if="context != 'invitation'">
+        <timi-event-card
+          ng-repeat="event in scheduled"
+          ng-model='event'>
+        </timi-event-card>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

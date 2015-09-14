@@ -22,13 +22,11 @@ var paths = {
 };
 
 // Compile all the sass and minify it to single .min.css on the staging
-gulp.task('sass', function(done) {
-  gulp.src('./scss/*.scss')
-    .pipe(sass({ style: 'compressed', errLogToConsole: true }))
-    .pipe(minifyCss({ processImport: true, keepSpecialComments: 0 }))
+gulp.task('sass', function() {
+  gulp.src('./scss/ionic.app.scss')
+    .pipe(sass({ style: 'compressed' }).on('error', sass.logError))
     .pipe(rename('app.min.css'))
     .pipe(gulp.dest('./dist'))
-    .on('end', done);
 });
 
 // Babelify, bundle and watch javascript files.
