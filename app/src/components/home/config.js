@@ -1,4 +1,5 @@
-export default ($stateProvider) => {
+export default ($urlRouterProvider, $stateProvider) => {
+  $urlRouterProvider.otherwise('/home');
   $stateProvider.state('home',
     {
       url: '/home',

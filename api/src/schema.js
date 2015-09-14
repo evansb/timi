@@ -58,4 +58,4 @@ export default function () {
     .then(function () {
       console.log('success');
     });
-};
+}

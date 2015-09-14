@@ -1,5 +1,31 @@
 
-export default ($scope) => {
+export default ($scope, $location, $timi) => {
+  $scope.context = 'invitation';
+
+  $scope.toInvitation = () => {
+    $scope.context = 'invitation';
+  };
+
+  $scope.toScheduled = () => {
+    $scope.context = 'scheduled';
+  };
+
+  $scope.goToCreate = () => {
+    $location.path('create');
+  };
+
+  $scope.goToSetting = () => {
+    $location.path('settings');
+  };
+
+  $scope.goToDetails = (event) => {
+    if (event.type == 'pending') {
+      $location.path('invitation');
+    } else {
+      $location.path('details');
+    }
+  };
+
   $scope.invites = [
     {
       title: 'CS3216 Assignment 3 Meeting',

@@ -9,11 +9,13 @@ $stable:                          #f8f8f8 !default;
 $positive:                        #387ef5 !default;
 $calm:                            #11c1f3 !default;
 $balanced:                        #33cd5f !default;
-$energized:                       #ffc900 !default;
 $assertive:                       #ef473a !default;
 $royal:                           #886aea !default;
 $dark:                            #444 !default;
 */
+$light:                           #fdfcfb !default;
+$positive:                        #f89100 !default;
+$energized:                       #ee554c !default;
 
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700,600,300);
 $font-family-sans-serif:          'Open Sans', sans-serif !default;
@@ -27,6 +29,9 @@ $ionicons-font-path: "../bower_components/ionic/fonts" !default;
 // Include all of Ionic
 @import "../bower_components/ionic/scss/ionic";
 @import "../bower_components/Ionicons/scss/ionicons";
+@import "./theme";
+
+$base-background-color:           #fdfcfb !default;
 
 .padding-big {
   padding-left: 40px !important;
@@ -88,14 +93,14 @@ $ionicons-font-path: "../bower_components/ionic/fonts" !default;
 
   a {
     text-decoration: none;
-    color:
+    color: black;
   }
 }
 
 .timi-message-modal {
   background-color: transparent;
   .modal-body {
-    background-color: rgba(0,0,0,0.6) !important;
+    background-color: #f89100 !important;
     height: auto !important;
     max-height: 80px !important;
     color: white;
@@ -111,6 +116,10 @@ $ionicons-font-path: "../bower_components/ionic/fonts" !default;
   }
 }
 
+.timi-event-card {
+  @extend .card;
+}
+
 .timi-forgot-message {
   h1 {
     font-size: 1.3em;
@@ -120,10 +129,14 @@ $ionicons-font-path: "../bower_components/ionic/fonts" !default;
 .timi-button-small {
   @extend .button;
   border: none;
-  background-color: #eeeeee !important;
+}
+
+.header {
+  padding-top: 1em;
 }
 
 .timi-list-title {
+  padding-top: 1em;
   padding-left: 0.5em;
 }
 
@@ -140,15 +153,12 @@ $ionicons-font-path: "../bower_components/ionic/fonts" !default;
   }
   .x-icon {
     text-align: center;
+    color: #dddddc;
     font-size: 2em;
   }
 }
 
 .timi-event-header {
-  h1 {
-    font-size: 2em;
-    padding-left: 0.5em;
-  }
 }
 
 .timi-stacked-form {
@@ -166,6 +176,10 @@ $ionicons-font-path: "../bower_components/ionic/fonts" !default;
 
 .timi-participant-list {
   @extend .padding-small;
+  small {
+    font-size: 0.7em;
+    color: gray;
+  }
 }
 
 .timi-person-card {
@@ -174,9 +188,13 @@ $ionicons-font-path: "../bower_components/ionic/fonts" !default;
 
 .timi-create-link {
   @extend .padding-medium;
-  h3 {
-    margin-top: 2em;
-    margin-bottom: 2em;
+  margin-top: 2em;
+
+  h1, h2, h3, p {
+    margin-bottom: 1.5em;
+  }
+  i {
+    font-size: 48px;
   }
 
   .link {

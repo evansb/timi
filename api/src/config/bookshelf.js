@@ -1,7 +1,5 @@
 import Bookshelf from 'bookshelf';
 
-console.log(process.env);
-
 var knex = require('knex')({
   client: 'pg',
   connection: {
