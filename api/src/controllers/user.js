@@ -108,4 +108,15 @@ export default class UserController {
       .then(reply)
       .catch((err) => reply(Boom.badImplementation(err)));
   }
+
+
+  //TODO
+
+  static update(request, reply) {
+    reply('OK');
+  }
+
+  static delete(request, reply) {
+    reply('OK');
+  }
 }

@@ -106,7 +106,7 @@ module.exports = [
         '{' +
           '"name":"Date with Sharon", ' +
           '"deadline": "2020-02-10", ' +
-          '"timeslots": [{start: "2020-02-10", end: "2020-02-11"}, {start: "2020-03-10", end: "2020-03-11"}], ' +
+          '"timeslots": [{"start": "2020-02-10", "end": "2020-02-11"}, {"start": "2020-03-10", "end": "2020-03-11"}], ' +
           '"participants": [1]' +
         '}',
       auth: 'session',
@@ -121,7 +121,7 @@ module.exports = [
     config: {
       tags: ['api'],
       description: 'Indicate availabilities for specified event',
-      notes: 'Sample input: [{"timeslot_id": 7, "weight": 10}, {"timeslot_id": 8, "weight": 1}]',
+      notes: 'Sample input: {"availabilities": [{"timeslot_id": 7, "weight": 10}, {"timeslot_id": 8, "weight": 1}]}',
       auth: 'session',
       validate: validate.newAvailabilities,
       handler: EventController.createAvailabilities
@@ -173,6 +173,42 @@ module.exports = [
       auth: 'session',
       validate: validate.eventTimeslotAvailabilities,
       handler: EventController.getTimeslotAvailabilities
+    }
+  },
+
+
+  //TODO
+  {
+    method: 'PUT',
+    path: '/api/me/update',
+    config: {
+      tags: ['api'],
+      description: 'Update the information of the current user',
+      notes: 'Sample input: { "email": "hello@example.com", "password": "newhelloworld", "name": "hello"}',
+      auth: 'session',
+      handler: UserController.update
+    }
+  },
+  {
+    method: 'DELETE',
+    path: '/api/me/delete',
+    config: {
+      tags: ['api'],
+      description: 'Remove of the current user',
+      auth: 'session',
+      handler: UserController.delete
+    }
+  },
+  {
+    method: 'POST',
+    path: '/api/events/{eventId}/confirmations',
+    config: {
+      tags: ['api'],
+      description: 'Indicate confirmation for specified event result',
+      notes: 'Sample input: {"confirmations": [5, 6, 7]}',
+      auth: 'session',
+      validate: validate.newConfirmations,
+      handler: EventController.createConfirmations
     }
   }
 ];

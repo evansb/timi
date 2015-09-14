@@ -100,4 +100,10 @@ export default class EventController {
       .then(reply)
       .catch((err) => reply(Boom.badRequest(err)));
   }
+
+  //TODO
+
+  static createConfirmations(request, reply) {
+    reply('OK');
+  }
 }

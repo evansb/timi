@@ -29,6 +29,8 @@ var availabilitySchema = Joi.object().keys({
 
 var availabilitiesSchema = Joi.array().items(availabilitySchema);
 
+var confirmationsSchema = Joi.array().items(idSchema);
+
 exports.userLogin = {
   payload: {
     email: emailSchema,
@@ -94,5 +96,14 @@ exports.eventTimeslotAvailabilities = {
   params: {
     eventId: idSchema,
     timeslotId: idSchema
+  }
+};
+
+exports.newConfirmations = {
+  params: {
+    eventId: idSchema
+  },
+  payload: {
+    confirmations: confirmationsSchema
   }
 };
