@@ -1,6 +1,7 @@
 import bookshelf from '../config/bookshelf';
 import Bcrypt from 'bcrypt';
 import Promise from 'bluebird';
+import EventUser from './event_user';
 
 Promise.promisifyAll(Bcrypt);
 
@@ -14,10 +15,9 @@ var User = bookshelf.model('User', {
         if(count > 0) {
           throw new Error('User with this email exists.');
         } else {
-          return Bcrypt.hashAsync(this.get('password'), 5)
-            .then((password) => {
-              return this.save('password', password);
-            });
+          Bcrypt.genSaltAsync(5)
+            .then((salt) => Bcrypt.hashAsync(this.get('password'), salt))
+            .then((password) => this.save('password', password));
         }
       });
   },
@@ -39,11 +39,11 @@ var User = bookshelf.model('User', {
     this.invited_events.where('participated', false);
   },
   belongToEvent: function (eventId) {
-    return this.involvedEvents()
-      .query({where: {id: eventId, owner_id: this.get('id')}})
+    return EventUser
+      .query({where: {event_id: eventId, user_id: this.get('id')}})
       .count()
       .then((count) => {
-         return (parseInt(count) > 0) ? this : false;
+        return parseInt(count) ? this : false;
       });
   },
   timeslots: function () {
@@ -53,11 +53,5 @@ var User = bookshelf.model('User', {
     return this.timeslots().withPivot(['weight']).query({where: {event_id: eventId}}).fetch();
   }
 });
-
-/*
-User.prototype.create = function (params) {
-
-};
-*/
 
 module.exports = User;

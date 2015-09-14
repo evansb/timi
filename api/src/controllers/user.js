@@ -3,11 +3,15 @@ import Boom       from 'boom';
 import Bcrypt     from 'bcrypt';
 import User       from '../models/user';
 
-let _permit = (user, eventId) => {
+let _getUser = (user) => {
+  return User.where('id', user.id).fetch();
+}
+
+let _permit = (user, eventId, reply) => {
   return user.belongToEvent(eventId)
     .then((result) => {
       if(!result) {
-        throw new Error('You are not in this event');
+        reply(Boom.forbidden('You are not in this event'));
       } else {
         return user;
       }
@@ -44,26 +48,24 @@ export default class UserController {
     reply({ status: 'logged_out' });
   }
 
-
   static getCurrentEvents(request, reply) {
-    let user = request.auth.credentials;
-    Promise
-      .all([user.ownEvents(), user.invitedEvents()])
-      .then((events) => reply(events[0].concat(events[1])))
+    _getUser(request.auth.credentials)
+      .then((_user) => Promise.all([_user.ownEvents(), _user.invitedEvents()]))
+      .then((events) => reply(events[0].toArray().concat(events[1].toArray())))
       .catch((err) => reply(Boom.badRequest(err)));
   }
 
   static getCurrentAvailability(request, reply) {
-    let user = request.auth.credentials;
     let eventId = request.params.eventId;
-    _permit(user, eventId)
+    _getUser(request.auth.credentials)
+      .then((_user) => _permit(_user, eventId, reply))
       .then((_user) => _user.availableForEvent(eventId))
       .then((slots) => reply(slots))
       .catch((err) => reply(Boom.badImplementation(err)));
   }
 
   static create(request, reply) {
-    let user = request.payload.user;
+    let user = request.payload;
     let newUser = new User(user, { hasTimestamps: true });
     newUser.trySave()
       .then(reply)
@@ -80,19 +82,15 @@ export default class UserController {
           reply(Boom.notFound('User does not exist'));
         }
       })
-      .catch((err) => {
-        reply(Boom.badRequest(err));
-      });
+      .catch((err) => reply(Boom.badRequest(err)));
   }
 
   static getUserAvailabilities(request, reply) {
-    let user = request.auth.credentials;
     let {userId, eventId} = request.params;
 
-    _permit(user, eventId)
-      .then(() => {
-        return User.where('id', userId).fetch();
-      })
+    _getUser(request.auth.credentials)
+      .then((_user) => _permit(_user, eventId, reply))
+      .then((_user) => User.where('id', userId).fetch())
       .then((viewedUser) => {
         if (viewedUser) {
           return viewedUser.belongToEvent(eventId);
@@ -107,11 +105,7 @@ export default class UserController {
           return result.availableForEvent(eventId);
         }
       })
-      .then((slots) => {
-        reply(slots);
-      })
-      .catch((err) => {
-        reply(Boom.badImplementation(err));
-      });
+      .then(reply)
+      .catch((err) => reply(Boom.badImplementation(err)));
   }
 }
