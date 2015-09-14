@@ -16,8 +16,8 @@ $dark:                            #444 !default;
 // Base
 // -------------------------------
 
-$font-family-sans-serif:          "Helvetica Neue", "Roboto", "Segoe UI", sans-serif !default;
-$font-family-light-sans-serif:    "HelveticaNeue-Light", "Roboto-Light", "Segoe UI-Light", sans-serif-light !default;
+$font-family-sans-serif:          "Open Sans Medium", sans-serif !default;
+$font-family-light-sans-serif:    "Open Sans Regular", sans-serif-light !default;
 $font-family-serif:               serif !default;
 $font-family-monospace:           monospace !default;
 
@@ -35,7 +35,7 @@ $headings-font-family:            $font-family-base !default;
 $headings-font-weight:            500 !default;
 $headings-line-height:            1.2 !default;
 
-$base-background-color:           #fff !default;
+$base-background-color:           #6fcfda !default;
 $base-color:                      #000 !default;
 
 $link-color:                      $positive !default;
@@ -52,9 +52,9 @@ $padding-large-horizontal:        16px !default;
 $padding-small-vertical:          5px !default;
 $padding-small-horizontal:        10px !default;
 
-$border-radius-base:              4px !default;
-$border-radius-large:             6px !default;
-$border-radius-small:             3px !default;
+$border-radius-base:              6px !default;
+$border-radius-large:             8px !default;
+$border-radius-small:             5px !default;
 
 
 // Content

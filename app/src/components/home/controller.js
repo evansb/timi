@@ -1,5 +1,9 @@
 
-export default ($scope, $location) => {
+export default ($scope, $location, $timi) => {
+  if (!$timi.isLoggedIn()) {
+    $location.path('login');
+  }
+
   $scope.context = 'invitation';
 
   $scope.toInvitation = () => {

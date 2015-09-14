@@ -1,6 +1,6 @@
 <ion-view class="timi-home" ng-controller="HomeController">
   <!-- Header -->
-  <ion-header-bar class='bar-light' align-title="center">
+  <ion-header-bar class='bar-energized' align-title="center">
     <button class="button button-clear icon ion-more"
             ng-click="goToSetting()"></button>
     <div class='title'>
@@ -25,7 +25,7 @@
                on-swipe-right="toInvitation()"
                on-swipe-left="toScheduled()">
     <div class="text-center">
-      <h3 class='timi-list-title'>
+      <h3 class='timi-list-title energized'>
         {{ (context == 'invitation')? 'Invites' : 'Scheduled' }}
       </h3>
     </div>
