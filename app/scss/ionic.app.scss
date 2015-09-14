@@ -27,7 +27,7 @@ $ionicons-font-path: "../bower_components/ionic/fonts" !default;
 @import "../bower_components/Ionicons/scss/ionicons";
 @import "./theme";
 
-$base-background-color:           #ffffff !default;
+$base-background-color:           #fdfcfb !default;
 
 * {
   font-family: 'Open Sans', sans-serif !important;
@@ -153,7 +153,8 @@ $base-background-color:           #ffffff !default;
   }
   .x-icon {
     text-align: center;
-    font-size: 4em;
+    color: #dddddc;
+    font-size: 2em;
   }
 }
 
