@@ -1,9 +1,5 @@
 
 export default ($scope, $location, $timi) => {
-  if (!$timi.isLoggedIn()) {
-    $location.path('login');
-  }
-
   $scope.context = 'invitation';
 
   $scope.toInvitation = () => {
@@ -19,7 +15,7 @@ export default ($scope, $location, $timi) => {
   };
 
   $scope.goToSetting = () => {
-    $location.path('invitation');
+    $location.path('settings');
   };
 
   $scope.invites = [

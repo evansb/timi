@@ -1,7 +1,7 @@
 
 const base = 'http://localhost:8000/api';
 
-let activeUser = null;
+var activeUser = null;
 
 export default function($resource) {
   let resource = (url, params, methods) => {
