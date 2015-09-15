@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" ng-controller="ForgotController">
   <div class="col col-center">
     <!-- Logo -->
     <div class="row timi-logo">
@@ -21,14 +21,16 @@
       <div class="col text-center">
         <div class="list">
           <label class="item item-input item-stacked-label">
-            <input type="text" placeholder="Email">
+            <input type="text"
+                   ng-model="email"
+                   placeholder="Email">
           </label>
         </div>
       </div>
     </div>
 
     <!-- Login Button -->
-    <timi-full-button type='light'>
+    <timi-full-button type='submit' ng-click='goToLogin()'>
       Send
     </timi-full-button>
 
