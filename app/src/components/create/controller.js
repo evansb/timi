@@ -33,7 +33,7 @@ export default ($scope, $location) => {
       }
     }
   };
-  
+
   $scope.datepickerEnd = {
     titleLabel: 'End Date',
     from: moment().subtract(1, 'days').toDate(),
@@ -46,4 +46,35 @@ export default ($scope, $location) => {
       }
     }
   };
+
+  $scope.timepicker = {
+    endValue: null,
+    startValue: null,
+    endValid: true
+  };
+
+  $scope.timepickerStart = {
+    titleLabel: 'Start Time',
+    callback: (val) => {
+      $scope.timepicker.startValue = val;
+      console.log(val);
+      if ($scope.timepicker.endValue == null){
+        $scope.timepickerEnd.from = val;
+      } else if ($scope.timepicker.endValue < val) {
+        $scope.timepickerEnd.from = val;
+      }
+    }
+  };
+
+  $scope.timepickerEnd = {
+    titleLabel: 'End Time',
+    callback: (val) => {
+      $scope.timepicker.endValue = val;
+      if ($scope.timepicker.startValue &&
+          (val < $scope.timepicker.startValue)){
+        $scope.timepicker.endValid = false;
+      }
+    }
+  };
+
 };
