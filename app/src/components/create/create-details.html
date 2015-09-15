@@ -32,7 +32,7 @@
         <span class='input-label'>From</span>
         <ionic-datepicker input-obj="datepickerStart">
           <button class="button button-clear button-energized">
-            {{ (datepickerStartValue | date: 'dd MMM yyyy') || "Tap to change" }}
+            {{ (datepicker.startValue | date: 'dd MMM yyyy') || "Tap to change" }}
           </button>
         </ionic-datepicker>
       </label>
@@ -40,7 +40,7 @@
         <span class='input-label'>To</span>
         <ionic-datepicker input-obj="datepickerEnd">
           <button class="button button-clear button-energized">
-            {{ (datepickerEndValue | date: 'dd MMM yyyy') || "Tap to change" }}
+            {{ (datepicker.endValue | date: 'dd MMM yyyy') || "Tap to change" }}
           </button>
         </ionic-datepicker>
         <input type='text'>

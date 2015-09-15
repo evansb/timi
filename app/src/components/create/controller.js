@@ -15,20 +15,22 @@ export default ($scope, $location) => {
     $location.path('home');
   };
 
-  $scope.datepickerEndValue = null;
-  $scope.datepickerStartValue = null;
-  $scope.datepickerEndValid = true;
+  $scope.datepicker = {
+    endValue: null,
+    startValue: null,
+    endValid: true
+  };
 
   $scope.datepickerStart = {
     titleLabel: 'Start Date',
     from: moment().subtract(1, 'days').toDate(),
     to: moment().add(5, 'years').toDate(),
     callback: function(val) {
-      $scope.datepickerStartValue = val;
+      $scope.datepicker.startValue = val;
       console.log(val);
-      if ($scope.datepickerEndValue == null){
+      if ($scope.datepicker.endValue == null){
         $scope.datepickerEnd.from = val;
-      } else if ($scope.datepickerEndValue < val) {
+      } else if ($scope.datepicker.endValue < val) {
         $scope.datepickerEnd.from = val;
       }
     }
@@ -39,10 +41,10 @@ export default ($scope, $location) => {
     from: moment().subtract(1, 'days').toDate(),
     to: moment().add(5, 'years').toDate(),
     callback: function(val) {
-      $scope.datepickerEndValue = val;
-      if ($scope.datepickerStartValue &&
-          (val < $scope.datepickerStartValue)){
-        $scope.datepickerEndValid = false;
+      $scope.datepicker.endValue = val;
+      if ($scope.datepicker.startValue &&
+          (val < $scope.datepicker.startValue)){
+        $scope.datepicker.endValid = false;
       }
     }
   };
@@ -76,5 +78,4 @@ export default ($scope, $location) => {
       }
     }
   };
-
 };
