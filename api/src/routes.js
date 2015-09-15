@@ -186,7 +186,8 @@ module.exports = [
       description: 'Update the information of the current user',
       notes: 'Sample input: { "email": "hello@example.com", "password": "newhelloworld", "name": "hello"}',
       auth: 'session',
-      handler: UserController.update
+      handler: (req, reply) => { reply('Not implemented'); }
+      //UserController.update
     }
   },
   {
