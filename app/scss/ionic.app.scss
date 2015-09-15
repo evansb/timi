@@ -18,10 +18,6 @@ $positive:                        #f89100 !default;
 $energized:                       #ee554c !default;
 
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700,600,300);
-$font-family-sans-serif:          'Open Sans', sans-serif !default;
-$font-family-light-sans-serif:    'Open Sans', sans-serif-light !default;
-$font-family-serif:               serif !default;
-$font-family-monospace:           monospace !default;
 
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../bower_components/ionic/fonts" !default;
