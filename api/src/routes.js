@@ -180,7 +180,7 @@ module.exports = [
   //TODO
   {
     method: 'PUT',
-    path: '/api/me/update',
+    path: '/api/me',
     config: {
       tags: ['api'],
       description: 'Update the information of the current user',
@@ -191,7 +191,7 @@ module.exports = [
   },
   {
     method: 'DELETE',
-    path: '/api/me/delete',
+    path: '/api/me',
     config: {
       tags: ['api'],
       description: 'Remove of the current user',
