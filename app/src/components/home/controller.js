@@ -61,5 +61,26 @@ export default ($scope, $location, $timi) => {
       timeEnd: '23:59',
       type: 'confirmed'
     },
+    {
+      title: 'Avengers Meeting',
+      date: '24 September',
+      timeStart: '15:30',
+      timeEnd: '16:30',
+      type: 'confirmed'
+    },
+    {
+      title: 'Plan Colin (McRae)\'s Birthday',
+      date: '21 April',
+      timeStart: '10:10',
+      timeEnd: '11:30',
+      type: 'confirmed'
+    },
+    {
+      title: 'Nala Mass Petting Event',
+      date: '8 December',
+      timeStart: '00:00',
+      timeEnd: '23:59',
+      type: 'confirmed'
+    },
   ];
 }

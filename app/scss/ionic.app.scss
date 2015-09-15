@@ -203,3 +203,16 @@ $base-background-color:           #fdfcfb !default;
     font-size: 1.5em;
   }
 }
+
+.slider {
+  position: absolute !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+}
+
+.scroll {
+  height: 100%;
+  min-height: 100%;
+}
