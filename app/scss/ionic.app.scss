@@ -17,21 +17,21 @@ $light:                           #fdfcfb !default;
 $positive:                        #f89100 !default;
 $energized:                       #ee554c !default;
 
-$timi-button-light: #eeeeee;
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700,600,300);
+$font-family-sans-serif:          'Open Sans', sans-serif !default;
+$font-family-light-sans-serif:    'Open Sans', sans-serif-light !default;
+$font-family-serif:               serif !default;
+$font-family-monospace:           monospace !default;
+
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../bower_components/ionic/fonts" !default;
 
 // Include all of Ionic
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700,600,300);
 @import "../bower_components/ionic/scss/ionic";
 @import "../bower_components/Ionicons/scss/ionicons";
 @import "./theme";
 
 $base-background-color:           #fdfcfb !default;
-
-* {
-  font-family: 'Open Sans', sans-serif !important;
-}
 
 .padding-big {
   padding-left: 40px !important;
