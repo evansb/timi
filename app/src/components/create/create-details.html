@@ -30,10 +30,19 @@
     <div class='list'>
       <label class='item item-input'>
         <span class='input-label'>From</span>
-        <input type='text'>
+        <ionic-datepicker input-obj="datepickerStart">
+          <button class="button button-clear button-energized">
+            {{ (datepickerStartValue | date: 'dd MMM yyyy') || "Tap to change" }}
+          </button>
+        </ionic-datepicker>
       </label>
       <label class='item item-input'>
         <span class='input-label'>To</span>
+        <ionic-datepicker input-obj="datepickerEnd">
+          <button class="button button-clear button-energized">
+            {{ (datepickerEndValue | date: 'dd MMM yyyy') || "Tap to change" }}
+          </button>
+        </ionic-datepicker>
         <input type='text'>
       </label>
     </div>

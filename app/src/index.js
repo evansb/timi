@@ -5,13 +5,14 @@ import 'angular-sanitize';
 import 'angular-resource';
 import 'angular-ui-router';
 import 'ionic';
+import 'ionic-datepicker';
 
 import _              from 'lodash'
 import startup        from './startup';
 import common         from './common';
 import components     from './components';
 
-let app = angular.module('timi', ['ionic', 'ngResource']);
+let app = angular.module('timi', ['ionic', 'ionic-datepicker', 'ngResource']);
 
 components.push(common);
 
