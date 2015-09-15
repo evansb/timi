@@ -216,3 +216,9 @@ $base-background-color:           #fdfcfb !default;
   height: 100%;
   min-height: 100%;
 }
+
+.timi-home {
+  .pager {
+    padding-top: 0.5em !important;
+  }
+}

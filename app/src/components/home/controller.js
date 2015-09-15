@@ -1,14 +1,19 @@
 
 export default ($scope, $location, $timi) => {
-  $scope.context = 'invitation';
-
-  $scope.toInvitation = () => {
-    $scope.context = 'invitation';
-  };
-
-  $scope.toScheduled = () => {
-    $scope.context = 'scheduled';
-  };
+  $scope.contexts = [
+    {
+      title: 'Invites',
+      get () {
+        return $scope.invites;
+      }
+    },
+    {
+      title: 'Scheduled',
+      get () {
+        return $scope.scheduled;
+      }
+    }
+  ]
 
   $scope.goToCreate = () => {
     $location.path('create');
@@ -24,6 +29,12 @@ export default ($scope, $location, $timi) => {
     } else {
       $location.path('details');
     }
+  };
+
+  $scope.slideIndex = 0;
+
+  $scope.slideChanged = (index) => {
+    $scope.slideIndex = index;
   };
 
   $scope.invites = [
