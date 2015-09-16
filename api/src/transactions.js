@@ -18,7 +18,14 @@ exports.newEvent = (eventParams, timeslots, participants) => {
         });
         let createParticipants = Promise.map(participants, (participant) => {
           let eventUser = {user_id: participant, event_id: eventId};
-          return new EventUser(eventUser, {hasTimestamps: true}).save(null, {transacting: t});
+          return User.where('id', participant).fetch()
+            .then((user) => {
+              if(!user) {
+                return Promise.reject(Boom.notFound('Participant does not exist'));
+              } else {
+                return new EventUser(eventUser, {hasTimestamps: true}).save(null, {transacting: t});
+              }
+            });
         });
         return Promise.all([createSlots, createParticipants])
           .then(() => event);
