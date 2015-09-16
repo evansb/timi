@@ -50,8 +50,8 @@ export default class {
 
     _getUserById(request.auth.credentials.id)
       .then((_user) => _permit(_user, eventId))
-      .then((_user) => transactions.newAvailabilities(_user.get('id'), eventId, availabilities))
-      .then(() => reply('Submitted'))
+      .then((_user) => transactions.newAvailabilities(_user, eventId, availabilities))
+      .then(reply)
       .catch((err) => reply(err.isBoom ? err : Boom.badImplementation(err)));
   }
 

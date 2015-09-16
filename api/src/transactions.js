@@ -33,7 +33,8 @@ exports.newEvent = (eventParams, timeslots, participants) => {
   });
 };
 
-exports.newAvailabilities = (userId, eventId, availabilities) => {
+exports.newAvailabilities = (user, eventId, availabilities) => {
+  let userId = user.get('id');
   return bookshelf.transaction((t) => {
     return Promise.map(availabilities, (availability) => {
       return Timeslot.where({id: availability.timeslot_id, event_id: eventId}).fetch()
@@ -41,18 +42,17 @@ exports.newAvailabilities = (userId, eventId, availabilities) => {
           if (!timeslot) {
             return Promise.reject(Boom.notFound('Timeslot does not belong to this event'));
           } else {
-            return Availability
-              .where({user_id: userId, timeslot_id: availability.timeslot_id})
-              .fetch()
-              .then((ts) => {
-                if (ts) {
-                  return Promise.reject(Boom.conflict('You have indicated it'));
-                } else {
-                  return new Availability(availability, {hasTimestamps: true}).save('user_id', userId, {transacting: t});
-                }
-              });
+            return Availability.where({user_id: userId, timeslot_id: availability.timeslot_id}).fetch();
+          }
+        })
+        .then((ts) => {
+          if (ts) {
+            return Promise.reject(Boom.conflict('You have indicated it'));
+          } else {
+            return new Availability(availability, {hasTimestamps: true}).save('user_id', userId, {transacting: t});
           }
         });
-    });
+    })
+      .then(() => user.participate(eventId));
   });
 };

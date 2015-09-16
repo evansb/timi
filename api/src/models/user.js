@@ -28,9 +28,7 @@ var User = bookshelf.model('User', {
     return this.hasMany('Event', 'owner_id').fetch();
   },
   invitedEvents: function () {
-    return this.involvedEvents().query((qb) => {
-      qb.where('owner_id', '<>', this.get('id'));
-    }).fetch();
+    return this.involvedEvents().query((qb) => qb.where('owner_id', '<>', this.get('id'))).fetch();
   },
   participated_events: function (){
     this.invited_events.where('participated', true);
@@ -40,17 +38,18 @@ var User = bookshelf.model('User', {
   },
   belongToEvent: function (eventId) {
     return EventUser
-      .query({where: {event_id: eventId, user_id: this.get('id')}})
+      .where({event_id: eventId, user_id: this.get('id')})
       .count()
-      .then((count) => {
-        return parseInt(count) ? this : false;
-      });
+      .then((count) => parseInt(count) ? this : false);
   },
   timeslots: function () {
     return this.belongsToMany('Timeslot', 'availabilities', 'user_id', 'timeslot_id');
   },
   availableForEvent: function (eventId) {
     return this.timeslots().withPivot(['weight']).query({where: {event_id: eventId}}).fetch();
+  },
+  participate: function(eventId) {
+    return EventUser.where({event_id: eventId, user_id: this.get('id')}).save({participated: true}, {method: 'update', patch: true});
   }
 });
 
