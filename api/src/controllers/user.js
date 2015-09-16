@@ -121,8 +121,16 @@ export default class {
 
   //TODO
 
-  static update(request, reply) {
-    reply('OK');
+  static updateCurrent(request, reply) {
+    let payload = request.payload;
+
+    _getUserById(request.auth.credentials.id)
+      .then((_user) => _user.update(payload))
+      .then((_user) => {
+        request.auth.session.set(_user);
+        reply(_user);
+      })
+      .catch((err) => reply(err.isBoom ? err : Boom.badImplementation(err)));
   }
 
   static delete(request, reply) {

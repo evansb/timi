@@ -19,7 +19,7 @@ module.exports = [
     config: {
       tags: ['api'],
       description: 'Log in a user with email and password',
-      notes: 'Sample input: { "email": "hello@example.com", "password": "helloworld" }',
+      notes: 'Sample payload: { "email": "hello@example.com", "password": "helloworld" }',
       auth: false,
       validate: validate.userLogin,
       handler: UserController.login
@@ -64,7 +64,7 @@ module.exports = [
     config: {
       tags: ['api'],
       description: 'Sign up a new user',
-      notes: 'Sample input: { "email": "hello@example.com", "password": "helloworld", "name": "hello"}',
+      notes: 'Sample payload: { "email": "hello@example.com", "password": "helloworld", "name": "hello"}',
       auth: false,
       validate: validate.newUser,
       handler: UserController.create
@@ -102,7 +102,7 @@ module.exports = [
       tags: ['api'],
       description: 'Create a new event',
       notes:
-      'Sample input: ' +
+      'Sample payload: ' +
         '{' +
           '"name":"Date with Sharon", ' +
           '"deadline": "2020-02-10", ' +
@@ -121,7 +121,7 @@ module.exports = [
     config: {
       tags: ['api'],
       description: 'Indicate availabilities for specified event',
-      notes: 'Sample input: {"availabilities": [{"timeslot_id": 7, "weight": 10}, {"timeslot_id": 8, "weight": 1}]}',
+      notes: 'Sample payload: {"availabilities": [{"timeslot_id": 7, "weight": 10}, {"timeslot_id": 8, "weight": 1}]}',
       auth: 'session',
       validate: validate.newAvailabilities,
       handler: EventController.createAvailabilities
@@ -175,20 +175,20 @@ module.exports = [
       handler: EventController.getTimeslotAvailabilities
     }
   },
-
-
-  //TODO
   {
     method: 'PUT',
     path: '/api/me',
     config: {
       tags: ['api'],
       description: 'Update the information of the current user',
-      notes: 'Sample input: { "email": "hello@example.com", "password": "newhelloworld", "name": "hello"}',
+      notes: 'Sample payload: { "email": "hello@example.com", "password": "newhelloworld", "name": "hello"}',
       auth: 'session',
-      handler: UserController.update
+      validate: validate.newUser,
+      handler: UserController.updateCurrent
     }
   },
+
+  //TODO
   {
     method: 'DELETE',
     path: '/api/me',
@@ -205,7 +205,7 @@ module.exports = [
     config: {
       tags: ['api'],
       description: 'Indicate confirmation for specified event result',
-      notes: 'Sample input: {"confirmations": [5, 6, 7]}',
+      notes: 'Sample payload: {"confirmations": [5, 6, 7]}',
       auth: 'session',
       validate: validate.newConfirmations,
       handler: EventController.createConfirmations
