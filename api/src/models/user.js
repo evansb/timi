@@ -13,9 +13,9 @@ var User = bookshelf.model('User', {
       .count()
       .then((count) => {
         if(count > 0) {
-          throw new Error('User with this email exists.');
+          return false;
         } else {
-          Bcrypt.genSaltAsync(5)
+          return Bcrypt.genSaltAsync(5)
             .then((salt) => Bcrypt.hashAsync(this.get('password'), salt))
             .then((password) => this.save('password', password));
         }
