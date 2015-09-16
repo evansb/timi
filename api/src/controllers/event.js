@@ -3,22 +3,22 @@ import transactions from '../transactions';
 import User         from '../models/user';
 import Event        from '../models/event';
 
-let _permit = (user, eventId, reply) => {
+let _permit = (user, eventId) => {
   return user.belongToEvent(eventId)
     .then((result) => {
       if(!result) {
-        reply(Boom.forbidden('You are not in this event'));
+        return Promise.reject(Boom.forbidden('You are not in this event'));
       } else {
         return user;
       }
     });
 };
 
-let _getUser = (user) => {
-  return User.where('id', user.id).fetch();
+let _getUserById = (userId) => {
+  return User.where('id', userId).fetch();
 };
 
-export default class EventController {
+export default class {
 
   static create(request, reply) {
     let event = request.payload;
@@ -27,7 +27,7 @@ export default class EventController {
     delete event['timeslots'];
     delete event['participants'];
 
-    _getUser(request.auth.credentials).
+    _getUserById(request.auth.credentials.id).
       then((user) => {
         let userId = user.get('id');
         event['owner_id'] = userId;
@@ -37,68 +37,71 @@ export default class EventController {
         return transactions.newEvent(event, timeslots, participants);
       })
       .then(reply)
-      .catch((err) => reply(Boom.badRequest(err)));
+      .catch((err) => reply(err.isBoom ? err : Boom.badImplementation(err)));
   }
 
   static createAvailabilities(request, reply) {
     let eventId = request.params.eventId;
     let availabilities = request.payload.availabilities;
-    _getUser(request.auth.credentials)
-      .then((_user) => _permit(_user, eventId, reply))
+
+    _getUserById(request.auth.credentials.id)
+      .then((_user) => _permit(_user, eventId))
       .then((_user) => transactions.newAvailabilities(_user.get('id'), eventId, availabilities))
-      .then(() => {
-        reply('Submitted');
-      })
-      .catch((err) => reply(Boom.badRequest(err)));
+      .then(() => reply('Submitted'))
+      .catch((err) => reply(err.isBoom ? err : Boom.badImplementation(err)));
   }
 
   static getTimeslots(request, reply) {
     let eventId = request.params.eventId;
-    _getUser(request.auth.credentials)
+
+    _getUserById(request.auth.credentials.id)
       .then((_user) => _permit(_user, eventId, reply))
       .then((_user) => Event.where('id', eventId).fetch())
       .then((event) => event.getTimeslots())
       .then(reply)
-      .catch((err) => reply(Boom.badRequest(err)));
+      .catch((err) => reply(err.isBoom ? err : Boom.badImplementation(err)));
   }
 
   static getResult(request, reply) {
     let eventId = request.params['eventId'];
-    _getUser(request.auth.credentials)
+
+    _getUserById(request.auth.credentials.id)
       .then((_user) => _permit(_user, eventId, reply))
       .then((_user) => Event.where('id', eventId).fetch())
       .then((event) => event.getResult())
       .then(reply)
-      .catch((err) => reply(Boom.badRequest(err)));
+      .catch((err) => reply(err.isBoom ? err : Boom.badImplementation(err)));
   }
 
   static getParticipants(request, reply) {
     let eventId = parseInt(request.params.eventId);
-    _getUser(request.auth.credentials)
+
+    _getUserById(request.auth.credentials.id)
       .then((_user) => _permit(_user, eventId, reply))
       .then((_user) => Event.where('id', eventId).fetch())
       .then((event) => event.getParticipants())
       .then(reply)
-      .catch((err) => reply(Boom.badRequest(err)));
+      .catch((err) => reply(err.isBoom ? err : Boom.badImplementation(err)));
   }
 
   static getTimeslotAvailabilities(request, reply) {
     let eventId = request.params.eventId;
     let timeslotId = request.params.timeslotId;
-    _getUser(request.auth.credentials)
+
+    _getUserById(request.auth.credentials.id)
       .then((_user) => _permit(_user, eventId, reply))
       .then((_user) => Event.where('id', eventId).fetch())
       .then((event) => event.getTimeslot(timeslotId))
       .then((timeslots) => {
         let timeslot = timeslots.first();
         if(!timeslot) {
-          reply(Boom.notFound('Timeslot does not exist in this event'));
+          return Promise.reject(Boom.notFound('Timeslot does not exist in this event'));
         } else {
           return timeslot.availabilities();
         }
       })
       .then(reply)
-      .catch((err) => reply(Boom.badRequest(err)));
+      .catch((err) => reply(err.isBoom ? err : Boom.badImplementation(err)));
   }
 
   //TODO

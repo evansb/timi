@@ -5,6 +5,7 @@ import Event from './models/event';
 import Timeslot from './models/timeslot';
 import EventUser from './models/event_user';
 import Availability from './models/availability';
+import Boom from 'boom';
 
 exports.newEvent = (eventParams, timeslots, participants) => {
   return bookshelf.transaction((t) => {
@@ -20,11 +21,7 @@ exports.newEvent = (eventParams, timeslots, participants) => {
           return new EventUser(eventUser, {hasTimestamps: true}).save(null, {transacting: t});
         });
         return Promise.all([createSlots, createParticipants])
-          .then(() => {
-            return event;
-          }).catch((err) => {
-            throw err;
-          });
+          .then(() => event);
       });
   });
 };
@@ -35,16 +32,16 @@ exports.newAvailabilities = (userId, eventId, availabilities) => {
       return Timeslot.where('id', availability.timeslot_id).fetch()
         .then((timeslot) => {
           if (!timeslot) {
-            throw new Error('Timeslot does not exist');
+            return Promise.reject(Boom.notFound('Timeslot does not exist'));
           } else if (timeslot.get('event_id') !== eventId) {
-            throw new Error('Timeslot does not belong to this event');
+            return Promise.reject(Boom.notFound('Timeslot does not belong to this event'));
           } else {
             return Availability
               .where({user_id: userId, timeslot_id: availability.timeslot_id})
               .fetch()
               .then((ts) => {
                 if (ts) {
-                  throw new Error('You have indicated it');
+                  return Promise.reject(Boom.conflict('You have indicated it'));
                 } else {
                   return new Availability(availability, {hasTimestamps: true}).save('user_id', userId, {transacting: t});
                 }
