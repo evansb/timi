@@ -18,6 +18,10 @@ let _getUserById = (userId) => {
   return User.where('id', userId).fetch();
 };
 
+let _getEventById = (eventId) => {
+  return Event.where('id', eventId).fetch();
+}
+
 export default class {
 
   static create(request, reply) {
@@ -56,7 +60,7 @@ export default class {
 
     _getUserById(request.auth.credentials.id)
       .then((_user) => _permit(_user, eventId, reply))
-      .then((_user) => Event.where('id', eventId).fetch())
+      .then((_user) => _getEventById(eventId))
       .then((event) => event.getTimeslots())
       .then(reply)
       .catch((err) => reply(err.isBoom ? err : Boom.badImplementation(err)));
@@ -67,7 +71,7 @@ export default class {
 
     _getUserById(request.auth.credentials.id)
       .then((_user) => _permit(_user, eventId, reply))
-      .then((_user) => Event.where('id', eventId).fetch())
+      .then((_user) => _getEventById(eventId))
       .then((event) => event.getResult())
       .then(reply)
       .catch((err) => reply(err.isBoom ? err : Boom.badImplementation(err)));
@@ -78,7 +82,7 @@ export default class {
 
     _getUserById(request.auth.credentials.id)
       .then((_user) => _permit(_user, eventId, reply))
-      .then((_user) => Event.where('id', eventId).fetch())
+      .then((_user) => _getEventById(eventId))
       .then((event) => event.getParticipants())
       .then(reply)
       .catch((err) => reply(err.isBoom ? err : Boom.badImplementation(err)));
@@ -90,7 +94,7 @@ export default class {
 
     _getUserById(request.auth.credentials.id)
       .then((_user) => _permit(_user, eventId, reply))
-      .then((_user) => Event.where('id', eventId).fetch())
+      .then((_user) => _getEventById(eventId))
       .then((event) => event.getTimeslot(timeslotId))
       .then((timeslots) => {
         let timeslot = timeslots.first();
