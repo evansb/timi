@@ -30,10 +30,19 @@
     <div class='list'>
       <label class='item item-input'>
         <span class='input-label'>From</span>
-        <input type='text'>
+        <ionic-datepicker input-obj="datepickerStart">
+          <button class="button button-clear button-energized">
+            {{ (datepicker.startValue | date: 'dd MMM yyyy') || "Tap to change" }}
+          </button>
+        </ionic-datepicker>
       </label>
       <label class='item item-input'>
         <span class='input-label'>To</span>
+        <ionic-datepicker input-obj="datepickerEnd">
+          <button class="button button-clear button-energized">
+            {{ (datepicker.endValue | date: 'dd MMM yyyy') || "Tap to change" }}
+          </button>
+        </ionic-datepicker>
         <input type='text'>
       </label>
     </div>
@@ -49,11 +58,19 @@
     <div class='list'>
       <label class='item item-input'>
         <span class='input-label'>From</span>
-        <input type='text'>
+        <ionic-timepicker input-obj="timepickerStart">
+          <button class="button button-clear button-energized">
+            {{ (timepicker.startValue | date: 'hh:mm') || "Tap to change" }}
+          </button>
+        </ionic-timepicker>
       </label>
       <label class='item item-input'>
         <span class='input-label'>To</span>
-        <input type='text'>
+        <ionic-timepicker input-obj="timepickerEnd">
+          <button class="button button-clear button-energized">
+            {{ (timepicker.endValue | date: 'hh:mm') || "Tap to change" }}
+          </button>
+        </ionic-timepicker>
       </label>
     </div>
   </div>

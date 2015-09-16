@@ -1,14 +1,19 @@
 
 export default ($scope, $location, $timi) => {
-  $scope.context = 'invitation';
-
-  $scope.toInvitation = () => {
-    $scope.context = 'invitation';
-  };
-
-  $scope.toScheduled = () => {
-    $scope.context = 'scheduled';
-  };
+  $scope.contexts = [
+    {
+      title: 'Invites',
+      get () {
+        return $scope.invites;
+      }
+    },
+    {
+      title: 'Scheduled',
+      get () {
+        return $scope.scheduled;
+      }
+    }
+  ]
 
   $scope.goToCreate = () => {
     $location.path('create');
@@ -26,6 +31,12 @@ export default ($scope, $location, $timi) => {
     }
   };
 
+  $scope.slideIndex = 0;
+
+  $scope.slideChanged = (index) => {
+    $scope.slideIndex = index;
+  };
+
   $scope.invites = [
     {
       title: 'CS3216 Assignment 3 Meeting',
@@ -40,6 +51,27 @@ export default ($scope, $location, $timi) => {
   ];
 
   $scope.scheduled = [
+    {
+      title: 'Avengers Meeting',
+      date: '24 September',
+      timeStart: '15:30',
+      timeEnd: '16:30',
+      type: 'confirmed'
+    },
+    {
+      title: 'Plan Colin (McRae)\'s Birthday',
+      date: '21 April',
+      timeStart: '10:10',
+      timeEnd: '11:30',
+      type: 'confirmed'
+    },
+    {
+      title: 'Nala Mass Petting Event',
+      date: '8 December',
+      timeStart: '00:00',
+      timeEnd: '23:59',
+      type: 'confirmed'
+    },
     {
       title: 'Avengers Meeting',
       date: '24 September',
