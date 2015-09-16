@@ -29,11 +29,9 @@ exports.newEvent = (eventParams, timeslots, participants) => {
 exports.newAvailabilities = (userId, eventId, availabilities) => {
   return bookshelf.transaction((t) => {
     return Promise.map(availabilities, (availability) => {
-      return Timeslot.where('id', availability.timeslot_id).fetch()
+      return Timeslot.where({id: availability.timeslot_id, event_id: eventId}).fetch()
         .then((timeslot) => {
           if (!timeslot) {
-            return Promise.reject(Boom.notFound('Timeslot does not exist'));
-          } else if (timeslot.get('event_id') !== eventId) {
             return Promise.reject(Boom.notFound('Timeslot does not belong to this event'));
           } else {
             return Availability
