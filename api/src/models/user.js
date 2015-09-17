@@ -1,6 +1,7 @@
 import bookshelf from '../config/bookshelf';
 import Bcrypt from 'bcrypt';
 import Promise from 'bluebird';
+import EventUser from './event_user';
 
 Promise.promisifyAll(Bcrypt);
 
@@ -12,12 +13,11 @@ var User = bookshelf.model('User', {
       .count()
       .then((count) => {
         if(count > 0) {
-          throw new Error('User with this email exists.');
+          return false;
         } else {
-          return Bcrypt.hashAsync(this.get('password'), 5)
-            .then((password) => {
-              return this.save('password', password);
-            });
+          return Bcrypt.genSaltAsync(5)
+            .then((salt) => Bcrypt.hashAsync(this.get('password'), salt))
+            .then((password) => this.save('password', password));
         }
       });
   },
@@ -28,9 +28,7 @@ var User = bookshelf.model('User', {
     return this.hasMany('Event', 'owner_id').fetch();
   },
   invitedEvents: function () {
-    return this.involvedEvents().query((qb) => {
-      qb.where('owner_id', '<>', this.get('id'));
-    }).fetch();
+    return this.involvedEvents().query((qb) => qb.where('owner_id', '<>', this.get('id'))).fetch();
   },
   participated_events: function (){
     this.invited_events.where('participated', true);
@@ -39,25 +37,23 @@ var User = bookshelf.model('User', {
     this.invited_events.where('participated', false);
   },
   belongToEvent: function (eventId) {
-    return this.involvedEvents()
-      .query({where: {id: eventId, owner_id: this.get('id')}})
+    return EventUser
+      .where({event_id: eventId, user_id: this.get('id')})
       .count()
-      .then((count) => {
-         return (parseInt(count) > 0) ? this : false;
-      });
+      .then((count) => parseInt(count) ? this : false);
   },
   timeslots: function () {
     return this.belongsToMany('Timeslot', 'availabilities', 'user_id', 'timeslot_id');
   },
   availableForEvent: function (eventId) {
     return this.timeslots().withPivot(['weight']).query({where: {event_id: eventId}}).fetch();
+  },
+  participate: function(eventId) {
+    return EventUser.where({event_id: eventId, user_id: this.get('id')}).save({participated: true}, {method: 'update', patch: true});
+  },
+  update: function(params) {
+    return this.save(params, {method: 'update', patch: true});
   }
 });
-
-/*
-User.prototype.create = function (params) {
-
-};
-*/
 
 module.exports = User;

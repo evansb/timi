@@ -1,11 +1,12 @@
 import Joi from 'joi';
 
-var emailSchema = Joi.string().email();
+var emailSchema = Joi.string().email().required();
 var idSchema = Joi.number().integer().positive().required();
+var passwordSchema = Joi.string().regex(/[a-zA-Z0-9]{3,30}/).required();
 
 var userSchema = Joi.object().keys({
-  email: emailSchema.required(),
-  password: Joi.string().regex(/[a-zA-Z0-9]{3,30}/).required(),
+  email: emailSchema,
+  password: passwordSchema,
   name: Joi.string().alphanum().max(30)
 });
 
@@ -28,10 +29,17 @@ var availabilitySchema = Joi.object().keys({
 
 var availabilitiesSchema = Joi.array().items(availabilitySchema);
 
-exports.newUser = {
+var confirmationsSchema = Joi.array().items(idSchema);
+
+exports.userLogin = {
   payload: {
-    user: userSchema
+    email: emailSchema,
+    password: passwordSchema
   }
+};
+
+exports.newUser = {
+  payload: userSchema
 };
 
 exports.userInfo = {
@@ -54,9 +62,7 @@ exports.userEventsAvailabilities = {
 };
 
 exports.newEvent = {
-  payload: {
-    event: eventSchema
-  }
+  payload: eventSchema
 };
 
 exports.newAvailabilities = {
@@ -90,5 +96,14 @@ exports.eventTimeslotAvailabilities = {
   params: {
     eventId: idSchema,
     timeslotId: idSchema
+  }
+};
+
+exports.newConfirmations = {
+  params: {
+    eventId: idSchema
+  },
+  payload: {
+    confirmations: confirmationsSchema
   }
 };
