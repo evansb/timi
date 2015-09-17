@@ -50,6 +50,7 @@ export default class {
 
     _getUserById(request.auth.credentials.id)
       .then((_user) => _permit(_user, eventId))
+      .then((_user) => _user.hasParticipated(eventId).then((result) => result ? Promise.reject(Boom.conflict('You have submitted your availabilities before')) : _user))
       .then((_user) => transactions.newAvailabilities(_user, eventId, availabilities))
       .then(reply)
       .catch((err) => reply(err.isBoom ? err : Boom.badImplementation(err)));
