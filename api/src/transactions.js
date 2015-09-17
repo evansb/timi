@@ -14,9 +14,7 @@ exports.newEvent = (eventParams, timeslots, participants) => {
       .save(null, {transacting: t})
       .then((event) => {
         let eventId = event.get('id');
-        let createSlots = Promise.map(timeslots, (timeslot) => {
-          return new Timeslot(timeslot, {hasTimestamps: true}).save('event_id', eventId, {transacting: t});
-        });
+        let createSlots = Promise.map(timeslots, (timeslot) => new Timeslot(timeslot, {hasTimestamps: true}).save('event_id', eventId, {transacting: t}));
         let createParticipants = Promise.map(participants, (participant) => {
           let eventUser = {user_id: participant, event_id: eventId};
           return User.where('id', participant).fetch()

@@ -47,7 +47,7 @@ export default class {
 
   static async createAvailabilities(request, reply) {
     let eventId = request.params.eventId;
-    let availabilities = request.payload.availabilities;
+    let availabilities = request.payload;
     try {
       let user = await _getUserById(request.auth.credentials.id);
       let permitted = await _permit(user, eventId);
