@@ -163,7 +163,6 @@ module.exports = [
       handler: EventController.getResult
     }
   },
-
   {
     method: 'GET',
     path: '/api/events/{eventId}/timeslots/{timeslotId}',

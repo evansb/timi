@@ -17,21 +17,17 @@ $light:                           #fdfcfb !default;
 $positive:                        #f89100 !default;
 $energized:                       #ee554c !default;
 
-$timi-button-light: #eeeeee;
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700,600,300);
+
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../bower_components/ionic/fonts" !default;
 
 // Include all of Ionic
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700,600,300);
 @import "../bower_components/ionic/scss/ionic";
 @import "../bower_components/Ionicons/scss/ionicons";
 @import "./theme";
 
 $base-background-color:           #fdfcfb !default;
-
-* {
-  font-family: 'Open Sans', sans-serif !important;
-}
 
 .padding-big {
   padding-left: 40px !important;
@@ -136,8 +132,7 @@ $base-background-color:           #fdfcfb !default;
 }
 
 .timi-list-title {
-  padding-top: 1em;
-  padding-left: 0.5em;
+  padding-top: 1.5em;
 }
 
 .timi-slot {
@@ -205,5 +200,24 @@ $base-background-color:           #fdfcfb !default;
     text-decoration: none;
     color: rgb(133,100,100);
     font-size: 1.5em;
+  }
+}
+
+.slider {
+  position: absolute !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+}
+
+.scroll {
+  height: 100%;
+  min-height: 100%;
+}
+
+.timi-home {
+  .pager {
+    padding-top: 0.75em !important;
   }
 }
