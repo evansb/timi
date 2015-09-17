@@ -46,7 +46,7 @@ export default class {
 
   static createAvailabilities(request, reply) {
     let eventId = request.params.eventId;
-    let availabilities = request.payload.availabilities;
+    let availabilities = request.payload;
 
     _getUserById(request.auth.credentials.id)
       .then((_user) => _permit(_user, eventId))

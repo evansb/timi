@@ -121,7 +121,7 @@ module.exports = [
     config: {
       tags: ['api'],
       description: 'Indicate availabilities for specified event',
-      notes: 'Sample payload: {"availabilities": [{"timeslot_id": 7, "weight": 10}, {"timeslot_id": 8, "weight": 1}]}',
+      notes: 'Sample payload: [{"timeslot_id": 7, "weight": 10}, {"timeslot_id": 8, "weight": 1}]',
       auth: 'session',
       validate: validate.newAvailabilities,
       handler: EventController.createAvailabilities
