@@ -48,7 +48,7 @@ export default class {
 
   static logout(request, reply) {
     request.auth.session.clear();
-    reply({ status: 'logged_out' });
+    reply('OK');
   }
 
   static getCurrentEvents(request, reply) {
@@ -118,9 +118,6 @@ export default class {
       .catch((err) => reply(err.isBoom ? err : Boom.badImplementation(err)));
   }
 
-
-  //TODO
-
   static updateCurrent(request, reply) {
     let payload = request.payload;
 
@@ -134,6 +131,12 @@ export default class {
   }
 
   static delete(request, reply) {
-    reply('OK');
+    _getUserById(request.auth.credentials.id)
+      .then((_user) => _user.destroy())
+      .then(() => {
+        request.auth.session.clear();
+        reply('OK');
+      })
+      .catch((err) => reply(err.isBoom ? err : Boom.badImplementation(err)));
   }
 }

@@ -187,8 +187,6 @@ module.exports = [
       handler: UserController.updateCurrent
     }
   },
-
-  //TODO
   {
     method: 'DELETE',
     path: '/api/me',
@@ -199,6 +197,9 @@ module.exports = [
       handler: UserController.delete
     }
   },
+
+
+  // TODO
   {
     method: 'POST',
     path: '/api/events/{eventId}/confirmations',
