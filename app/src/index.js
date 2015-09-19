@@ -22,6 +22,11 @@ let app = angular.module('timi', [
 
 components.push(common);
 
+// Require credentials for all request
+app.config(($httpProvider) => {
+  $httpProvider.defaults.withCredentials = true;
+})
+
 // Load all components
 _.forEach(components, (component) => {
   _.forEach(component, (value, key) => {

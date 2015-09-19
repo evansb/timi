@@ -1,3 +1,4 @@
+import _ from 'lodash';
 
 export default ($scope, $state, $timi) => {
   $scope.contexts = [
@@ -33,6 +34,13 @@ export default ($scope, $state, $timi) => {
     $scope.slideIndex = index;
   };
 
+  $timi.Event.fetch((events) => {
+    $scope.invites = _.map(events, (event) => {
+      event.isPending = true;
+      return event;
+    });
+  });
+
   $scope.invites = [
     {
       title: 'CS3216 Assignment 3 Meeting',
@@ -45,6 +53,7 @@ export default ($scope, $state, $timi) => {
       type: 'pending'
     }
   ];
+
 
   $scope.scheduled = [
     {

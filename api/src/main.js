@@ -15,7 +15,9 @@ if (process.env.NODE_ENV === 'development') {
 var server = new Hapi.Server({
   connections: {
     routes: {
-      cors: true
+      cors: {
+        credentials: true
+      }
     }
   }
 });

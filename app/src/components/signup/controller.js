@@ -14,11 +14,9 @@ export default ($scope, $timi, $notification, $state) => {
       let message = 'Password must be 3-30 characters';
       $notification.send({ type: 'modal', message: message});
     } else {
-      let newUser = new $timi.User({
-        user: {
-          email: $scope.email,
-          password: $scope.password
-        }
+      let newUser = new $timi.User.signup({
+        email: $scope.email,
+        password: $scope.password
       });
       newUser.$save((user) => {
         $timi.setActiveUser(user);
