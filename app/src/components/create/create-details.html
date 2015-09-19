@@ -75,3 +75,30 @@
     </div>
   </div>
 </div>
+<div class="row">
+  <div class="col text-center">
+    <h4 class='energized'>Deadline</h4>
+  </div>
+</div>
+<div class='row timi-inline-form'>
+  <div class='col'>
+    <div class='list'>
+      <label class='item item-input'>
+        <span class='input-label'>Date</span>
+        <ionic-datepicker input-obj="datepickerDeadline">
+          <button class="button button-clear button-energized">
+            {{ (deadline.date | date: 'dd MMM yyyy') || "Tap to change" }}
+          </button>
+        </ionic-datepicker>
+      </label>
+      <label class='item item-input'>
+        <span class='input-label'>Time</span>
+        <ionic-timepicker input-obj="timepickerDeadline">
+          <button class="button button-clear button-energized">
+            {{ (deadline.time) || "Tap to change" }}
+          </button>
+        </ionic-timepicker>
+      </label>
+    </div>
+  </div>
+</div>

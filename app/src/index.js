@@ -7,6 +7,7 @@ import 'angular-ui-router';
 import 'ionic';
 import 'ionic-datepicker';
 import 'ionic-timepicker';
+import 'ion-autocomplete';
 
 import _              from 'lodash'
 import startup        from './startup';
@@ -17,6 +18,7 @@ let app = angular.module('timi', [
   'ionic',
   'ionic-datepicker',
   'ionic-timepicker',
+  'ion-autocomplete',
   'ngResource'
 ]);
 
