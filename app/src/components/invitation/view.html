@@ -4,18 +4,18 @@
       <button class="button button-clear"
               ng-click="backToHome()">Cancel</button>
     </div>
-    <h1 class="title">Your Availability</h1>
+    <h1 class="title">
+      {{ isPending ? 'Your Availability': '' }}
+    </h1>
     <div class="buttons">
-      <button class="button button-clear"
+      <button ng-if="isPending"
+              class="button button-clear"
               ng-click="backToHome()">Submit</button>
     </div>
   </ion-header-bar>
   <ion-content class="timi-invitation">
     <div class="padding-top">
       <timi-event-header></timi-event-header>
-      <button class="button buton-outline" ng-click="viewParticipants()">
-        View Participants
-      </button>
     </div>
     <div class="list padding-medium">
       <timi-slot-card ng-repeat="slot in slots" ng-model="slot">

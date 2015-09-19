@@ -239,3 +239,10 @@ $ionicons-font-path: "../bower_components/ionic/fonts" !default;
     letter-spacing: 4px !important;
   }
 }
+
+.item-avatar-centered {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+}
