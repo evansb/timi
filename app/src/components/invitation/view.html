@@ -13,6 +13,9 @@
   <ion-content class="timi-invitation">
     <div class="padding-top">
       <timi-event-header></timi-event-header>
+      <button class="button buton-outline" ng-click="viewParticipants()">
+        View Participants
+      </button>
     </div>
     <div class="list padding-medium">
       <timi-slot-card ng-repeat="slot in slots" ng-model="slot">

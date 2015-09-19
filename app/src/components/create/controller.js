@@ -12,7 +12,7 @@ export default ($scope, $location) => {
   ];
   $scope.backToHome = () => {
     $scope.step = 1;
-    $location.path('home');
+    $state.go('home');
   };
 
   $scope.datepicker = {

@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-export default ($scope, $location) => {
+export default ($scope, $location, $state) => {
   $scope.slots = [
     {
       start: moment().add(3, 'days').add(1, 'hours'),
@@ -16,7 +16,11 @@ export default ($scope, $location) => {
     }
   ];
 
+  $scope.viewParticipants = () => {
+    $state.go('participants', { eventId: 2 })
+  };
+
   $scope.backToHome = () => {
-    $location.path('home');
+    $state.go('home');
   };
 }

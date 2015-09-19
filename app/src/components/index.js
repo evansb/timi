@@ -5,7 +5,8 @@ import login          from './login'
 import signup         from './signup'
 import forgot         from './forgot'
 import settings       from './settings'
+import participants   from './participants'
 import notification   from './notification'
 
 export default [home, create, invitation, login,
-  signup, forgot, notification, settings];
+  signup, forgot, notification, settings, participants];

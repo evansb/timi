@@ -1,5 +1,5 @@
 
-export default ($scope, $location, $timi) => {
+export default ($scope, $state, $timi) => {
   $scope.contexts = [
     {
       title: 'Invites',
@@ -16,18 +16,18 @@ export default ($scope, $location, $timi) => {
   ]
 
   $scope.goToCreate = () => {
-    $location.path('create');
+    $state.go('create');
   };
 
   $scope.goToSetting = () => {
-    $location.path('settings');
+    $state.go('settings');
   };
 
   $scope.goToDetails = (event) => {
     if (event.type == 'pending') {
-      $location.path('invitation');
+      $state.go('invitation', { eventId: 2 });
     } else {
-      $location.path('details');
+      $state.go('details');
     }
   };
 
