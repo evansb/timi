@@ -4,6 +4,38 @@ export default ($scope, $location) => {
   $scope.step = 1;
   $scope.previous = () => $scope.step = Math.max($scope.step - 1, 1);
   $scope.next = () => $scope.step = Math.min($scope.step + 1, 3);
+
+  $scope.user = "";
+  $scope.users = [
+    {
+      name: 'Evan Sebastian',
+      email: 'evansebastian@hehe.com'
+    },
+    {
+      name: 'Sharon Lynn',
+      email: 'sharonlynn@hehe.com'
+    },
+    {
+      name: 'Patricia Wong',
+      email: 'patriciawong@hehe.com'
+    },
+    {
+      name: 'Liu Yang',
+      email: 'liuyang@hehe.com'
+    }
+  ];
+
+  $scope.getUser = function(query) {
+    return {
+      users: $scope.users.filter((user) => {
+        return (user.name.toLowerCase()
+          .search(query.toLowerCase()) != -1) ||
+          (user.email.toLowerCase()
+          .search(query.toLowerCase()) != -1);
+      })
+    };
+  };
+
   $scope.participants = [
     {
       name: 'Evan Sebastian',
