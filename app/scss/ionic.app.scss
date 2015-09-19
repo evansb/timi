@@ -14,8 +14,14 @@ $royal:                           #886aea !default;
 $dark:                            #444 !default;
 */
 $light:                           #fdfcfb !default;
-$positive:                        #f89100 !default;
-$energized:                       #ee554c !default;
+$positive:                        #ffde39 !default;
+$energized:                       #d40058 !default;
+$base-background-color:           #fcfdfb !default;
+
+$font-family-sans-serif:          "Open Sans Medium", sans-serif !default;
+$font-family-light-sans-serif:    "Open Sans Regular", sans-serif-light !default;
+$font-family-serif:               serif !default;
+$font-family-monospace:           monospace !default;
 
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700,600,300);
 
@@ -26,8 +32,6 @@ $ionicons-font-path: "../bower_components/ionic/fonts" !default;
 @import "../bower_components/ionic/scss/ionic";
 @import "../bower_components/Ionicons/scss/ionicons";
 @import "./theme";
-
-$base-background-color:           #fdfcfb !default;
 
 .padding-big {
   padding-left: 40px !important;
@@ -102,7 +106,7 @@ $base-background-color:           #fdfcfb !default;
 .timi-message-modal {
   background-color: transparent;
   .modal-body {
-    background-color: #f89100 !important;
+    background-color: $positive !important;
     height: auto !important;
     max-height: 80px !important;
     color: white;
