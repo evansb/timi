@@ -57,25 +57,50 @@ export default ($scope, $location) => {
 
   $scope.timepickerStart = {
     titleLabel: 'Start Time',
-    callback: (val) => {
-      $scope.timepicker.startValue = val;
-      console.log(val);
+    step: 1,
+    callback: function(val) {
+      let valFormatted = moment().startOf('day').add(val, 'seconds').format('HH:mm');
+      $scope.timepicker.startValue = valFormatted;
       if ($scope.timepicker.endValue == null){
-        $scope.timepickerEnd.from = val;
+        $scope.timepickerEnd.from = valFormatted;
       } else if ($scope.timepicker.endValue < val) {
-        $scope.timepickerEnd.from = val;
+        $scope.timepickerEnd.from = valFormatted;
       }
     }
   };
 
   $scope.timepickerEnd = {
     titleLabel: 'End Time',
-    callback: (val) => {
-      $scope.timepicker.endValue = val;
+    step: 1,
+    callback: function(val) {
+      let valFormatted = moment().startOf('day').add(val, 'seconds').format('HH:mm');
+      $scope.timepicker.endValue = valFormatted;
       if ($scope.timepicker.startValue &&
           (val < $scope.timepicker.startValue)){
         $scope.timepicker.endValid = false;
       }
+    }
+  };
+
+  $scope.deadline ={
+    date: null,
+    time: null
+  };
+
+  $scope.datepickerDeadline = {
+    titleLabel: 'Date',
+    from: moment().subtract(1, 'days').toDate(),
+    to: moment().add(5, 'years').toDate(),
+    callback: function(val) {
+      $scope.deadline.date = val;
+    }
+  };
+
+  $scope.timepickerDeadline = {
+    titleLabel: 'Time',
+    step: 1,
+    callback: function(val) {
+      $scope.deadline.time = moment().startOf('day').add(val, 'seconds').format('HH:mm');
     }
   };
 };
