@@ -15,14 +15,16 @@ let _permit = (user, eventId) => {
       } else {
         return user;
       }
-    })
+    });
 };
 
 export default class {
 
   static getCurrent(request, reply) {
     let user = request.auth.credentials;
-    reply(user);
+    User.where('id', user.id).fetch()
+        .then(reply)
+        .catch(() => Boom.notFound('User not found'));
   }
 
   static login(request, reply) {
@@ -52,10 +54,12 @@ export default class {
   }
 
   static getCurrentEvents(request, reply) {
-    _getUserById(request.auth.credentials.id)
-      .then((_user) => Promise.all([_user.ownEvents(), _user.invitedEvents()]))
-      .then((events) => reply(events[0].toArray().concat(events[1].toArray())))
-      .catch((err) => reply(err.isBoom ? err : Boom.badImplementation(err)));
+    let userId = request.auth.credentials.id;
+    User.where('id', userId).fetch({ withRelated: ['involvedEvents.owner' ] })
+        .then((user) => {
+          reply(user.related('involvedEvents').toJSON());
+        })
+        .catch((err) => reply(err.isBoom ? err : Boom.badImplementation(err)));
   }
 
   static getCurrentAvailability(request, reply) {

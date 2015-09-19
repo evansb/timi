@@ -25,10 +25,7 @@ var User = bookshelf.model('User', {
     return this.belongsToMany('Event', 'events_users', 'user_id', 'event_id');
   },
   ownEvents: function () {
-    return this.hasMany('Event', 'owner_id').fetch();
-  },
-  invitedEvents: function () {
-    return this.involvedEvents().query((qb) => qb.where('owner_id', '<>', this.get('id'))).fetch();
+    return this.hasMany('Event', 'owner_id');
   },
   participated_events: function (){
     this.invited_events.where('participated', true);

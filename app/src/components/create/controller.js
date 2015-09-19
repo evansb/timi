@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-export default ($scope, $location) => {
+export default ($scope, $state) => {
   $scope.step = 1;
   $scope.previous = () => $scope.step = Math.max($scope.step - 1, 1);
   $scope.next = () => $scope.step = Math.min($scope.step + 1, 3);

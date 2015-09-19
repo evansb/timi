@@ -1,6 +1,6 @@
 
-export default ($scope, $location) => {
+export default ($scope, $state) => {
   $scope.backToHome = () => {
-      $location.path('home')
-  };  
+      $state.go('home')
+  };
 }
