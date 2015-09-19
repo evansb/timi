@@ -1,4 +1,8 @@
-export default ($scope, $stateParams) => {
+export default ($scope, $stateParams, $state) => {
+  $scope.back = () => {
+    $state.go($stateParams.previous, { eventId: $stateParams.eventId });
+  };
+
   $scope.going = [
     {
       name: 'Sharon Lynn',

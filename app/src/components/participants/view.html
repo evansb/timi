@@ -11,14 +11,11 @@
         <div class="item item-divider">
           {{data.header}} ({{data.length}})
         </div>
-        <div class="item row" ng-repeat="participant in data">
-          <div class="col col-20 item-avatar">
-            <img src="{{participant.url}}">
-          </div>
-          <div class="col">
-            {{participant.name}}
-          </div>
-        </div>
+        <a class="item item-avatar item-avatar-centered" href="#"
+           ng-repeat="participant in data">
+          <img src="{{participant.url}}">
+          <h2>{{participant.name}}</h2>
+        </a>
       </div>
     </div>
   </ion-content>

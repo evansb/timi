@@ -17,7 +17,7 @@ export default ($scope, $location, $state) => {
   ];
 
   $scope.viewParticipants = () => {
-    $state.go('participants', { eventId: 2 })
+    $state.go('participants', { previous: 'invitation', eventId: 2 })
   };
 
   $scope.backToHome = () => {

@@ -221,3 +221,10 @@ $base-background-color:           #fdfcfb !default;
     padding-top: 0.75em !important;
   }
 }
+
+.item-avatar-centered {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+}
