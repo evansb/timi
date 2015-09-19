@@ -1,0 +1,25 @@
+<ion-view>
+  <ion-header-bar align-title="center" class="bar-energized">
+    <div class="buttons">
+      <button class="button button-clear" ng-click="back()">Back</button>
+    </div>
+    <h1 class="title">Participant List</h1>
+  </ion-header-bar>
+  <ion-content class="timi-invitation">
+    <div class="list">
+      <div ng-repeat="data in [going, invited]">
+        <div class="item item-divider">
+          {{data.header}} ({{data.length}})
+        </div>
+        <div class="item row" ng-repeat="participant in data">
+          <div class="col col-20 item-avatar">
+            <img src="{{participant.url}}">
+          </div>
+          <div class="col">
+            {{participant.name}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>
