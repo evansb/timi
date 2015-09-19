@@ -15,6 +15,10 @@ export default function($resource) {
     }
   });
 
+  this.NewEvent = resource('/events', {}, {
+    create: { method: 'POST' }
+  });
+
   this.User = resource('/users', {}, {
     signup: {
       method: 'POST',
