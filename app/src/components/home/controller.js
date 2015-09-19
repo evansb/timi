@@ -24,11 +24,7 @@ export default ($scope, $state, $timi) => {
   };
 
   $scope.goToDetails = (event) => {
-    if (event.type == 'pending') {
-      $state.go('invitation', { eventId: 2 });
-    } else {
-      $state.go('details');
-    }
+    $state.go('invitation', { eventId: 2 });
   };
 
   $scope.slideIndex = 0;

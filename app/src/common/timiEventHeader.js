@@ -20,6 +20,14 @@ export default () => {
           </div>
           <div class="col">Sharon</div>
         </div>
+        <div class="row">
+          <div class="col col-50">
+            {{ going.length }} Going
+          </div>
+          <div class="col">
+            {{ invited.length }} Pending
+          </div>
+        </div>
       </div>`
   };
 }
