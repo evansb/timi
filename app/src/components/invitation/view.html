@@ -4,9 +4,12 @@
       <button class="button button-clear"
               ng-click="backToHome()">Back</button>
     </div>
-    <h1 class="title">Your Availability</h1>
+    <h1 class="title">
+      {{ isPending ? 'Your Availability': '' }}
+    </h1>
     <div class="buttons">
-      <button class="button button-clear"
+      <button ng-if="isPending"
+              class="button button-clear"
               ng-click="backToHome()">Submit</button>
     </div>
   </ion-header-bar>

@@ -23,4 +23,6 @@ export default ($scope, $location, $state) => {
   $scope.backToHome = () => {
     $state.go('home');
   };
+
+  $scope.isPending = false;
 }
