@@ -8,10 +8,16 @@
         <button class='button button-clear' ng-click='previous()'>Back</button>
       </div>
     </div>
-    <div class='title'>
-      <i ng-repeat="i in [1,2]"
-         class="icon ion-ios-{{(step > i)?'checkmark':'circle-outline'}}">
-      </i>
+    <div class='title timi-pager text-center'>
+      <div ng-if='step == 1'>
+        <span>&#106;&#107;</span>
+      </div>
+      <div ng-if='step == 2'>
+        <span>&#117;&#107;</span>
+      </div>
+      <div ng-if='step == 3'>
+        <span>&#117;&#118;</span>
+      </div>
     </div>
     <div class='buttons'>
       <div ng-if='step == 1'>
