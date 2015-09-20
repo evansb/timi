@@ -53,6 +53,10 @@ var User = bookshelf.model('User', {
   },
   update: function(params) {
     return this.save(params, {method: 'update', patch: true});
+  },
+  hasParticipated: function(eventId) {
+    return EventUser.where({event_id: eventId, user_id: this.get('id')}).fetch()
+      .then((eventUser) => eventUser.get('participated'));
   }
 });
 

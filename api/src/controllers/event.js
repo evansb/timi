@@ -51,14 +51,18 @@ export default class {
     try {
       let user = await _getUserById(request.auth.credentials.id);
       let permitted = await _permit(user, eventId);
-      let event = await _getEventById(eventId);
-      let result = await transactions.newAvailabilities(permitted, eventId,
-        availabilities);
-      reply(result);
-      let fullyParticipated = await event.isFullyParticipated();
-      if(fullyParticipated) {
-        let participants = await event.getParticipants();
-        Mailer.sendConfirmationEmail(request.server.plugins.mailer, event, participants);
+      let hasParticipated = await user.hasParticipated(eventId);
+      if(hasParticipated) {
+        reply(Boom.conflict('You have submitted your availabilities before'));
+      } else {
+        let event = await _getEventById(eventId);
+        let result = await transactions.newAvailabilities(permitted, eventId, availabilities);
+        reply(result);
+        let fullyParticipated = await event.isFullyParticipated();
+        if(fullyParticipated) {
+          let participants = await event.getParticipants();
+          Mailer.sendConfirmationEmail(request.server.plugins.mailer, event, participants);
+        }
       }
     } catch(err) {
       reply(err.isBoom ? err : Boom.badImplementation(err));
