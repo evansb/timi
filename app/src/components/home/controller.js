@@ -1,5 +1,34 @@
+import _ from 'lodash';
 
 export default ($scope, $state, $timi) => {
+  let sample = {
+    'name':'Date with Sharon',
+    'deadline': '2020-02-10',
+    'timeslots': [
+      {
+        'start': '2020-02-10',
+        'end': '2020-02-11'
+      },
+      {
+        'start': '2020-03-10',
+        'end': '2020-03-11'
+      }
+    ],
+    'participants': [1]
+  };
+  let login = () => {
+    $timi.Self.login({
+      email: 'vi@ana.com',
+      password: 'irvin'
+    }, () => { $timi.NewEvent.create(sample); });
+  };
+  $timi.User.signup({
+    name: 'Viana',
+    email: 'vi@ana.com',
+    password: 'irvin'
+  }, () => login(), () => login());
+
+
   $scope.contexts = [
     {
       title: 'Invites',
@@ -33,6 +62,13 @@ export default ($scope, $state, $timi) => {
     $scope.slideIndex = index;
   };
 
+  $timi.Event.fetch((events) => {
+    $scope.invites = _.map(events, (event) => {
+      event.isPending = true;
+      return event;
+    });
+  });
+
   $scope.invites = [
     {
       title: 'CS3216 Assignment 3 Meeting',
@@ -45,6 +81,7 @@ export default ($scope, $state, $timi) => {
       type: 'pending'
     }
   ];
+
 
   $scope.scheduled = [
     {
