@@ -1,5 +1,4 @@
 import 'babel/polyfill';
-import auth        from './auth';
 import Hapi        from 'hapi';
 import NUSMods     from './vendor/nusmods';
 import routes      from './routes';
@@ -8,6 +7,11 @@ import Inert       from 'inert';
 import Vision      from 'vision';
 import HapiSwagger from 'hapi-swagger';
 import Pack        from '../package';
+import Cookie      from 'hapi-auth-cookie';
+import Handlebars  from 'handlebars';
+import Mailer      from 'hapi-mailer';
+import Path        from 'path';
+
 
 if (process.env.NODE_ENV === 'development') {
   schema();
@@ -51,7 +55,36 @@ let swaggerOptions = {
   apiVersion: Pack.version
 };
 
-auth(server);
+let mailerOptions = {
+  transport: {
+    service: 'Gmail',
+    auth: {
+      user: 'melody9951213@gmail.com',
+      pass: 'tainawujia'
+    }
+  },
+  views: {
+    engines: {
+      html: {
+        module: Handlebars.create(),
+        path: Path.join(__dirname, 'email')
+      }
+    }
+  }
+};
+
+let oneDay = 24 * 60 * 60 * 1000;
+server.register(Cookie, (err) => {
+  if (err) {
+    throw err;
+  }
+  server.auth.strategy('session', 'cookie', {
+    password: 'opensesame',
+    cookie: 'session',
+    isSecure: false,
+    ttl: oneDay
+  });
+});
 
 for (var route in routes) {
   server.route(routes[route]);
@@ -67,6 +100,10 @@ server.register([
   {
     register: HapiSwagger,
     options: swaggerOptions
+  },
+  {
+    register: Mailer,
+    options: mailerOptions
   }], (err) => {
   if (err) {
     throw err;
