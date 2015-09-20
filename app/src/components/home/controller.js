@@ -20,7 +20,7 @@ export default ($scope, $state, $timi) => {
     $timi.Self.login({
       email: 'vi@ana.com',
       password: 'irvin'
-    }, () => { $timi.NewEvent.create(sample); });
+    }, () => { $timi.Event.create(sample); });
   };
 
   $timi.User.signup({
