@@ -209,6 +209,7 @@ $ionicons-font-path: "../bower_components/ionic/fonts" !default;
 .timi-create-link {
   @extend .padding-medium;
   margin-top: 2em;
+  font-color: $light;
 
   h1, h2, h3, p {
     margin-bottom: 1.5em;
@@ -263,10 +264,11 @@ $ionicons-font-path: "../bower_components/ionic/fonts" !default;
 }
 
 .timi-invitation-attendance {
-  font-size: 0.8em;
+  font-size: .9em;
+  background-color: $positive;
 
   a {
-    font-size: 1.5em !important;
+    font-size: 2em !important;
     font-weight: bolder;
   }
 
