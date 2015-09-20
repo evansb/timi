@@ -196,16 +196,13 @@ module.exports = [
       handler: UserController.delete
     }
   },
-
-
-  // TODO
   {
     method: 'POST',
     path: '/api/events/{eventId}/confirmations',
     config: {
       tags: ['api'],
       description: 'Indicate confirmation for specified event result',
-      notes: 'Sample payload: {"confirmations": [5, 6, 7]}',
+      notes: 'Sample payload: [5, 6, 7]',
       auth: 'session',
       validate: validate.newConfirmations,
       handler: EventController.createConfirmations

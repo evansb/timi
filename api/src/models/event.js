@@ -54,6 +54,10 @@ var Event = bookshelf.model('Event', {
     return this.hasMany('EventUser').query('where', 'participated', '=', false).count()
       .then((count) => parseInt(count) < 1 ? true : false );
   },
+  isFullyConfirmed: function() {
+    return this.hasMany('EventUser').query('where', 'confirmed', '=', false).count()
+      .then((count) => parseInt(count) < 1 ? true : false );
+  },
   top3: function() {
     return this.getResult()
       .then((result) => result.toArray().slice(0, 3));

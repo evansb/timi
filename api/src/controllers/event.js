@@ -49,12 +49,12 @@ export default class {
     let eventId = request.params.eventId;
     let availabilities = request.payload.availabilities;
     try {
-      let user = await _getUserById(request.auth.credentials.id)
+      let user = await _getUserById(request.auth.credentials.id);
       let permitted = await _permit(user, eventId);
+      let event = await _getEventById(eventId);
       let result = await transactions.newAvailabilities(permitted, eventId,
         availabilities);
       reply(result);
-      let event = await _getEventById(eventId);
       let fullyParticipated = await event.isFullyParticipated();
       if(fullyParticipated) {
         let participants = await event.getParticipants();
@@ -122,9 +122,27 @@ export default class {
       reply(err.isBoom ? err : Boom.badImplementation(err));
     }
   }
-
-  //TODO
-  static createConfirmations(request, reply) {
-    reply('OK');
+  static async createConfirmations(request, reply) {
+    let eventId = request.params.eventId;
+    let confirmations = request.payload;
+    try {
+      let user = await _getUserById(request.auth.credentials.id)
+      let permitted = await _permit(user, eventId);
+      let event = await _getEventById(eventId);
+      let fullyParticipated = await event.isFullyParticipated();
+      if(!fullyParticipated) {
+        reply(Boom.badRequest('This event is still in polling stage'));
+      } else {
+        let top3 = await event.top3();
+        let result = await transactions.newConfirmations(permitted, eventId, top3, confirmations);
+        reply(result);
+        if(event.isFullyConfirmed()) {
+          let participants = await event.getParticipants();
+          Mailer.sendScheduleEmail(request.server.plugins.mailer, event, participants);
+        }
+      }
+    } catch(err) {
+      reply(err.isBoom ? err : Boom.badImplementation(err));
+    }
   }
 }

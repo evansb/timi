@@ -103,7 +103,5 @@ exports.newConfirmations = {
   params: {
     eventId: idSchema
   },
-  payload: {
-    confirmations: confirmationsSchema
-  }
+  payload: confirmationsSchema
 };
