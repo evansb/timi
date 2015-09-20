@@ -22,109 +22,87 @@ export default ($scope, $state, $timi) => {
       password: 'irvin'
     }, () => { $timi.NewEvent.create(sample); });
   };
+
   $timi.User.signup({
     name: 'Viana',
     email: 'vi@ana.com',
     password: 'irvin'
   }, () => login(), () => login());
 
-
   $scope.contexts = [
-    {
-      title: 'Invites',
-      get () {
-        return $scope.invites;
-      }
-    },
-    {
-      title: 'Scheduled',
-      get () {
-        return $scope.scheduled;
-      }
-    }
+    { title: 'Invites', get () { return $scope.invites; } },
+    { title: 'Scheduled', get () { return $scope.scheduled; } }
   ]
-
   $scope.goToCreate = () => {
     $state.go('create');
   };
-
   $scope.goToSetting = () => {
     $state.go('settings');
   };
-
   $scope.goToDetails = (event) => {
     $state.go('invitation', { eventId: 2 });
   };
-
   $scope.slideIndex = 0;
-
   $scope.slideChanged = (index) => {
     $scope.slideIndex = index;
   };
 
-  $timi.Event.fetch((events) => {
-    $scope.invites = _.map(events, (event) => {
-      event.isPending = true;
-      return event;
-    });
-  });
-
-  $scope.invites = [
-    {
-      title: 'CS3216 Assignment 3 Meeting',
-      inviter: 'Sharon',
-      type: 'pending'
-    },
-    {
-      title: 'A Date in Aircon Canteen',
-      inviter: 'Sharon',
-      type: 'pending'
+  (async () => {
+    try {
+      let myEvents = $timi.MyEvents.query(() => {
+        $scope.invites = myEvents.map((event) => {
+          event.isPending = true
+          return event;
+        });
+      });
+    } catch(err) {
+      console.log(err);
     }
-  ];
+  })()
 
-
+  $scope.invites = [];
   $scope.scheduled = [
-    {
-      title: 'Avengers Meeting',
-      date: '24 September',
-      timeStart: '15:30',
-      timeEnd: '16:30',
-      type: 'confirmed'
-    },
-    {
-      title: 'Plan Colin (McRae)\'s Birthday',
-      date: '21 April',
-      timeStart: '10:10',
-      timeEnd: '11:30',
-      type: 'confirmed'
-    },
-    {
-      title: 'Nala Mass Petting Event',
-      date: '8 December',
-      timeStart: '00:00',
-      timeEnd: '23:59',
-      type: 'confirmed'
-    },
-    {
-      title: 'Avengers Meeting',
-      date: '24 September',
-      timeStart: '15:30',
-      timeEnd: '16:30',
-      type: 'confirmed'
-    },
-    {
-      title: 'Plan Colin (McRae)\'s Birthday',
-      date: '21 April',
-      timeStart: '10:10',
-      timeEnd: '11:30',
-      type: 'confirmed'
-    },
-    {
-      title: 'Nala Mass Petting Event',
-      date: '8 December',
-      timeStart: '00:00',
-      timeEnd: '23:59',
-      type: 'confirmed'
-    },
-  ];
+      {
+        title: 'Avengers Meeting',
+        date: '24 September',
+        timeStart: '15:30',
+        timeEnd: '16:30',
+        type: 'confirmed'
+      },
+      {
+        title: 'Plan Colin (McRae)\'s Birthday',
+        date: '21 April',
+        timeStart: '10:10',
+        timeEnd: '11:30',
+        type: 'confirmed'
+      },
+      {
+        title: 'Nala Mass Petting Event',
+        date: '8 December',
+        timeStart: '00:00',
+        timeEnd: '23:59',
+        type: 'confirmed'
+      },
+      {
+        title: 'Avengers Meeting',
+        date: '24 September',
+        timeStart: '15:30',
+        timeEnd: '16:30',
+        type: 'confirmed'
+      },
+      {
+        title: 'Plan Colin (McRae)\'s Birthday',
+        date: '21 April',
+        timeStart: '10:10',
+        timeEnd: '11:30',
+        type: 'confirmed'
+      },
+      {
+        title: 'Nala Mass Petting Event',
+        date: '8 December',
+        timeStart: '00:00',
+        timeEnd: '23:59',
+        type: 'confirmed'
+      },
+    ];
 }

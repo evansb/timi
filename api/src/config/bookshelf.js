@@ -12,7 +12,9 @@ var knex = require('knex')({
 });
 
 var bookshelf = Bookshelf(knex);
+
+bookshelf.plugin('virtuals');
 bookshelf.plugin('registry');
 bookshelf.plugin('visibility');
 
-module.exports = bookshelf;
+export default bookshelf;

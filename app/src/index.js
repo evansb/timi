@@ -1,9 +1,11 @@
+import 'babelify/polyfill';
 import 'es6-shim';
 import 'angular';
 import 'angular-animate';
 import 'angular-sanitize';
 import 'angular-resource';
 import 'angular-ui-router';
+import 'satellizer';
 import 'ionic';
 import 'ionic-datepicker';
 import 'ionic-timepicker';
@@ -19,6 +21,7 @@ let app = angular.module('timi', [
   'ionic-datepicker',
   'ionic-timepicker',
   'ion-autocomplete',
+  'satellizer',
   'ngResource'
 ]);
 
