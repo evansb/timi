@@ -17,7 +17,16 @@ let _getUserById = (userId) => {
 };
 
 let _getEventById = (eventId) => {
-  return Event.where('id', eventId).fetch();
+  return Event.where('id', eventId).fetch({
+    withRelated: [
+      'owner',
+      'timeslots',
+      'important_participants',
+      'normal_participants',
+      'participated_participants',
+      'unparticipated_participants'
+    ]
+  });
 };
 
 export default class {
@@ -52,6 +61,20 @@ export default class {
         availabilities);
       reply(result);
     } catch(err) {
+      reply(err.isBoom ? err : Boom.badImplementation(err));
+    }
+  }
+
+  static async getEvent(request, reply) {
+    let eventId = request.params.eventId;
+    try {
+      let user = await _getUserById(request.auth.credentials.id);
+      console.log(eventId);
+      let permitted = await _permit(user, eventId);
+      let event = await _getEventById(eventId);
+      console.log(event);
+      reply(event.toJSON());
+    } catch (err) {
       reply(err.isBoom ? err : Boom.badImplementation(err));
     }
   }

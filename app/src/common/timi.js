@@ -8,11 +8,11 @@ export default function($resource) {
     return $resource(base + url, params, methods);
   };
 
-  this.MyEvents = resource('/me/events', {
+  this.MyEvents = resource('/me/events/:eventId', {
     eventId: '@id'
   });
 
-  this.Event = resource('/events', {}, {
+  this.Event = resource('/events/:eventId', { eventId: '@id' }, {
     create: { method: 'POST' }
   });
 

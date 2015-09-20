@@ -1,4 +1,5 @@
 import validate from './validate';
+import Joi              from 'joi';
 import UserController   from './controllers/user';
 import EventController  from './controllers/event';
 
@@ -35,6 +36,7 @@ module.exports = [
       handler: UserController.logout
     }
   },
+
   {
     method: 'GET',
     path: '/api/me/events',
@@ -45,56 +47,22 @@ module.exports = [
       handler: UserController.getCurrentEvents
     }
   },
-
   {
     method: 'GET',
-    path: '/api/me/events/{eventId}/availabilities',
+    path: '/api/events/{eventId}',
     config: {
       tags: ['api'],
-      description: 'Get the availabilities of current user for the specified events',
+      description: 'Get details of an event',
       auth: 'session',
-      validate: validate.myEventsAvailabilities,
-      handler: UserController.getCurrentAvailability
+      validate: {
+        params: {
+          eventId: Joi.number()
+            .description('The event ID')
+        }
+      },
+      handler: EventController.getEvent
     }
   },
-
-  {
-    method: 'POST',
-    path: '/api/users',
-    config: {
-      tags: ['api'],
-      description: 'Sign up a new user',
-      notes: 'Sample payload: { "email": "hello@example.com", "password": "helloworld", "name": "hello"}',
-      auth: false,
-      validate: validate.newUser,
-      handler: UserController.create
-    }
-  },
-
-  {
-    method: 'GET',
-    path: '/api/users/{userId}',
-    config: {
-      tags: ['api'],
-      description: 'Get the basic information of the specified user',
-      auth: 'session',
-      validate: validate.userInfo,
-      handler: UserController.getUser
-    }
-  },
-
-  {
-    method: 'GET',
-    path: '/api/users/{userId}/events/{eventId}/availabilities',
-    config: {
-      tags: ['api'],
-      description: 'Get the availabilities of specified user for the specified events',
-      auth: 'session',
-      validate: validate.userEventsAvailabilities,
-      handler: UserController.getUserAvailabilities
-    }
-  },
-
   {
     method: 'POST',
     path: '/api/events',
@@ -172,6 +140,54 @@ module.exports = [
       auth: 'session',
       validate: validate.eventTimeslotAvailabilities,
       handler: EventController.getTimeslotAvailabilities
+    }
+  },
+  {
+    method: 'GET',
+    path: '/api/me/events/{eventId}/availabilities',
+    config: {
+      tags: ['api'],
+      description: 'Get the availabilities of current user for the specified events',
+      auth: 'session',
+      validate: validate.myEventsAvailabilities,
+      handler: UserController.getCurrentAvailability
+    }
+  },
+
+  {
+    method: 'POST',
+    path: '/api/users',
+    config: {
+      tags: ['api'],
+      description: 'Sign up a new user',
+      notes: 'Sample payload: { "email": "hello@example.com", "password": "helloworld", "name": "hello"}',
+      auth: false,
+      validate: validate.newUser,
+      handler: UserController.create
+    }
+  },
+
+  {
+    method: 'GET',
+    path: '/api/users/{userId}',
+    config: {
+      tags: ['api'],
+      description: 'Get the basic information of the specified user',
+      auth: 'session',
+      validate: validate.userInfo,
+      handler: UserController.getUser
+    }
+  },
+
+  {
+    method: 'GET',
+    path: '/api/users/{userId}/events/{eventId}/availabilities',
+    config: {
+      tags: ['api'],
+      description: 'Get the availabilities of specified user for the specified events',
+      auth: 'session',
+      validate: validate.userEventsAvailabilities,
+      handler: UserController.getUserAvailabilities
     }
   },
   {
