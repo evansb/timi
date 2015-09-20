@@ -184,7 +184,7 @@ $ionicons-font-path: "../bower_components/ionic/fonts" !default;
   }
   .x-icon {
     text-align: center;
-    color: #dddddc;
+    color: $dark;
     font-size: 2em;
   }
 }
@@ -204,8 +204,9 @@ $ionicons-font-path: "../bower_components/ionic/fonts" !default;
     padding-left: 0;
     padding-bottom: 0;
   }
-  input {
-    border-bottom: 1px solid black !important;
+
+  .item {
+    border: 0px !important;
   }
 }
 
