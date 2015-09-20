@@ -30,22 +30,39 @@ var Event = bookshelf.model('Event', {
     return this.belongsToMany('User', 'events_users', 'event_id', 'user_id');
   },
   participants: function () {
-    return this.involvedUsers().query('where', 'id', '<>', this.get('owner_id'));
+    return this.involvedUsers();
   },
   getParticipants: function () {
-    return this.involvedUsers().withPivot(['important', 'participated', 'confirmed']).fetch();
+    return this.involvedUsers()
+               .withPivot(['important', 'participated', 'confirmed']).fetch();
   },
   important_participants: function () {
-    return this.participants().where('important', true);
+    return this.participants().query({
+      where: {
+        important: true
+      }
+    });
   },
   normal_participants: function () {
-    return this.participants().where('important', false);
+    return this.participants().query({
+      where: {
+        important: false
+      }
+    });
   },
   participated_participants: function () {
-    return this.participants().where('participated', true);
+    return this.participants().query({
+      where: {
+        participated: true
+      }
+    });
   },
   unparticipated_participants: function () {
-    return this.participants().where('participated', false);
+    return this.participants().query({
+      where: {
+        participated: false
+      }
+    });
   }
 });
 

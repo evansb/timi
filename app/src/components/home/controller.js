@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 export default ($scope, $state, $timi) => {
   let sample = {
-    'name':'Date with Sharon',
+    'name':'Date with Nathan',
     'deadline': '2020-02-10',
     'timeslots': [
       {
@@ -20,7 +20,7 @@ export default ($scope, $state, $timi) => {
     $timi.Self.login({
       email: 'vi@ana.com',
       password: 'irvin'
-    }, () => { $timi.Event.create(sample); });
+    }, () => { $timi.MyEvent.create(sample); });
   };
 
   $timi.User.signup({
@@ -40,25 +40,12 @@ export default ($scope, $state, $timi) => {
     $state.go('settings');
   };
   $scope.goToDetails = (event) => {
-    $state.go('invitation', { eventId: 2 });
+    $state.go('invitation', { eventId: event.id });
   };
   $scope.slideIndex = 0;
   $scope.slideChanged = (index) => {
     $scope.slideIndex = index;
   };
-
-  (async () => {
-    try {
-      let myEvents = $timi.MyEvents.query(() => {
-        $scope.invites = myEvents.map((event) => {
-          event.isPending = true
-          return event;
-        });
-      });
-    } catch(err) {
-      console.log(err);
-    }
-  })()
 
   $scope.invites = [];
   $scope.scheduled = [
@@ -105,4 +92,17 @@ export default ($scope, $state, $timi) => {
         type: 'confirmed'
       },
     ];
+
+  (async () => {
+    try {
+      let myEvents = $timi.MyEvents.query(() => {
+        $scope.invites = myEvents.map((event) => {
+          event.isPending = true
+          return event;
+        });
+      });
+    } catch(err) {
+      console.log(err);
+    }
+  })()
 }

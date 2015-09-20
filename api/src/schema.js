@@ -19,7 +19,12 @@ export default function () {
       t.increments().primary();
       t.string('name').notNullable();
       t.timestamp('deadline');
-      t.integer('owner_id').unsigned().notNullable().references('users.id').onDelete('cascade').onUpdate('cascade');
+      t.integer('owner_id').unsigned()
+        .notNullable()
+        .references('users.id')
+        .onDelete('cascade')
+        .onUpdate('cascade');
+      t.string('location');
       t.timestamps();
     })
     .createTable('events_users', (t) => {
