@@ -14,12 +14,52 @@
     </div>
     <div class="col">Sharon</div>
   </div>
-  <div class="row">
-    <div class="col col-50">
-      {{ going.length }} Going
-    </div>
-    <div class="col">
-      {{ invited.length }} Pending
+  <div class="timi-invitation-attendance text-center">
+    <div class="row">
+      <div class="col col-33">
+        <div class="row">
+          <div class="col">
+            <a ng-click="viewParticipants()">
+              {{ going.length }}
+            </a>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">Attending</div>
+        </div>
+      </div>
+      <div class="or-spacer-vertical left">
+        <div class="mask">
+        </div>
+      </div>
+      <div class="col col-25">
+        <div class="row">
+          <div class="col">
+            <a ng-click="viewParticipants()">
+              {{ notgoing.length }}
+            </a>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">No</div>
+        </div>
+      </div>
+      <div class="or-spacer-vertical right">
+        <div class="mask">
+        </div>
+      </div>
+      <div class="col col-33">
+        <div class="row">
+          <div class="col">
+            <a ng-click="viewParticipants()">
+              {{ invited.length }}
+            </a>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">Pending</div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

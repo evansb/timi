@@ -247,3 +247,43 @@ $ionicons-font-path: "../bower_components/ionic/fonts" !default;
   -webkit-align-items: center;
   align-items: center;
 }
+
+.timi-invitation-attendance {
+  font-size: 0.8em;
+
+  a {
+    font-size: 1.5em !important;
+    font-weight: bolder;
+  }
+
+  .row {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .or-spacer-vertical {
+    display:inline-block;
+    margin-top:5px; width:5px;
+    position:relative;
+    .mask {
+      overflow:hidden; width:1px; height:60px;
+      //outline:1px solid pink;
+    }
+
+    &.left .mask:after {
+      content:'';
+      display:block; margin-left:-2px;
+      width:2px; height:100%;
+      border-radius: 12px;
+      box-shadow:0 0 8px black;
+    }
+
+    &.right .mask:before {
+      content:'';
+      display:block; margin-left:2px;
+      width:2px; height:100%;
+      border-radius: 12px;
+      box-shadow:0 0 8px black;
+    }
+  }
+}
