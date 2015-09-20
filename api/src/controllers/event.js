@@ -24,7 +24,9 @@ let _getEventById = (eventId) => {
       'important_participants',
       'normal_participants',
       'participated_participants',
-      'unparticipated_participants'
+      'unparticipated_participants',
+      'confirmed_participants',
+      'unconfirmed_participants'
     ]
   });
 };
