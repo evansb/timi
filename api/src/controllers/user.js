@@ -69,7 +69,7 @@ export default class {
     try {
       let eventId = request.params.eventId;
       let user = await _getUserById(request.auth.credentials.id);
-      let permitted = await _permit(_user, eventId);
+      let permitted = await _permit(user, eventId);
       let availability = await permitted.availableForEvent(eventId);
       reply(availability);
     } catch(err) {
@@ -84,7 +84,7 @@ export default class {
       if (!user) {
         throw Boom.badRequest('User with this email exists');
       } else {
-        reply(_user);
+        reply(user);
       }
     } catch(err) {
       reply(err.isBoom ? err : Boom.badImplementation(err));

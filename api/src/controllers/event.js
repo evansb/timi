@@ -24,20 +24,22 @@ let _getEventById = (eventId) => {
 export default class {
 
   static async create(request, reply) {
-    let event = request.payload;
-    let timeslots = event.timeslots;
-    let participants = event.participants;
-    delete event.timeslots;
-    delete event.participants;
+    let eventParams = request.payload;
+    let timeslots = eventParams.timeslots;
+    let participantsParams = eventParams.participants;
+    delete eventParams.timeslots;
+    delete eventParams.participants;
     try {
       let user = await _getUserById(request.auth.credentials.id);
       let userId = user.get('id');
-      event.owner_id = userId;
-      if (participants.indexOf(userId) < 0) {
-        participants.push(userId);
+      eventParams.owner_id = userId;
+      if (participantsParams.indexOf(userId) < 0) {
+        participantsParams.push(userId);
       }
-      let result = await transactions.newEvent(event, timeslots, participants);
-      reply(result);
+      let event = await transactions.newEvent(eventParams, timeslots, participantsParams);
+      reply(event);
+      let participants = await event.getParticipants();
+      Mailer.sendInvitationEmail(request.server.plugins.mailer, event, user, participants);
     } catch(err) {
       reply(err.isBoom ? err : Boom.badImplementation(err));
     }
