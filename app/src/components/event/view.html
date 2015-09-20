@@ -8,8 +8,7 @@
       {{ isPending ? 'Your Availability': '' }}
     </h1>
     <div class="buttons">
-      <button ng-if="isPending"
-              class="button button-clear button-energized"
+      <button ng-if="isPending" class="button button-clear button-energized"
               ng-click="backToHome()">Submit</button>
     </div>
   </ion-header-bar>
@@ -18,7 +17,7 @@
       <timi-event-header></timi-event-header>
     </div>
     <div class="list padding-medium">
-      <timi-slot-card ng-repeat="slot in slots" ng-model="slot">
+      <timi-slot-card ng-repeat="slot in event.timeslots" ng-model="slot">
       </timi-slot-card>
     </div>
   </ion-content>

@@ -67,14 +67,16 @@ var Event = bookshelf.model('Event', {
   participated_participants: function () {
     return this.participants().query({
       where: {
-        participated: true
+        participated: true,
+        confirmed: true
       }
     });
   },
   unparticipated_participants: function () {
     return this.participants().query({
       where: {
-        participated: false
+        participated: false,
+        confirmed: true
       }
     });
   }

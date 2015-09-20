@@ -71,10 +71,8 @@ export default class {
     let eventId = request.params.eventId;
     try {
       let user = await _getUserById(request.auth.credentials.id);
-      console.log(eventId);
       let permitted = await _permit(user, eventId);
       let event = await _getEventById(eventId);
-      console.log(event);
       reply(event.toJSON());
     } catch (err) {
       reply(err.isBoom ? err : Boom.badImplementation(err));

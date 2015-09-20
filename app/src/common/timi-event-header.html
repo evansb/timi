@@ -11,7 +11,7 @@
   <div class="row">
     <div class="col col-10 text-center">
       <i class="icon positive ion-android-person"></i>
-    </div
+    </div>
     <div class="col positive">{{ event.owner.name }}</div>
   </div>
   <div class="timi-invitation-attendance text-center">
@@ -20,7 +20,7 @@
         <div class="row">
           <div class="col">
             <h1>
-              {{ going.length || 0}}
+              {{ event.participated_participants.length || 0}}
             </h1>
           </div>
         </div>
@@ -36,7 +36,7 @@
         <div class="row">
           <div class="col">
             <h1>
-              {{ notgoing.length || 0 }}
+              {{ event.unparticipated_participants.length || 0 }}
             </h1>
           </div>
         </div>
@@ -52,7 +52,7 @@
         <div class="row">
           <div class="col">
             <h1>
-              {{ invited.length || 0}}
+              {{ event.unconfirmed_participants.length || 0}}
             </h1>
           </div>
         </div>

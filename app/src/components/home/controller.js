@@ -4,6 +4,7 @@ export default ($scope, $state, $timi) => {
   let sample = {
     'name':'Date with Nathan',
     'deadline': '2020-02-10',
+    'location': 'SoC Canteen',
     'timeslots': [
       {
         'start': '2020-02-10',
@@ -20,7 +21,7 @@ export default ($scope, $state, $timi) => {
     $timi.Self.login({
       email: 'vi@ana.com',
       password: 'irvin'
-    }, () => { $timi.MyEvent.create(sample); });
+    }, () => { $timi.Event.create(sample); });
   };
 
   $timi.User.signup({
