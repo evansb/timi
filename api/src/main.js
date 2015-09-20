@@ -8,9 +8,13 @@ import Inert       from 'inert';
 import Vision      from 'vision';
 import HapiSwagger from 'hapi-swagger';
 import Pack        from '../package';
+import seed        from './seed';
 
 if (process.env.NODE_ENV === 'development') {
-  schema();
+  (async () => {
+    await schema();
+    await seed();
+  })();
 }
 
 var server = new Hapi.Server({

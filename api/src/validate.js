@@ -2,12 +2,12 @@ import Joi from 'joi';
 
 var emailSchema = Joi.string().email().required();
 var idSchema = Joi.number().integer().positive().required();
-var passwordSchema = Joi.string().regex(/[a-zA-Z0-9]{3,30}/).required();
+var passwordSchema = Joi.string().min(4).required();
 
 var userSchema = Joi.object().keys({
   email: emailSchema,
   password: passwordSchema,
-  name: Joi.string().alphanum().max(30)
+  name: Joi.string().max(30)
 });
 
 var timeslotSchema = Joi.object().keys({
@@ -19,6 +19,7 @@ var eventSchema = Joi.object().keys({
   name: Joi.string().max(50).required(),
   deadline: Joi.date().min(new Date()),
   participants: Joi.array().items(idSchema).min(1).unique().required(),
+  location: Joi.string().max(50).required(),
   timeslots: Joi.array().items(timeslotSchema).min(1).unique().required()
 });
 

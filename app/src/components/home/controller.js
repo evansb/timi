@@ -4,6 +4,7 @@ export default ($scope, $state, $timi) => {
   let sample = {
     'name':'Date with Nathan',
     'deadline': '2020-02-10',
+    'location': 'SoC Canteen',
     'timeslots': [
       {
         'start': '2020-02-10',
@@ -20,7 +21,7 @@ export default ($scope, $state, $timi) => {
     $timi.Self.login({
       email: 'vi@ana.com',
       password: 'irvin'
-    }, () => { $timi.MyEvent.create(sample); });
+    }, () => { $timi.Event.create(sample); });
   };
 
   $timi.User.signup({
@@ -40,7 +41,7 @@ export default ($scope, $state, $timi) => {
     $state.go('settings');
   };
   $scope.goToDetails = (event) => {
-    $state.go('invitation', { eventId: event.id });
+    $state.go('event', { eventId: event.id });
   };
   $scope.slideIndex = 0;
   $scope.slideChanged = (index) => {

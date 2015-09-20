@@ -50,17 +50,33 @@ var Event = bookshelf.model('Event', {
       }
     });
   },
+  confirmed_participants: function () {
+    return this.participants().query({
+      where: {
+        confirmed: true
+      }
+    });
+  },
+  unconfirmed_participants: function () {
+    return this.participants().query({
+      where: {
+        confirmed: false
+      }
+    });
+  },
   participated_participants: function () {
     return this.participants().query({
       where: {
-        participated: true
+        participated: true,
+        confirmed: true
       }
     });
   },
   unparticipated_participants: function () {
     return this.participants().query({
       where: {
-        participated: false
+        participated: false,
+        confirmed: true
       }
     });
   }

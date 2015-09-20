@@ -8,7 +8,7 @@
       </p>
       <p>
         <i class="icons ion-ios-stopwatch"></i>
-        {{ event.deadline }}
+        {{ parseDate(event.deadline) }}
       </p>
     </div>
     <div ng-if="event.type == 'confirmed'">
