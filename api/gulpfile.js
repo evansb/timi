@@ -15,6 +15,18 @@ var envDevel = {
   'PG_DATA': './data'
 };
 
+var envDevelSharon = {
+  'NODE_ENV': 'development',
+  'API_HOST': 'localhost',
+  'API_PORT': '8000',
+  'DB_HOST': 'localhost',
+  'PGPORT': '5432',
+  'DB_USER': 'postgres',
+  'DB_PASSWORD': 'root',
+  'DB_NAME': 'timi',
+  'PG_DATA': './data',
+};
+
 // Babelify, bundle and watch javascript files.
 gulp.task('compile', function() {
   gulp.src('./src/**/*.js')
@@ -39,6 +51,15 @@ gulp.task('serve', [], function() {
     tasks: ['compile'],
     ext: 'js',
     env: envDevel
+  });
+});
+
+gulp.task('serveSharon', [], function() {
+  nodemon({
+    script: 'js/main.js',
+    tasks: ['compile'],
+    ext: 'js',
+    env: envDevelSharon
   });
 });
 
