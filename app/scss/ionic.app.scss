@@ -13,11 +13,25 @@ $assertive:                       #ef473a !default;
 $royal:                           #886aea !default;
 $dark:                            #444 !default;
 */
-$light:                           #fdfcfb !default;
-$positive:                        #ffde39 !default;
-$energized:                       #d40058 !default;
-$base-background-color:           #fcfdfb !default;
+// Primary Colors
+$primary1:                        #d40058;
+$primary2:                        #ffde39;
+$primary3:                        #ffffff;
+$primary4:                        #a3a0a0;
+$primary5:                        #58585b;
 
+// Basic
+$light:                           $primary3 !default;
+$positive:                        $primary3 !default;
+$energized:                       $primary1 !default;
+$assertive:                       $primary1 !default;
+$balanced:                        $primary4 !default;
+$dark:                            $primary5 !default;
+
+// Base
+$base-background-color:           $primary1 !default;
+
+// Font
 $font-family-sans-serif:          "Open Sans Medium", sans-serif !default;
 $font-family-light-sans-serif:    "Open Sans Regular", sans-serif-light !default;
 $font-family-serif:               serif !default;
@@ -107,7 +121,7 @@ $ionicons-font-path: "../bower_components/ionic/fonts" !default;
 .timi-message-modal {
   background-color: transparent;
   .modal-body {
-    background-color: $positive !important;
+    background-color: $dark !important;
     height: auto !important;
     max-height: 80px !important;
     color: white;
@@ -184,7 +198,7 @@ $ionicons-font-path: "../bower_components/ionic/fonts" !default;
   @extend .padding-small;
   small {
     font-size: 0.7em;
-    color: gray;
+    color: $dark;
   }
 }
 
