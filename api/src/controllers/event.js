@@ -3,8 +3,8 @@ import transactions from '../transactions';
 import User         from '../models/user';
 import Event        from '../models/event';
 
-let _permit = (user, eventId) => {
-  let result = user.belongToEvent(eventId);
+let _permit = async (user, eventId) => {
+  let result = await user.belongToEvent(eventId);
   if(!result) {
     throw Boom.forbidden('You are not in this event');
   } else {
