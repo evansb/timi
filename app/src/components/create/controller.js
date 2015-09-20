@@ -8,18 +8,22 @@ export default ($scope, $state) => {
   $scope.user = "";
   $scope.users = [
     {
+      user_id: 1,
       name: 'Evan Sebastian',
       email: 'evansebastian@hehe.com'
     },
     {
+      user_id: 2,
       name: 'Sharon Lynn',
       email: 'sharonlynn@hehe.com'
     },
     {
+      user_id: 3,
       name: 'Patricia Wong',
       email: 'patriciawong@hehe.com'
     },
     {
+      user_id: 4,
       name: 'Liu Yang',
       email: 'liuyang@hehe.com'
     }
@@ -36,12 +40,12 @@ export default ($scope, $state) => {
     };
   };
 
-  $scope.participants = [
-    {
-      name: 'Evan Sebastian',
-      email: 'evanlhoini@gmail.com'
-    }
-  ];
+  $scope.clickedMethod = function(callback) {
+    $scope.participants.push(callback.item);
+  };
+
+  $scope.participants = [];
+
   $scope.backToHome = () => {
     $scope.step = 1;
     $state.go('home');
@@ -57,6 +61,7 @@ export default ($scope, $state) => {
     titleLabel: 'Start Date',
     from: moment().subtract(1, 'days').toDate(),
     to: moment().add(5, 'years').toDate(),
+    setButtonType: 'button-energized',
     callback: function(val) {
       $scope.datepicker.startValue = val;
       console.log(val);
@@ -72,6 +77,7 @@ export default ($scope, $state) => {
     titleLabel: 'End Date',
     from: moment().subtract(1, 'days').toDate(),
     to: moment().add(5, 'years').toDate(),
+    setButtonType: 'button-energized',
     callback: function(val) {
       $scope.datepicker.endValue = val;
       if ($scope.datepicker.startValue &&
@@ -90,6 +96,7 @@ export default ($scope, $state) => {
   $scope.timepickerStart = {
     titleLabel: 'Start Time',
     step: 1,
+    setButtonType: 'button-energized',
     callback: function(val) {
       let valFormatted = moment().startOf('day').add(val, 'seconds').format('HH:mm');
       $scope.timepicker.startValue = valFormatted;
@@ -104,6 +111,7 @@ export default ($scope, $state) => {
   $scope.timepickerEnd = {
     titleLabel: 'End Time',
     step: 1,
+    setButtonType: 'button-energized',
     callback: function(val) {
       let valFormatted = moment().startOf('day').add(val, 'seconds').format('HH:mm');
       $scope.timepicker.endValue = valFormatted;
@@ -114,7 +122,7 @@ export default ($scope, $state) => {
     }
   };
 
-  $scope.deadline ={
+  $scope.deadline = {
     date: null,
     time: null
   };
@@ -123,6 +131,7 @@ export default ($scope, $state) => {
     titleLabel: 'Date',
     from: moment().subtract(1, 'days').toDate(),
     to: moment().add(5, 'years').toDate(),
+    setButtonType: 'button-energized',
     callback: function(val) {
       $scope.deadline.date = val;
     }
@@ -131,8 +140,22 @@ export default ($scope, $state) => {
   $scope.timepickerDeadline = {
     titleLabel: 'Time',
     step: 1,
+    setButtonType: 'button-energized',
     callback: function(val) {
       $scope.deadline.time = moment().startOf('day').add(val, 'seconds').format('HH:mm');
+    }
+  };
+
+  $scope.duration = {
+    time: null
+  };
+
+  $scope.timepickerDuration = {
+    titleLabel: 'Duration',
+    step: 5,
+    setButtonType: 'button-energized',
+    callback: function(val) {
+      $scope.duration.time = moment().startOf('day').add(val, 'seconds').format('HH [h] mm [min]');
     }
   };
 };
