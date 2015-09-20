@@ -8,6 +8,7 @@ import Inert       from 'inert';
 import Vision      from 'vision';
 import HapiSwagger from 'hapi-swagger';
 import Pack        from '../package';
+import seed        from './seed';
 
 if (process.env.NODE_ENV === 'development') {
   schema();
@@ -72,6 +73,10 @@ server.register([
     throw err;
   } else {
     server.start(() => {
+      if (process.env.NODE_ENV === 'development') {
+        seed();
+      }
+      
       let nusmods = new NUSMods('http://modsn.us/racU2');
       nusmods.scrap();
       console.log('Server running at ', server.info.uri);
