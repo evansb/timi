@@ -1,7 +1,7 @@
 export default ($stateProvider) => {
   $stateProvider.state({
-    name: 'invitation',
-    url: '/invitation/:eventId',
+    name: 'event',
+    url: '/event/:eventId',
     templateUrl: __dirname + '/view.html'
   });
 }

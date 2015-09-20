@@ -40,7 +40,7 @@ export default ($scope, $state, $timi) => {
     $state.go('settings');
   };
   $scope.goToDetails = (event) => {
-    $state.go('invitation', { eventId: event.id });
+    $state.go('event', { eventId: event.id });
   };
   $scope.slideIndex = 0;
   $scope.slideChanged = (index) => {
