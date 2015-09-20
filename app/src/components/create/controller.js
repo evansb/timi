@@ -8,18 +8,22 @@ export default ($scope, $state) => {
   $scope.user = "";
   $scope.users = [
     {
+      user_id: 1,
       name: 'Evan Sebastian',
       email: 'evansebastian@hehe.com'
     },
     {
+      user_id: 2,
       name: 'Sharon Lynn',
       email: 'sharonlynn@hehe.com'
     },
     {
+      user_id: 3,
       name: 'Patricia Wong',
       email: 'patriciawong@hehe.com'
     },
     {
+      user_id: 4,
       name: 'Liu Yang',
       email: 'liuyang@hehe.com'
     }
@@ -36,12 +40,12 @@ export default ($scope, $state) => {
     };
   };
 
-  $scope.participants = [
-    {
-      name: 'Evan Sebastian',
-      email: 'evanlhoini@gmail.com'
-    }
-  ];
+  $scope.clickedMethod = function(callback) {
+    $scope.participants.push(callback.item);
+  };
+
+  $scope.participants = [];
+
   $scope.backToHome = () => {
     $scope.step = 1;
     $state.go('home');
