@@ -11,7 +11,10 @@ import Pack        from '../package';
 import seed        from './seed';
 
 if (process.env.NODE_ENV === 'development') {
-  schema();
+  (async () => {
+    await schema();
+    await seed();
+  })();
 }
 
 var server = new Hapi.Server({
@@ -73,10 +76,6 @@ server.register([
     throw err;
   } else {
     server.start(() => {
-      if (process.env.NODE_ENV === 'development') {
-        seed();
-      }
-      
       let nusmods = new NUSMods('http://modsn.us/racU2');
       nusmods.scrap();
       console.log('Server running at ', server.info.uri);
