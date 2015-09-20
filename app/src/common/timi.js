@@ -31,8 +31,7 @@ export default function($resource) {
       method: 'POST',
       params: {
         verb: 'login'
-      },
-      withCredentials: false
+      }
     },
     logout: {
       method: 'POST',
