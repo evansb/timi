@@ -15,6 +15,14 @@ export default ($scope, $stateParams, $state) => {
   ];
   $scope.going.header = 'Going';
 
+  $scope.notgoing = [
+    {
+      name: 'Nathan Azaria',
+      url: 'http://cdn.playbuzz.com/cdn/a6264acf-e11e-4a83-8ac2-7986b637ed4d/5c92493e-654a-4b10-81f7-fc0d7c4ece11.jpg'
+    }
+  ];
+  $scope.notgoing.header = 'Not Going';
+
   $scope.invited = [
     {
       name: 'Anthony Ganteng',
