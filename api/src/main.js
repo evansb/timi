@@ -1,3 +1,4 @@
+import 'babel/polyfill';
 import auth        from './auth';
 import Hapi        from 'hapi';
 import NUSMods     from './vendor/nusmods';
