@@ -2,6 +2,7 @@ import Boom         from 'boom';
 import transactions from '../transactions';
 import User         from '../models/user';
 import Event        from '../models/event';
+import Mailer       from '../mailer';
 
 let _permit = async (user, eventId) => {
   let result = await user.belongToEvent(eventId);
@@ -51,6 +52,12 @@ export default class {
       let result = await transactions.newAvailabilities(permitted, eventId,
         availabilities);
       reply(result);
+      let event = await _getEventById(eventId);
+      let fullyParticipated = await event.isFullyParticipated();
+      if(fullyParticipated) {
+        let participants = await event.getParticipants();
+        Mailer.sendConfirmationEmail(request.server.plugins.mailer, event, participants);
+      }
     } catch(err) {
       reply(err.isBoom ? err : Boom.badImplementation(err));
     }
