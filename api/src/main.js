@@ -9,7 +9,7 @@ import HapiSwagger from 'hapi-swagger';
 import Pack        from '../package';
 import Cookie      from 'hapi-auth-cookie';
 import Handlebars  from 'handlebars';
-import Mailer      from 'hapi-mailer';
+import Mailer      from './config/mailer';
 import Path        from 'path';
 
 
@@ -55,24 +55,6 @@ let swaggerOptions = {
   apiVersion: Pack.version
 };
 
-let mailerOptions = {
-  transport: {
-    service: 'Gmail',
-    auth: {
-      user: 'melody9951213@gmail.com',
-      pass: 'tainawujia'
-    }
-  },
-  views: {
-    engines: {
-      html: {
-        module: Handlebars.create(),
-        path: Path.join(__dirname, 'email')
-      }
-    }
-  }
-};
-
 let oneDay = 24 * 60 * 60 * 1000;
 server.register(Cookie, (err) => {
   if (err) {
@@ -102,8 +84,8 @@ server.register([
     options: swaggerOptions
   },
   {
-    register: Mailer,
-    options: mailerOptions
+    register: Mailer.mailer,
+    options: Mailer.options
   }], (err) => {
   if (err) {
     throw err;

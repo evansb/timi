@@ -136,7 +136,8 @@ export default class {
         let top3 = await event.top3();
         let result = await transactions.newConfirmations(permitted, eventId, top3, confirmations);
         reply(result);
-        if(event.isFullyConfirmed()) {
+        let fullyConfirmed = await event.isFullyConfirmed();
+        if(fullyConfirmed) {
           let participants = await event.getParticipants();
           Mailer.sendScheduleEmail(request.server.plugins.mailer, event, participants);
         }
