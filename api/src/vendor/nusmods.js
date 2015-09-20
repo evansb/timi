@@ -13,39 +13,27 @@ class NUSMods {
     this.url = url;
   }
 
-  scrap() {
-    let moduleClass = [];
-    expandP(this.url)
-      .then((expandedPath) => {
-        let nusmods = Url.parse(expandedPath.path, true);
-        let classes = nusmods.query;
-        for (var cl in classes){
-          let mod = cl.split('[')[0];
-          moduleClass.push([mod, classes[cl]]);
-        }
-        let ay = nusmods.pathname.split('/')[2];
-        let sem = nusmods.pathname.split('/')[3].replace('sem', '');
-        return {ay, sem};
-      })
-      .then((details) => {
-        let { ay, sem } = details;
-        let base = `http://api.nusmods.com/${ay}/${sem}/modules`;
-        let requests = moduleClass.map(mc => {
-          let moduleUrl = `${base}/${mc[0]}/timetable.json`;
-          return requestP(moduleUrl);
-        });
-        return requests;
-      })
-      .map((response) => JSON.parse(response[0].body))
-      .then((modules) =>
-        _.flatten(
-          _.zipWith(moduleClass, modules, (mc, module) =>
-            _.filter(module, o => o.ClassNo === mc[1])
-          )
-        )
-      )
-      .then(()=> {})
-      .catch(console.log);
+  async scrap() {
+    try {
+      let moduleClass = [];
+      let expandedPath = await expandP(this.url);
+      let nusmods = Url.parse(expandedPath.path, true);
+      let classes = nusmods.query;
+      for (var cl in classes){
+        let mod = cl.split('[')[0];
+        moduleClass.push([mod, classes[cl]]);
+      }
+      let ay = nusmods.pathname.split('/')[2];
+      let sem = nusmods.pathname.split('/')[3].replace('sem', '');
+      let base = `http://api.nusmods.com/${ay}/${sem}/modules`;
+      let requests = moduleClass.map(mc => requestP(`${base}/${mc[0]}/timetable.json`));
+      let responses = await Promise.all(requests);
+      let modules = responses.map(response => JSON.parse(response[0].body));
+      let result = _.flatten(_.zipWith(moduleClass, modules, (mc, module) =>
+              _.filter(module, o => o.ClassNo === mc[1])))
+    } catch (err) {
+      console.log(err);
+    }
   }
 }
 
