@@ -27,8 +27,9 @@ exports.newEvent = (eventParams, timeslots, participants) => {
               }
             });
         });
-        return Promise.all([createSlots, createParticipants])
-          .then(() => event);
+        return Promise.all([
+          createSlots,
+          createParticipants]).then(() => event);
       });
   });
 };

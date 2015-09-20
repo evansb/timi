@@ -3,15 +3,13 @@ import transactions from '../transactions';
 import User         from '../models/user';
 import Event        from '../models/event';
 
-let _permit = (user, eventId) => {
-  return user.belongToEvent(eventId)
-    .then((result) => {
-      if(!result) {
-        return Promise.reject(Boom.forbidden('You are not in this event'));
-      } else {
-        return user;
-      }
-    });
+let _permit = async (user, eventId) => {
+  let result = await user.belongToEvent(eventId);
+  if(!result) {
+    throw Boom.forbidden('You are not in this event');
+  } else {
+    return user;
+  }
 };
 
 let _getUserById = (userId) => {
@@ -20,96 +18,103 @@ let _getUserById = (userId) => {
 
 let _getEventById = (eventId) => {
   return Event.where('id', eventId).fetch();
-}
+};
 
 export default class {
 
-  static create(request, reply) {
+  static async create(request, reply) {
     let event = request.payload;
     let timeslots = event.timeslots;
     let participants = event.participants;
-    delete event['timeslots'];
-    delete event['participants'];
-
-    _getUserById(request.auth.credentials.id).
-      then((user) => {
-        let userId = user.get('id');
-        event['owner_id'] = userId;
-        if (participants.indexOf(userId) < 0) {
-          participants.push(userId);
-        }
-        return transactions.newEvent(event, timeslots, participants);
-      })
-      .then(reply)
-      .catch((err) => reply(err.isBoom ? err : Boom.badImplementation(err)));
+    delete event.timeslots;
+    delete event.participants;
+    try {
+      let user = await _getUserById(request.auth.credentials.id);
+      let userId = user.get('id');
+      event.owner_id = userId;
+      if (participants.indexOf(userId) < 0) {
+        participants.push(userId);
+      }
+      let result = await transactions.newEvent(event, timeslots, participants);
+      reply(result);
+    } catch(err) {
+      reply(err.isBoom ? err : Boom.badImplementation(err));
+    }
   }
 
-  static createAvailabilities(request, reply) {
+  static async createAvailabilities(request, reply) {
     let eventId = request.params.eventId;
     let availabilities = request.payload.availabilities;
-
-    _getUserById(request.auth.credentials.id)
-      .then((_user) => _permit(_user, eventId))
-      .then((_user) => transactions.newAvailabilities(_user, eventId, availabilities))
-      .then(reply)
-      .catch((err) => reply(err.isBoom ? err : Boom.badImplementation(err)));
+    try {
+      let user = await _getUserById(request.auth.credentials.id)
+      let permitted = await _permit(user, eventId);
+      let result = await transactions.newAvailabilities(permitted, eventId,
+        availabilities);
+      reply(result);
+    } catch(err) {
+      reply(err.isBoom ? err : Boom.badImplementation(err));
+    }
   }
 
-  static getTimeslots(request, reply) {
+  static async getTimeslots(request, reply) {
     let eventId = request.params.eventId;
-
-    _getUserById(request.auth.credentials.id)
-      .then((_user) => _permit(_user, eventId, reply))
-      .then((_user) => _getEventById(eventId))
-      .then((event) => event.getTimeslots())
-      .then(reply)
-      .catch((err) => reply(err.isBoom ? err : Boom.badImplementation(err)));
+    try {
+      let user = await _getUserById(request.auth.credentials.id);
+      let permitted = await _permit(user, eventId);
+      let event = await _getEventById(eventId);
+      let timeslots = await event.getTimeslots();
+      reply(timeslots);
+    } catch (err) {
+      reply(err.isBoom ? err : Boom.badImplementation(err));
+    }
   }
 
-  static getResult(request, reply) {
-    let eventId = request.params['eventId'];
-
-    _getUserById(request.auth.credentials.id)
-      .then((_user) => _permit(_user, eventId, reply))
-      .then((_user) => _getEventById(eventId))
-      .then((event) => event.getResult())
-      .then(reply)
-      .catch((err) => reply(err.isBoom ? err : Boom.badImplementation(err)));
+  static async getResult(request, reply) {
+    let eventId = request.params.eventId;
+    try {
+      let user = await _getUserById(request.auth.credentials.id);
+      let permitted = await _permit(user, eventId);
+      let event = await _getEventById(eventId);
+      let result = await event.getResult();
+      reply(result);
+    } catch (err) {
+      reply(err.isBoom ? err : Boom.badImplementation(err));
+    }
   }
 
-  static getParticipants(request, reply) {
-    let eventId = parseInt(request.params.eventId);
-
-    _getUserById(request.auth.credentials.id)
-      .then((_user) => _permit(_user, eventId, reply))
-      .then((_user) => _getEventById(eventId))
-      .then((event) => event.getParticipants())
-      .then(reply)
-      .catch((err) => reply(err.isBoom ? err : Boom.badImplementation(err)));
+  static async getParticipants(request, reply) {
+    let eventId = request.params.eventId;
+    try {
+      let user = await _getUserById(request.auth.credentials.id);
+      let permitted = await _permit(user, eventId);
+      let event = await _getEventById(eventId);
+      let result = await event.getParticipants();
+      reply(result);
+    } catch(err) {
+      reply(err.isBoom ? err : Boom.badImplementation(err));
+    }
   }
 
-  static getTimeslotAvailabilities(request, reply) {
+  static async getTimeslotAvailabilities(request, reply) {
     let eventId = request.params.eventId;
     let timeslotId = request.params.timeslotId;
-
-    _getUserById(request.auth.credentials.id)
-      .then((_user) => _permit(_user, eventId, reply))
-      .then((_user) => _getEventById(eventId))
-      .then((event) => event.getTimeslot(timeslotId))
-      .then((timeslots) => {
-        let timeslot = timeslots.first();
-        if(!timeslot) {
-          return Promise.reject(Boom.notFound('Timeslot does not exist in this event'));
-        } else {
-          return timeslot.availabilities();
-        }
-      })
-      .then(reply)
-      .catch((err) => reply(err.isBoom ? err : Boom.badImplementation(err)));
+    try {
+      let user = await _getUserById(request.auth.credentials.id);
+      let permitted = await _permit(user, eventId);
+      let event = await _getEventById(eventId);
+      let timeslots = await event.getTimeslot(timeslotId);
+      if (timeslot.first()) {
+        reply(Boom.notFound('Timeslot does not exist in this event'));
+      } else {
+        let availabilities = await timeslot.availabilities();
+        reply(availabilities);
+      }
+    } catch (err) {
+      reply(err.isBoom ? err : Boom.badImplementation(err));
+    }
   }
 
   //TODO
-
   static createConfirmations(request, reply) {
     reply('OK');
   }

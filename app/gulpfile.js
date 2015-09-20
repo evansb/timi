@@ -37,7 +37,7 @@ gulp.task('browserify', function() {
     entries: ['./src/index.js'],
     debug: false
   };
-  var babelifyConfig = { only: /src/ };
+  var babelifyConfig = { only: /src/, experimental: true };
   var bundler = watchify(browserify(config));
   var sourcemap =
     sourcemaps.init({ loadMaps: true })
