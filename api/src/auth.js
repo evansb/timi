@@ -3,22 +3,8 @@ import Boom  from 'boom';
 import User  from './models/user';
 
 async function validate(decoded, request, callback) {
-  let { email, password } = request.payload;
-  try {
-    let user = await User.where('email', email).fetch();
-    if (!user) {
-      callback(null, false);
-    } else {
-      let isValid = await compare(password, user.get('password'));
-      if (!isValid) {
-        callback(null, false);
-      } else {
-        callback(null, true);
-      }
-    }
-  } catch(err) {
-    reply(err.isBoom ? err : Boom.badImplementation(err));
-  }
+  // Todo: Check decoded.id should be in database
+  callback(null, true);
 }
 
 export default (server) => {

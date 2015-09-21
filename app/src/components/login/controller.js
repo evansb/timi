@@ -1,7 +1,7 @@
 
 export default ($scope, $timi, $notification, $state, $auth, $http) => {
-  if ($timi.isLoggedIn()) {
-    $location.path('home');
+  if ($auth.isAuthenticated()) {
+    $state.go('home');
   }
 
   $scope.login = async () => {

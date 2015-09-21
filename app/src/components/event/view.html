@@ -5,10 +5,10 @@
               ng-click="backToHome()">Cancel</button>
     </div>
     <h1 class="title">
-      {{ isPending ? 'Your Availability': '' }}
+      {{ event.isPending ? 'Your Availability': '' }}
     </h1>
     <div class="buttons">
-      <button ng-if="isPending" class="button button-clear button-energized"
+      <button ng-if="event.isPending" class="button button-clear button-energized"
               ng-click="backToHome()">Submit</button>
     </div>
   </ion-header-bar>

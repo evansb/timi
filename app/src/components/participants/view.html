@@ -7,13 +7,13 @@
   </ion-header-bar>
   <ion-content class="timi-invitation">
     <div class="list">
-      <div ng-repeat="data in [going, notgoing, invited]">
+      <div ng-repeat="data in [ event.participated_participants,
+                                event.unparticipated_participants,
+                                event.unconfirmed_participants ]">
         <div class="item item-divider">
-          {{data.header}} ({{data.length}})
+          <strong>{{data.length}}</strong> {{data.header}} 
         </div>
-        <a class="item item-avatar item-avatar-centered"
-           ng-repeat="participant in data">
-          <img src="{{participant.url}}">
+        <a class="item" ng-repeat="participant in data">
           <h2>{{participant.name}}</h2>
         </a>
       </div>

@@ -18,7 +18,8 @@ export default ($scope, $location, $state, $stateParams, $timi) => {
   $scope.viewParticipants = () => {
     $state.go('participants', {
       previous: 'event',
-      eventId: event.id
+      eventId: $scope.event.id,
+      event: $scope.event
     })
   };
 
