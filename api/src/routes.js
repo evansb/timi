@@ -169,6 +169,16 @@ module.exports = [
 
   {
     method: 'GET',
+    path: '/api/users',
+    config: {
+      tags: ['api'],
+      description: 'List all users',
+      handler: UserController.getAllUsers
+    }
+  }, 
+
+  {
+    method: 'GET',
     path: '/api/users/{userId}',
     config: {
       tags: ['api'],

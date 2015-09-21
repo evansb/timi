@@ -121,6 +121,19 @@ export default class {
     }
   }
 
+  static async getAllUsers(request, reply) {
+    try {
+      let users = await User.fetchAll();
+      if(!users) {
+        throw Boom.notFound('User does not exist');
+      } else {
+        reply(users);
+      }
+    } catch(err) {
+      reply(err.isBoom ? err : Boom.badImplementation(err));
+    }
+  }
+
   static async getUserAvailabilities(request, reply) {
     let {userId, eventId} = request.params;
     try {

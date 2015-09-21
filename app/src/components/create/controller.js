@@ -1,29 +1,11 @@
 import moment from 'moment';
 
-export default ($scope, $state) => {
+export default ($scope, $state, $timi) => {
   $scope.step = 1;
   $scope.previous = () => $scope.step = Math.max($scope.step - 1, 1);
   $scope.next = () => $scope.step = Math.min($scope.step + 1, 3);
 
-  $scope.user = "";
-  $scope.users = [
-    {
-      name: 'Evan Sebastian',
-      email: 'evansebastian@hehe.com'
-    },
-    {
-      name: 'Sharon Lynn',
-      email: 'sharonlynn@hehe.com'
-    },
-    {
-      name: 'Patricia Wong',
-      email: 'patriciawong@hehe.com'
-    },
-    {
-      name: 'Liu Yang',
-      email: 'liuyang@hehe.com'
-    }
-  ];
+  $scope.users = [];
 
   $scope.getUser = function(query) {
     return {
@@ -36,12 +18,6 @@ export default ($scope, $state) => {
     };
   };
 
-  $scope.participants = [
-    {
-      name: 'Evan Sebastian',
-      email: 'evanlhoini@gmail.com'
-    }
-  ];
   $scope.backToHome = () => {
     $scope.step = 1;
     $state.go('home');
@@ -59,7 +35,6 @@ export default ($scope, $state) => {
     to: moment().add(5, 'years').toDate(),
     callback: function(val) {
       $scope.datepicker.startValue = val;
-      console.log(val);
       if ($scope.datepicker.endValue == null){
         $scope.datepickerEnd.from = val;
       } else if ($scope.datepicker.endValue < val) {
@@ -135,4 +110,14 @@ export default ($scope, $state) => {
       $scope.deadline.time = moment().startOf('day').add(val, 'seconds').format('HH:mm');
     }
   };
+
+  (async () => {
+    try {
+      let users = $timi.User.query(() => {
+        $scope.users = users;
+      });
+    } catch(err) {
+      console.log(err);
+    }
+  })();
 };
