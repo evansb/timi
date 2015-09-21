@@ -14,11 +14,13 @@
                autocomplete="off"
                max-selected-items="1"
                placeholder="Attendee's Name or Email"
-               item-value-key="name"
+               item-value-key="id"
                item-view-value-key="name"
                items-method="getUser(query)"
                items-method-value-key="users"
-               ng-model="user">
+               items-clicked-method="clickedMethod(callback)"
+               ng-model="user"
+               value="Attendee's Name or Email">
       </label>
     </div>
   </div>
