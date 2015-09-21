@@ -1,7 +1,7 @@
 <ion-view class="timi-home" ng-controller="SettingsController">
   <!-- Header -->
-  <ion-header-bar class='bar-energized' align-title="center">
-    <button class="button button-clear"
+  <ion-header-bar class='bar-positive' align-title="center">
+    <button class="button button-clear button-energized"
             ng-click="backToHome()">Back</button>
     <div class='title'>
       Settings
@@ -28,7 +28,7 @@
       <div class="item item-divider">
         Account Management
       </div>
-      <a class="item item-icon-right" href="#">
+      <a class="item item-icon-right" ng-click='logout()'>
         Logout
         <i class="icon ion-backspace energized"></i>
       </a>

@@ -1,7 +1,7 @@
 import bookshelf from './config/bookshelf';
 
 export default function () {
-  bookshelf.knex.schema
+  return bookshelf.knex.schema
     .dropTableIfExists('confirmations')
     .dropTableIfExists('availabilities')
     .dropTableIfExists('events_users')
@@ -19,7 +19,12 @@ export default function () {
       t.increments().primary();
       t.string('name').notNullable();
       t.timestamp('deadline');
-      t.integer('owner_id').unsigned().notNullable().references('users.id').onDelete('cascade').onUpdate('cascade');
+      t.integer('owner_id').unsigned()
+        .notNullable()
+        .references('users.id')
+        .onDelete('cascade')
+        .onUpdate('cascade');
+      t.string('location');
       t.timestamps();
     })
     .createTable('events_users', (t) => {
@@ -29,7 +34,6 @@ export default function () {
       t.boolean('participated').notNullable().defaultTo(false);
       t.boolean('confirmed').notNullable().defaultTo(false);
       t.timestamps();
-
       t.primary(['event_id', 'user_id']);
     })
     .dropTableIfExists('timeslots')
@@ -45,17 +49,12 @@ export default function () {
       t.integer('timeslot_id').unsigned().notNullable().references('timeslots.id').onDelete('cascade').onUpdate('cascade');
       t.integer('weight').unsigned().notNullable();
       t.timestamps();
-
       t.primary(['user_id', 'timeslot_id']);
     })
     .createTable('confirmations', (t) => {
       t.integer('user_id').unsigned().notNullable().references('users.id').onDelete('cascade').onUpdate('cascade');
       t.integer('timeslot_id').unsigned().notNullable().references('timeslots.id').onDelete('cascade').onUpdate('cascade');
       t.timestamps();
-
       t.primary(['user_id', 'timeslot_id']);
-    })
-    .then(function () {
-      console.log('success');
     });
 }

@@ -13,15 +13,34 @@ $assertive:                       #ef473a !default;
 $royal:                           #886aea !default;
 $dark:                            #444 !default;
 */
-$light:                           #fdfcfb !default;
-$positive:                        #ffde39 !default;
-$energized:                       #d40058 !default;
-$base-background-color:           #fcfdfb !default;
+// Primary Colors
+$primary1:                        #d40058;
+$primary2:                        #ffde39;
+$primary3:                        #ffffff;
+$primary4:                        #a3a0a0;
+$primary5:                        #58585b;
 
+// Basic
+$light:                           $primary3 !default;
+$positive:                        $primary3 !default;
+$energized:                       $primary1 !default;
+$assertive:                       $primary1 !default;
+$balanced:                        $primary4 !default;
+$dark:                            $primary5 !default;
+
+// Base
+$base-background-color:           $primary1 !default;
+
+// Font
 $font-family-sans-serif:          "Open Sans Medium", sans-serif !default;
 $font-family-light-sans-serif:    "Open Sans Regular", sans-serif-light !default;
 $font-family-serif:               serif !default;
 $font-family-monospace:           monospace !default;
+
+// Checkbox
+$checkbox-off-border-default:     $energized !default;
+$checkbox-on-bg-default:          $energized !default;
+$checkbox-on-border-default:      $energized !default;
 
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700,600,300);
 
@@ -74,6 +93,12 @@ $ionicons-font-path: "../bower_components/ionic/fonts" !default;
   }
 }
 
+.timi-background-light {
+  .pane, .view {
+    background-color: $light;
+  }
+}
+
 .timi-inline-form {
   @extend .padding-medium;
   span {
@@ -107,7 +132,7 @@ $ionicons-font-path: "../bower_components/ionic/fonts" !default;
 .timi-message-modal {
   background-color: transparent;
   .modal-body {
-    background-color: $positive !important;
+    background-color: transparentize($dark, .2) !important;
     height: auto !important;
     max-height: 80px !important;
     color: white;
@@ -159,7 +184,7 @@ $ionicons-font-path: "../bower_components/ionic/fonts" !default;
   }
   .x-icon {
     text-align: center;
-    color: #dddddc;
+    color: $dark;
     font-size: 2em;
   }
 }
@@ -169,14 +194,19 @@ $ionicons-font-path: "../bower_components/ionic/fonts" !default;
 
 .timi-stacked-form {
   @extend .padding-small;
+  .col {
+    background-color: $positive;
+  }
+
   label {
     @extend .only-bottom-border;
     width: 100% !important;
     padding-left: 0;
     padding-bottom: 0;
   }
-  input {
-    border-bottom: 1px solid black !important;
+
+  .item {
+    border: 0px !important;
   }
 }
 
@@ -184,17 +214,20 @@ $ionicons-font-path: "../bower_components/ionic/fonts" !default;
   @extend .padding-small;
   small {
     font-size: 0.7em;
-    color: gray;
+    color: $positive;
   }
 }
 
 .timi-person-card {
   @extend .card;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .timi-create-link {
   @extend .padding-medium;
   margin-top: 2em;
+  font-color: $light;
 
   h1, h2, h3, p {
     margin-bottom: 1.5em;
@@ -249,10 +282,11 @@ $ionicons-font-path: "../bower_components/ionic/fonts" !default;
 }
 
 .timi-invitation-attendance {
-  font-size: 0.8em;
+  font-size: .9em;
+  background-color: $positive;
 
-  a {
-    font-size: 1.5em !important;
+  h1 {
+    font-size: 2em !important;
     font-weight: bolder;
   }
 

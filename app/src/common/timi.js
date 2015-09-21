@@ -8,14 +8,11 @@ export default function($resource) {
     return $resource(base + url, params, methods);
   };
 
-  this.Event = resource('/me/events', {}, {
-    fetch: {
-      method: 'GET',
-      isArray: true
-    }
+  this.MyEvents = resource('/me/events/:eventId', {
+    eventId: '@id'
   });
 
-  this.NewEvent = resource('/events', {}, {
+  this.Event = resource('/events/:eventId', { eventId: '@id' }, {
     create: { method: 'POST' }
   });
 

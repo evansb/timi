@@ -1,130 +1,41 @@
 import _ from 'lodash';
 
 export default ($scope, $state, $timi) => {
-  let sample = {
-    'name':'Date with Sharon',
-    'deadline': '2020-02-10',
-    'timeslots': [
-      {
-        'start': '2020-02-10',
-        'end': '2020-02-11'
-      },
-      {
-        'start': '2020-03-10',
-        'end': '2020-03-11'
-      }
-    ],
-    'participants': [1]
-  };
-  let login = () => {
-    $timi.Self.login({
-      email: 'vi@ana.com',
-      password: 'irvin'
-    }, () => { $timi.NewEvent.create(sample); });
-  };
-  $timi.User.signup({
-    name: 'Viana',
-    email: 'vi@ana.com',
-    password: 'irvin'
-  }, () => login(), () => login());
-
-
   $scope.contexts = [
-    {
-      title: 'Invites',
-      get () {
-        return $scope.invites;
-      }
-    },
-    {
-      title: 'Scheduled',
-      get () {
-        return $scope.scheduled;
-      }
-    }
+    { title: 'Invites', get () { return $scope.invites; } },
+    { title: 'Scheduled', get () { return $scope.scheduled; } }
   ]
-
   $scope.goToCreate = () => {
     $state.go('create');
   };
-
   $scope.goToSetting = () => {
     $state.go('settings');
   };
-
   $scope.goToDetails = (event) => {
-    $state.go('invitation', { eventId: 2 });
+    $state.go('event', { eventId: event.id });
   };
-
   $scope.slideIndex = 0;
-
   $scope.slideChanged = (index) => {
     $scope.slideIndex = index;
   };
 
-  $timi.Event.fetch((events) => {
-    $scope.invites = _.map(events, (event) => {
-      event.isPending = true;
-      return event;
-    });
-  });
+  $scope.invites = [];
+  $scope.scheduled = [];
 
-  $scope.invites = [
-    {
-      title: 'CS3216 Assignment 3 Meeting',
-      inviter: 'Sharon',
-      type: 'pending'
-    },
-    {
-      title: 'A Date in Aircon Canteen',
-      inviter: 'Sharon',
-      type: 'pending'
+  (async () => {
+    try {
+      let myEvents = $timi.MyEvents.query(() => {
+        let me = $timi.Self.get(() => {
+          $scope.invites = _.filter(myEvents, (event) =>
+            _.includes(_.pluck(event.unconfirmed_participants, 'id'), me.id)
+          ).map(event => _.assign(event, { isPending: true }));
+          $scope.scheduled = _.filter(myEvents, (event) =>
+            _.includes(_.pluck(event.confirmed_participants, 'id'), me.id)
+          );
+         });
+      });
+    } catch(err) {
+      console.log(err);
     }
-  ];
-
-
-  $scope.scheduled = [
-    {
-      title: 'Avengers Meeting',
-      date: '24 September',
-      timeStart: '15:30',
-      timeEnd: '16:30',
-      type: 'confirmed'
-    },
-    {
-      title: 'Plan Colin (McRae)\'s Birthday',
-      date: '21 April',
-      timeStart: '10:10',
-      timeEnd: '11:30',
-      type: 'confirmed'
-    },
-    {
-      title: 'Nala Mass Petting Event',
-      date: '8 December',
-      timeStart: '00:00',
-      timeEnd: '23:59',
-      type: 'confirmed'
-    },
-    {
-      title: 'Avengers Meeting',
-      date: '24 September',
-      timeStart: '15:30',
-      timeEnd: '16:30',
-      type: 'confirmed'
-    },
-    {
-      title: 'Plan Colin (McRae)\'s Birthday',
-      date: '21 April',
-      timeStart: '10:10',
-      timeEnd: '11:30',
-      type: 'confirmed'
-    },
-    {
-      title: 'Nala Mass Petting Event',
-      date: '8 December',
-      timeStart: '00:00',
-      timeEnd: '23:59',
-      type: 'confirmed'
-    },
-  ];
+  })()
 }

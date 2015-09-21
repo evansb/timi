@@ -1,19 +1,19 @@
 <ion-view>
-  <ion-header-bar align-title="center" class="bar-energized">
+  <ion-header-bar align-title="center" class="bar-positive">
     <div class="buttons">
-      <button class="button button-clear" ng-click="back()">Back</button>
+      <button class="button button-clear button-energized" ng-click="back()">Back</button>
     </div>
     <h1 class="title">Participant List</h1>
   </ion-header-bar>
   <ion-content class="timi-invitation">
     <div class="list">
-      <div ng-repeat="data in [going, notgoing, invited]">
+      <div ng-repeat="data in [ event.participated_participants,
+                                event.unparticipated_participants,
+                                event.unconfirmed_participants ]">
         <div class="item item-divider">
-          {{data.header}} ({{data.length}})
+          <strong>{{data.length}}</strong> {{data.header}}
         </div>
-        <a class="item item-avatar item-avatar-centered"
-           ng-repeat="participant in data">
-          <img src="{{participant.url}}">
+        <a class="item" ng-repeat="participant in data">
           <h2>{{participant.name}}</h2>
         </a>
       </div>

@@ -3,27 +3,24 @@
     <div class="col col-25">
       <div class="row">
         <div class="col date-big text-center">
-          {{ slot.start.format('DD') }}
+          {{ day2(slot.start) }}
         </div>
       </div>
       <div class="row">
         <div class="col month-big text-center">
-          {{ slot.start.format('MMM') }}
+          {{ month3(slot.start) }}
         </div>
       </div>
     </div>
     <div class="col col-50">
       <div class="row">
         <div class="col day-big">
-          {{ ((slot.start.calendar().indexOf('/') == - 1)
-              ? slot.start.calendar().split(' ')[0]
-              : slot.start.format('dddd')).toUpperCase()
-          }}
+          {{ niceDay(slot.start) }}
         </div>
       </div>
       <div class="row">
         <div class="col">
-          {{ slot.start.format('hh:mm') }} - {{ slot.end.format('hh:mm') }}
+          {{ hourMinute(slot.start) }} - {{ hourMinute(slot.end) }}
         </div>
       </div>
     </div>

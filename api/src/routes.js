@@ -1,4 +1,5 @@
 import validate from './validate';
+import Joi              from 'joi';
 import UserController   from './controllers/user';
 import EventController  from './controllers/event';
 
@@ -9,7 +10,7 @@ module.exports = [
     config: {
       tags: ['api'],
       description: 'Get the basic information of the current user',
-      auth: 'session',
+      auth: 'jwt',
       handler: UserController.getCurrent
     }
   },
@@ -31,28 +32,123 @@ module.exports = [
     config: {
       tags: ['api'],
       description: 'Log out the current user',
-      auth: 'session',
+      auth: 'jwt',
       handler: UserController.logout
     }
   },
+
   {
     method: 'GET',
     path: '/api/me/events',
     config: {
       tags: ['api'],
       description: 'Get relevant events of current user',
-      auth: 'session',
+      auth: 'jwt',
       handler: UserController.getCurrentEvents
     }
   },
+  {
+    method: 'GET',
+    path: '/api/events/{eventId}',
+    config: {
+      tags: ['api'],
+      description: 'Get details of an event',
+      auth: 'jwt',
+      validate: {
+        params: {
+          eventId: Joi.number()
+            .description('The event ID')
+        }
+      },
+      handler: EventController.getEvent
+    }
+  },
+  {
+    method: 'POST',
+    path: '/api/events',
+    config: {
+      tags: ['api'],
+      description: 'Create a new event',
+      notes:
+      'Sample payload: ' +
+        '{' +
+          '"name":"Date with Sharon", ' +
+          '"deadline": "2020-02-10", ' +
+          '"timeslots": [{"start": "2020-02-10", "end": "2020-02-11"}, {"start": "2020-03-10", "end": "2020-03-11"}], ' +
+          '"participants": [1]' +
+        '}',
+      auth: 'jwt',
+      validate: validate.newEvent,
+      handler: EventController.create
+    }
+  },
 
+  {
+    method: 'POST',
+    path: '/api/events/{eventId}/availabilities',
+    config: {
+      tags: ['api'],
+      description: 'Indicate availabilities for specified event',
+      notes: 'Sample payload: [{"timeslot_id": 7, "weight": 10}, {"timeslot_id": 8, "weight": 1}]',
+      auth: 'jwt',
+      validate: validate.newAvailabilities,
+      handler: EventController.createAvailabilities
+    }
+  },
+
+  {
+    method: 'GET',
+    path: '/api/events/{eventId}/timeslots',
+    config: {
+      tags: ['api'],
+      description: 'Get all the timeslots for specified event',
+      auth: 'jwt',
+      validate: validate.eventTimeslots,
+      handler: EventController.getTimeslots
+    }
+  },
+
+  {
+    method: 'GET',
+    path: '/api/events/{eventId}/participants',
+    config: {
+      tags: ['api'],
+      description: 'Get all the participants for specified event',
+      auth: 'jwt',
+      validate: validate.eventParticipants,
+      handler: EventController.getParticipants
+    }
+  },
+
+  {
+    method: 'GET',
+    path: '/api/events/{eventId}/result',
+    config: {
+      tags: ['api'],
+      description: 'Get the timeslots for specified event, and the number of people available for each timeslot',
+      auth: 'jwt',
+      validate: validate.eventResult,
+      handler: EventController.getResult
+    }
+  },
+  {
+    method: 'GET',
+    path: '/api/events/{eventId}/timeslots/{timeslotId}',
+    config: {
+      tags: ['api'],
+      description: 'Get the user who are available for specified timeslots',
+      auth: 'jwt',
+      validate: validate.eventTimeslotAvailabilities,
+      handler: EventController.getTimeslotAvailabilities
+    }
+  },
   {
     method: 'GET',
     path: '/api/me/events/{eventId}/availabilities',
     config: {
       tags: ['api'],
       description: 'Get the availabilities of current user for the specified events',
-      auth: 'session',
+      auth: 'jwt',
       validate: validate.myEventsAvailabilities,
       handler: UserController.getCurrentAvailability
     }
@@ -73,11 +169,21 @@ module.exports = [
 
   {
     method: 'GET',
+    path: '/api/users',
+    config: {
+      tags: ['api'],
+      description: 'List all users',
+      handler: UserController.getAllUsers
+    }
+  },
+
+  {
+    method: 'GET',
     path: '/api/users/{userId}',
     config: {
       tags: ['api'],
       description: 'Get the basic information of the specified user',
-      auth: 'session',
+      auth: 'jwt',
       validate: validate.userInfo,
       handler: UserController.getUser
     }
@@ -89,89 +195,9 @@ module.exports = [
     config: {
       tags: ['api'],
       description: 'Get the availabilities of specified user for the specified events',
-      auth: 'session',
+      auth: 'jwt',
       validate: validate.userEventsAvailabilities,
       handler: UserController.getUserAvailabilities
-    }
-  },
-
-  {
-    method: 'POST',
-    path: '/api/events',
-    config: {
-      tags: ['api'],
-      description: 'Create a new event',
-      notes:
-      'Sample payload: ' +
-        '{' +
-          '"name":"Date with Sharon", ' +
-          '"deadline": "2020-02-10", ' +
-          '"timeslots": [{"start": "2020-02-10", "end": "2020-02-11"}, {"start": "2020-03-10", "end": "2020-03-11"}], ' +
-          '"participants": [1]' +
-        '}',
-      auth: 'session',
-      validate: validate.newEvent,
-      handler: EventController.create
-    }
-  },
-
-  {
-    method: 'POST',
-    path: '/api/events/{eventId}/availabilities',
-    config: {
-      tags: ['api'],
-      description: 'Indicate availabilities for specified event',
-      notes: 'Sample payload: [{"timeslot_id": 7, "weight": 10}, {"timeslot_id": 8, "weight": 1}]',
-      auth: 'session',
-      validate: validate.newAvailabilities,
-      handler: EventController.createAvailabilities
-    }
-  },
-
-  {
-    method: 'GET',
-    path: '/api/events/{eventId}/timeslots',
-    config: {
-      tags: ['api'],
-      description: 'Get all the timeslots for specified event',
-      auth: 'session',
-      validate: validate.eventTimeslots,
-      handler: EventController.getTimeslots
-    }
-  },
-
-  {
-    method: 'GET',
-    path: '/api/events/{eventId}/participants',
-    config: {
-      tags: ['api'],
-      description: 'Get all the participants for specified event',
-      auth: 'session',
-      validate: validate.eventParticipants,
-      handler: EventController.getParticipants
-    }
-  },
-
-  {
-    method: 'GET',
-    path: '/api/events/{eventId}/result',
-    config: {
-      tags: ['api'],
-      description: 'Get the timeslots for specified event, and the number of people available for each timeslot',
-      auth: 'session',
-      validate: validate.eventResult,
-      handler: EventController.getResult
-    }
-  },
-  {
-    method: 'GET',
-    path: '/api/events/{eventId}/timeslots/{timeslotId}',
-    config: {
-      tags: ['api'],
-      description: 'Get the user who are available for specified timeslots',
-      auth: 'session',
-      validate: validate.eventTimeslotAvailabilities,
-      handler: EventController.getTimeslotAvailabilities
     }
   },
   {
@@ -181,7 +207,7 @@ module.exports = [
       tags: ['api'],
       description: 'Update the information of the current user',
       notes: 'Sample payload: { "email": "hello@example.com", "password": "newhelloworld", "name": "hello"}',
-      auth: 'session',
+      auth: 'jwt',
       validate: validate.newUser,
       handler: UserController.updateCurrent
     }
@@ -192,7 +218,7 @@ module.exports = [
     config: {
       tags: ['api'],
       description: 'Remove of the current user',
-      auth: 'session',
+      auth: 'jwt',
       handler: UserController.delete
     }
   },
@@ -203,7 +229,7 @@ module.exports = [
       tags: ['api'],
       description: 'Indicate confirmation for specified event result',
       notes: 'Sample payload: [5, 6, 7]',
-      auth: 'session',
+      auth: 'jwt',
       validate: validate.newConfirmations,
       handler: EventController.createConfirmations
     }

@@ -1,6 +1,6 @@
 <div class='row'>
   <div class='col text-center header'>
-    <h3 class='energized'>Invite People</h3>
+    <h3 class='positive'>Invite People</h3>
   </div>
 </div>
 <div class='row timi-stacked-form'>
@@ -14,18 +14,20 @@
                autocomplete="off"
                max-selected-items="1"
                placeholder="Attendee's Name or Email"
-               item-value-key="name"
+               item-value-key="id"
                item-view-value-key="name"
                items-method="getUser(query)"
                items-method-value-key="users"
-               ng-model="user">
+               items-clicked-method="clickedMethod(callback)"
+               ng-model="user"
+               value="Attendee's Name or Email">
       </label>
     </div>
   </div>
 </div>
 <div class='row timi-participant-list'>
   <div class='col'>
-    <h4 class='energized'>Participants<br/><small>Tick Compulsory Attendees</small></h4>
+    <h4 class='positive'>Participants<br/><small>Tick Compulsory Attendees</small></h4>
   </div>
 </div>
 <div class='list'>
