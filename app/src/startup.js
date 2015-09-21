@@ -1,6 +1,8 @@
 
+import _ from 'lodash';
+
 // Work which should be performed when the injector is done loading all modules.
-export default function($ionicPlatform) {
+export default function($ionicPlatform, $auth, $rootScope, $state) {
   let defaultStatusBar = () => {
       if (window.StatusBar) {
         StatusBar.styleDefault;
@@ -14,5 +16,12 @@ export default function($ionicPlatform) {
   $ionicPlatform.ready(() => {
     hideAccessoryBar();
     defaultStatusBar();
+  });
+  $rootScope.$on('$stateChangeStart', function(e, to) {
+    if (!_.includes(['login', 'signup', 'forgot'], to.name) &&
+          !$auth.isAuthenticated()) {
+      e.preventDefault();
+      $state.go('login');
+    }
   });
 }

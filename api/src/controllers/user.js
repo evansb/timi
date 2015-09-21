@@ -1,6 +1,7 @@
 import Promise    from 'bluebird';
 import Boom       from 'boom';
 import Bcrypt     from 'bcrypt';
+import JWT        from 'jsonwebtoken';
 import User       from '../models/user';
 
 let compare = Promise.promisify(Bcrypt.compare);
@@ -39,8 +40,8 @@ export default class {
         if (!isValid) {
           return Promise.reject(Boom.forbidden('Wrong username or password'));
         } else {
-          request.auth.session.set(user);
-          reply(user);
+          let token = JWT.sign(user, process.env.PRIVATE_KEY);
+          reply({ token }).header('Authorization', token);
         }
       }
     } catch(err) {
@@ -84,7 +85,8 @@ export default class {
       if (!user) {
         throw Boom.badRequest('User with this email exists');
       } else {
-        reply(_user);
+        let token = JWT.sign(user, process.env.PRIVATE_KEY);
+        reply({ token }).header('Authorization', token);
       }
     } catch(err) {
       reply(err.isBoom ? err : Boom.badImplementation(err));

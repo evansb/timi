@@ -10,7 +10,6 @@ export default async function() {
       let salt = Bcrypt.genSaltSync(5);
       user.password = Bcrypt.hashSync(user.password, salt);
       return user;
-
     });
   };
 

@@ -1,16 +1,36 @@
-import Cookie   from 'hapi-auth-cookie';
+import JWT   from 'hapi-auth-jwt2';
+import Boom  from 'boom';
+import User  from './models/user';
+
+async function validate(decoded, request, callback) {
+  let { email, password } = request.payload;
+  try {
+    let user = await User.where('email', email).fetch();
+    if (!user) {
+      callback(null, false);
+    } else {
+      let isValid = await compare(password, user.get('password'));
+      if (!isValid) {
+        callback(null, false);
+      } else {
+        callback(null, true);
+      }
+    }
+  } catch(err) {
+    reply(err.isBoom ? err : Boom.badImplementation(err));
+  }
+}
 
 export default (server) => {
-  let oneDay = 24 * 60 * 60 * 1000;
-  server.register(Cookie, (err) => {
+  server.register(JWT, (err) => {
     if (err) {
       throw err;
     }
-    server.auth.strategy('session', 'cookie', {
-      password: 'opensesame',
-      cookie: 'session',
-      isSecure: false,
-      ttl: oneDay
+    server.auth.strategy('jwt', 'jwt', {
+      key: process.env.PRIVATE_KEY,
+      validateFunc: validate,
+      verifyOptions: { algorithms: [ 'HS256' ] }
     });
+    server.auth.default('jwt');
   });
 };

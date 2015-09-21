@@ -10,6 +10,7 @@ var envDevel = {
   'API_PORT': '8000',
   'DB_HOST': 'localhost',
   'PGPORT': '5432',
+  'PRIVATE_KEY': 'opensesame',
   'DB_USER': process.env.USER,
   'DB_NAME': 'timi',
   'PG_DATA': './data'
@@ -21,6 +22,7 @@ var envDevelSharon = {
   'API_PORT': '8000',
   'DB_HOST': 'localhost',
   'PGPORT': '5432',
+  'PRIVATE_KEY': 'opensesame',
   'DB_USER': 'postgres',
   'DB_PASSWORD': 'root',
   'DB_NAME': 'timi',

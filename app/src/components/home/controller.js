@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-export default ($scope, $state, $timi) => {
+export default ($scope, $state, $timi, $auth) => {
   let sample = {
     'name':'Date with Nathan',
     'deadline': '2020-02-10',

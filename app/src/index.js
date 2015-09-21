@@ -28,7 +28,11 @@ let app = angular.module('timi', [
 components.push(common);
 
 // Require credentials for all request
-app.config(($httpProvider) => {
+app.config(($httpProvider, $authProvider) => {
+  $authProvider.baseUrl = 'http://localhost:8000/api/';
+  $authProvider.loginUrl = '/me/login';
+  $authProvider.signupUrl = '/me/signup';
+  $authProvider.unlinkUrl = '/me/logout';
   $httpProvider.defaults.withCredentials = true;
 })
 
