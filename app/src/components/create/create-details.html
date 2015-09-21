@@ -7,10 +7,14 @@
   <div class='col'>
     <div class='list'>
       <label class='item item-input'>
-        <input type='text' placeholder='Title'>
+        <input type='text' placeholder='Title'
+               ng-model='newEvent.name'
+               ng-model-options=" {getterSetter: true }" >
       </label>
       <label class='item item-input'>
-        <input type='text' placeholder='Location'>
+        <input type='text' placeholder='Location'
+               ng-model='newEvent.location'
+               ng-model-options=" {getterSetter: true }">
       </label>
       <label class='item item-input'>
         <span class='input-label'>Duration</span>

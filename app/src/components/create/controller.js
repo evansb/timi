@@ -1,9 +1,49 @@
 import moment from 'moment';
+import _ from 'lodash';
 
-export default ($scope, $state, $timi) => {
+export default ($scope, $state, $timi, localStorageService) => {
+  let save = () => {
+    let h = moment($scope.deadline.time).get('hour');
+    let m = moment($scope.deadline.time).get('minute');
+    $scope.newEvent.rawDeadline = $scope.deadline;
+    console.log($scope.deadline.date);
+    $scope.newEvent.deadline = moment($scope.deadline.date)
+      .add(h, 'hours').add(m, 'minutes').toDate().toString();
+    console.log($scope.newEvent.deadline);
+    $scope.newEvent.participants = $scope.participants;
+    localStorageService.set('newEvent', $scope.newEvent);
+  };
+  $scope.newEvent = localStorageService.get('newEvent') || {};
   $scope.step = 1;
-  $scope.previous = () => $scope.step = Math.max($scope.step - 1, 1);
-  $scope.next = () => $scope.step = Math.min($scope.step + 1, 3);
+  $scope.previous = () => {
+    save();
+    $scope.step = Math.max($scope.step - 1, 1);
+  }
+  $scope.next = () => {
+    if ($scope.step == 2) {
+      save();
+      (async () => {
+        try {
+          let { name, deadline, participants, location } = $scope.newEvent;
+          $timi.Event.create({
+            name: name,
+            deadline: deadline,
+            participants: _.map(participants, (par) => par.id),
+            location: location,
+            timeslots: [{
+              start: deadline,
+              end: moment(deadline).add(2, 'hours').toDate().toString()
+            }]
+          }, () => $scope.step = Math.min($scope.step + 1, 3));
+        } catch(err) {
+          console.log(err);
+        }
+      })();
+    } else {
+      save();
+      $scope.step = Math.min($scope.step + 1, 3);
+    }
+  }
 
   $scope.users = [];
 
@@ -19,10 +59,11 @@ export default ($scope, $state, $timi) => {
   };
 
   $scope.clickedMethod = function(callback) {
-    $scope.participants.push(callback.item);
+    if (!_.includes($scope.participants, callback.item.id))
+      $scope.participants.push(callback.item);
   };
 
-  $scope.participants = [];
+  $scope.participants = $scope.newEvent? ($scope.newEvent.participants || []) : [];
 
   $scope.backToHome = () => {
     $scope.step = 1;
@@ -99,7 +140,7 @@ export default ($scope, $state, $timi) => {
     }
   };
 
-  $scope.deadline = {
+  $scope.deadline = $scope.newEvent.rawDeadline || {
     date: null,
     time: null
   };
