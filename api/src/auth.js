@@ -1,16 +1,22 @@
-import Cookie   from 'hapi-auth-cookie';
+import JWT   from 'hapi-auth-jwt2';
+import Boom  from 'boom';
+import User  from './models/user';
+
+async function validate(decoded, request, callback) {
+  // Todo: Check decoded.id should be in database
+  callback(null, true);
+}
 
 export default (server) => {
-  let oneDay = 24 * 60 * 60 * 1000;
-  server.register(Cookie, (err) => {
+  server.register(JWT, (err) => {
     if (err) {
       throw err;
     }
-    server.auth.strategy('session', 'cookie', {
-      password: 'opensesame',
-      cookie: 'session',
-      isSecure: false,
-      ttl: oneDay
+    server.auth.strategy('jwt', 'jwt', {
+      key: process.env.PRIVATE_KEY,
+      validateFunc: validate,
+      verifyOptions: { algorithms: [ 'HS256' ] }
     });
+    server.auth.default('jwt');
   });
 };

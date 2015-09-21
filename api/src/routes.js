@@ -10,7 +10,7 @@ module.exports = [
     config: {
       tags: ['api'],
       description: 'Get the basic information of the current user',
-      auth: 'session',
+      auth: 'jwt',
       handler: UserController.getCurrent
     }
   },
@@ -32,7 +32,7 @@ module.exports = [
     config: {
       tags: ['api'],
       description: 'Log out the current user',
-      auth: 'session',
+      auth: 'jwt',
       handler: UserController.logout
     }
   },
@@ -43,7 +43,7 @@ module.exports = [
     config: {
       tags: ['api'],
       description: 'Get relevant events of current user',
-      auth: 'session',
+      auth: 'jwt',
       handler: UserController.getCurrentEvents
     }
   },
@@ -53,7 +53,7 @@ module.exports = [
     config: {
       tags: ['api'],
       description: 'Get details of an event',
-      auth: 'session',
+      auth: 'jwt',
       validate: {
         params: {
           eventId: Joi.number()
@@ -77,7 +77,7 @@ module.exports = [
           '"timeslots": [{"start": "2020-02-10", "end": "2020-02-11"}, {"start": "2020-03-10", "end": "2020-03-11"}], ' +
           '"participants": [1]' +
         '}',
-      auth: 'session',
+      auth: 'jwt',
       validate: validate.newEvent,
       handler: EventController.create
     }
@@ -90,7 +90,7 @@ module.exports = [
       tags: ['api'],
       description: 'Indicate availabilities for specified event',
       notes: 'Sample payload: {"availabilities": [{"timeslot_id": 7, "weight": 10}, {"timeslot_id": 8, "weight": 1}]}',
-      auth: 'session',
+      auth: 'jwt',
       validate: validate.newAvailabilities,
       handler: EventController.createAvailabilities
     }
@@ -102,7 +102,7 @@ module.exports = [
     config: {
       tags: ['api'],
       description: 'Get all the timeslots for specified event',
-      auth: 'session',
+      auth: 'jwt',
       validate: validate.eventTimeslots,
       handler: EventController.getTimeslots
     }
@@ -114,7 +114,7 @@ module.exports = [
     config: {
       tags: ['api'],
       description: 'Get all the participants for specified event',
-      auth: 'session',
+      auth: 'jwt',
       validate: validate.eventParticipants,
       handler: EventController.getParticipants
     }
@@ -126,7 +126,7 @@ module.exports = [
     config: {
       tags: ['api'],
       description: 'Get the timeslots for specified event, and the number of people available for each timeslot',
-      auth: 'session',
+      auth: 'jwt',
       validate: validate.eventResult,
       handler: EventController.getResult
     }
@@ -137,7 +137,7 @@ module.exports = [
     config: {
       tags: ['api'],
       description: 'Get the user who are available for specified timeslots',
-      auth: 'session',
+      auth: 'jwt',
       validate: validate.eventTimeslotAvailabilities,
       handler: EventController.getTimeslotAvailabilities
     }
@@ -148,7 +148,7 @@ module.exports = [
     config: {
       tags: ['api'],
       description: 'Get the availabilities of current user for the specified events',
-      auth: 'session',
+      auth: 'jwt',
       validate: validate.myEventsAvailabilities,
       handler: UserController.getCurrentAvailability
     }
@@ -169,11 +169,21 @@ module.exports = [
 
   {
     method: 'GET',
+    path: '/api/users',
+    config: {
+      tags: ['api'],
+      description: 'List all users',
+      handler: UserController.getAllUsers
+    }
+  }, 
+
+  {
+    method: 'GET',
     path: '/api/users/{userId}',
     config: {
       tags: ['api'],
       description: 'Get the basic information of the specified user',
-      auth: 'session',
+      auth: 'jwt',
       validate: validate.userInfo,
       handler: UserController.getUser
     }
@@ -185,7 +195,7 @@ module.exports = [
     config: {
       tags: ['api'],
       description: 'Get the availabilities of specified user for the specified events',
-      auth: 'session',
+      auth: 'jwt',
       validate: validate.userEventsAvailabilities,
       handler: UserController.getUserAvailabilities
     }
@@ -197,7 +207,7 @@ module.exports = [
       tags: ['api'],
       description: 'Update the information of the current user',
       notes: 'Sample payload: { "email": "hello@example.com", "password": "newhelloworld", "name": "hello"}',
-      auth: 'session',
+      auth: 'jwt',
       validate: validate.newUser,
       handler: UserController.updateCurrent
     }
@@ -208,7 +218,7 @@ module.exports = [
     config: {
       tags: ['api'],
       description: 'Remove of the current user',
-      auth: 'session',
+      auth: 'jwt',
       handler: UserController.delete
     }
   },
@@ -222,7 +232,7 @@ module.exports = [
       tags: ['api'],
       description: 'Indicate confirmation for specified event result',
       notes: 'Sample payload: {"confirmations": [5, 6, 7]}',
-      auth: 'session',
+      auth: 'jwt',
       validate: validate.newConfirmations,
       handler: EventController.createConfirmations
     }

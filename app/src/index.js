@@ -4,6 +4,7 @@ import 'angular';
 import 'angular-animate';
 import 'angular-sanitize';
 import 'angular-resource';
+import 'angular-local-storage';
 import 'angular-ui-router';
 import 'satellizer';
 import 'ionic';
@@ -22,13 +23,18 @@ let app = angular.module('timi', [
   'ionic-timepicker',
   'ion-autocomplete',
   'satellizer',
-  'ngResource'
+  'ngResource',
+  'LocalStorageModule'
 ]);
 
 components.push(common);
 
 // Require credentials for all request
-app.config(($httpProvider) => {
+app.config(($httpProvider, $authProvider) => {
+  $authProvider.baseUrl = 'http://localhost:8000/api/';
+  $authProvider.loginUrl = '/me/login';
+  $authProvider.signupUrl = '/me/signup';
+  $authProvider.unlinkUrl = '/me/logout';
   $httpProvider.defaults.withCredentials = true;
 })
 

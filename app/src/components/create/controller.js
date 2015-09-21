@@ -1,33 +1,51 @@
 import moment from 'moment';
+import _ from 'lodash';
 
-export default ($scope, $state) => {
+export default ($scope, $state, $timi, localStorageService) => {
+  let save = () => {
+    let h = moment($scope.deadline.time).get('hour');
+    let m = moment($scope.deadline.time).get('minute');
+    $scope.newEvent.rawDeadline = $scope.deadline;
+    console.log($scope.deadline.date);
+    $scope.newEvent.deadline = moment($scope.deadline.date)
+      .add(h, 'hours').add(m, 'minutes').toDate().toString();
+    console.log($scope.newEvent.deadline);
+    $scope.newEvent.participants = $scope.participants;
+    localStorageService.set('newEvent', $scope.newEvent);
+  };
+  $scope.newEvent = localStorageService.get('newEvent') || {};
   $scope.step = 1;
-  $scope.previous = () => $scope.step = Math.max($scope.step - 1, 1);
-  $scope.next = () => $scope.step = Math.min($scope.step + 1, 3);
-
-  $scope.user = "";
-  $scope.users = [
-    {
-      user_id: 1,
-      name: 'Evan Sebastian',
-      email: 'evansebastian@hehe.com'
-    },
-    {
-      user_id: 2,
-      name: 'Sharon Lynn',
-      email: 'sharonlynn@hehe.com'
-    },
-    {
-      user_id: 3,
-      name: 'Patricia Wong',
-      email: 'patriciawong@hehe.com'
-    },
-    {
-      user_id: 4,
-      name: 'Liu Yang',
-      email: 'liuyang@hehe.com'
+  $scope.previous = () => {
+    save();
+    $scope.step = Math.max($scope.step - 1, 1);
+  }
+  $scope.next = () => {
+    if ($scope.step == 2) {
+      save();
+      (async () => {
+        try {
+          let { name, deadline, participants, location } = $scope.newEvent;
+          $timi.Event.create({
+            name: name,
+            deadline: deadline,
+            participants: _.map(participants, (par) => par.id),
+            location: location,
+            timeslots: [{
+              start: deadline,
+              end: moment(deadline).add(2, 'hours').toDate().toString()
+            }]
+          }, () => $scope.step = Math.min($scope.step + 1, 3));
+        } catch(err) {
+          console.log(err);
+        }
+      })();
+    } else {
+      save();
+      $scope.step = Math.min($scope.step + 1, 3);
     }
-  ];
+  }
+
+  $scope.users = [];
 
   $scope.getUser = function(query) {
     return {
@@ -41,10 +59,11 @@ export default ($scope, $state) => {
   };
 
   $scope.clickedMethod = function(callback) {
-    $scope.participants.push(callback.item);
+    if (!_.includes($scope.participants, callback.item.id))
+      $scope.participants.push(callback.item);
   };
 
-  $scope.participants = [];
+  $scope.participants = $scope.newEvent? ($scope.newEvent.participants || []) : [];
 
   $scope.backToHome = () => {
     $scope.step = 1;
@@ -64,7 +83,6 @@ export default ($scope, $state) => {
     setButtonType: 'button-energized',
     callback: function(val) {
       $scope.datepicker.startValue = val;
-      console.log(val);
       if ($scope.datepicker.endValue == null){
         $scope.datepickerEnd.from = val;
       } else if ($scope.datepicker.endValue < val) {
@@ -122,7 +140,7 @@ export default ($scope, $state) => {
     }
   };
 
-  $scope.deadline = {
+  $scope.deadline = $scope.newEvent.rawDeadline || {
     date: null,
     time: null
   };
@@ -145,6 +163,16 @@ export default ($scope, $state) => {
       $scope.deadline.time = moment().startOf('day').add(val, 'seconds').format('HH:mm');
     }
   };
+
+  (async () => {
+    try {
+      let users = $timi.User.query(() => {
+        $scope.users = users;
+      });
+    } catch(err) {
+      console.log(err);
+    }
+  })();
 
   $scope.duration = {
     time: null

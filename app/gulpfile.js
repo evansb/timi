@@ -36,7 +36,7 @@ gulp.task('browserify', function() {
     packageCache: {},
     cache: {},
     entries: ['./src/index.js'],
-    debug: false
+    debug: true
   };
   var babelifyConfig = { only: /src/, experimental: true };
   var bundler = watchify(browserify(config));
@@ -48,7 +48,6 @@ gulp.task('browserify', function() {
       .bundle()
       .on('error', gutil.log.bind(gutil, 'browserify error'))
       .pipe(source('app.js'))
-      .pipe(buffer())
       .pipe(gulp.dest('./dist'))
   };
   bundler.on('update', rebundle);

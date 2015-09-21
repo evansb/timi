@@ -1,32 +1,31 @@
 import validator from 'validator'
 
-export default ($scope, $timi, $notification, $state) => {
+export default ($scope, $notification, $state, $auth) => {
 
-  if ($timi.isLoggedIn()) {
-    $location.path('home');
+  if ($auth.isAuthenticated()) {
+    $state.go('home');
   }
 
-  $scope.signup = () => {
+  $scope.signup = async () => {
     if (!validator.isEmail($scope.email)) {
       let message = 'Invalid email address';
       $notification.send({ type: 'modal', message: message});
-    } else if (!validator.isByteLength($scope.password, 3, 30)) {
-      let message = 'Password must be 3-30 characters';
+    } else if ($scope.password && $scope.password.length < 4) {
+      let message = 'Password must be at least 4 characters';
       $notification.send({ type: 'modal', message: message});
     } else {
-      let newUser = new $timi.User.signup({
-        email: $scope.email,
-        password: $scope.password
-      });
-      newUser.$save((user) => {
-        $timi.setActiveUser(user);
-        $state.go('home');
-      }, (err) => {
+      try {
+        let user = await $auth.signup({
+          email: $scope.email,
+          password: $scope.password
+        });
+        $http.defaults.headers.common.Authorization = user.token;
+      } catch(err) {
         if (err.status === 400) {
-          let message = 'a user with that email already exists. try login?';
+          let message = 'A user with that email already exists. try login?';
           $notification.send({ type: 'modal', message: message});
         }
-      });
+      }
     }
   }
 }

@@ -2,6 +2,7 @@ import Boom         from 'boom';
 import transactions from '../transactions';
 import User         from '../models/user';
 import Event        from '../models/event';
+import JWT          from 'jsonwebtoken';
 
 let _permit = async (user, eventId) => {
   let result = await user.belongToEvent(eventId);
@@ -11,6 +12,12 @@ let _permit = async (user, eventId) => {
     return user;
   }
 };
+
+let getUserId = (request) => {
+  let decoded = JWT.decode(
+    request.headers.authorization.split(' ')[1], { complete:true });
+  return decoded.payload.id;
+}
 
 let _getUserById = (userId) => {
   return User.where('id', userId).fetch();
@@ -40,7 +47,7 @@ export default class {
     delete event.timeslots;
     delete event.participants;
     try {
-      let user = await _getUserById(request.auth.credentials.id);
+      let user = await _getUserById(getUserId(request));
       let userId = user.get('id');
       event.owner_id = userId;
       if (participants.indexOf(userId) < 0) {
@@ -57,7 +64,7 @@ export default class {
     let eventId = request.params.eventId;
     let availabilities = request.payload.availabilities;
     try {
-      let user = await _getUserById(request.auth.credentials.id)
+      let user = await _getUserById(getUserId(request))
       let permitted = await _permit(user, eventId);
       let result = await transactions.newAvailabilities(permitted, eventId,
         availabilities);
@@ -70,7 +77,7 @@ export default class {
   static async getEvent(request, reply) {
     let eventId = request.params.eventId;
     try {
-      let user = await _getUserById(request.auth.credentials.id);
+      let user = await _getUserById(getUserId(request));
       let permitted = await _permit(user, eventId);
       let event = await _getEventById(eventId);
       reply(event.toJSON());
@@ -82,7 +89,7 @@ export default class {
   static async getTimeslots(request, reply) {
     let eventId = request.params.eventId;
     try {
-      let user = await _getUserById(request.auth.credentials.id);
+      let user = await _getUserById(getUserId(request));
       let permitted = await _permit(user, eventId);
       let event = await _getEventById(eventId);
       let timeslots = await event.getTimeslots();
@@ -95,7 +102,7 @@ export default class {
   static async getResult(request, reply) {
     let eventId = request.params.eventId;
     try {
-      let user = await _getUserById(request.auth.credentials.id);
+      let user = await _getUserById(getUserId(request));
       let permitted = await _permit(user, eventId);
       let event = await _getEventById(eventId);
       let result = await event.getResult();
@@ -108,7 +115,7 @@ export default class {
   static async getParticipants(request, reply) {
     let eventId = request.params.eventId;
     try {
-      let user = await _getUserById(request.auth.credentials.id);
+      let user = await _getUserById(getUserId(request));
       let permitted = await _permit(user, eventId);
       let event = await _getEventById(eventId);
       let result = await event.getParticipants();
@@ -122,7 +129,7 @@ export default class {
     let eventId = request.params.eventId;
     let timeslotId = request.params.timeslotId;
     try {
-      let user = await _getUserById(request.auth.credentials.id);
+      let user = await _getUserById(getUserId(request));
       let permitted = await _permit(user, eventId);
       let event = await _getEventById(eventId);
       let timeslots = await event.getTimeslot(timeslotId);

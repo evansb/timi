@@ -1,6 +1,7 @@
 import Promise    from 'bluebird';
 import Boom       from 'boom';
 import Bcrypt     from 'bcrypt';
+import JWT        from 'jsonwebtoken';
 import User       from '../models/user';
 
 let compare = Promise.promisify(Bcrypt.compare);
@@ -18,10 +19,16 @@ let _permit = async (user, eventId) => {
   }
 };
 
+let getUserId = (request) => {
+  let decoded = JWT.decode(
+    request.headers.authorization.split(' ')[1], { complete:true });
+  return decoded.payload.id;
+}
+
 export default class {
   static async getCurrent(request, reply) {
     try {
-      let user = await _getUserById(request.auth.credentials.id);
+      let user = await _getUserById(getUserId(request));
       reply(user);
     } catch(err) {
       reply(Boom.notFound('User not found'));
@@ -37,10 +44,10 @@ export default class {
       } else {
         let isValid = await compare(password, user.get('password'));
         if (!isValid) {
-          return Promise.reject(Boom.forbidden('Wrong username or password'));
+          reply(Boom.forbidden('Wrong username or password'));
         } else {
-          request.auth.session.set(user);
-          reply(user);
+          let token = JWT.sign(user, process.env.PRIVATE_KEY);
+          reply({ token }).header('Authorization', token);
         }
       }
     } catch(err) {
@@ -55,9 +62,18 @@ export default class {
 
   static async getCurrentEvents(request, reply) {
     try {
-      let userId = request.auth.credentials.id;
+      let userId = getUserId(request);
       let user = await User.where('id', userId).fetch({
-        withRelated: ['involvedEvents.owner']
+        withRelated: [
+          'involvedEvents.owner',
+          'involvedEvents.timeslots',
+          'involvedEvents.important_participants',
+          'involvedEvents.normal_participants',
+          'involvedEvents.participated_participants',
+          'involvedEvents.unparticipated_participants',
+          'involvedEvents.confirmed_participants',
+          'involvedEvents.unconfirmed_participants'
+        ]
       });
       reply(user.related('involvedEvents').toJSON());
     } catch (err) {
@@ -68,7 +84,7 @@ export default class {
   static async getCurrentAvailability(request, reply) {
     try {
       let eventId = request.params.eventId;
-      let user = await _getUserById(request.auth.credentials.id);
+      let user = await _getUserById(getUserId(request));
       let permitted = await _permit(_user, eventId);
       let availability = await permitted.availableForEvent(eventId);
       reply(availability);
@@ -84,7 +100,8 @@ export default class {
       if (!user) {
         throw Boom.badRequest('User with this email exists');
       } else {
-        reply(_user);
+        let token = JWT.sign(user, process.env.PRIVATE_KEY);
+        reply({ token }).header('Authorization', token);
       }
     } catch(err) {
       reply(err.isBoom ? err : Boom.badImplementation(err));
@@ -104,10 +121,23 @@ export default class {
     }
   }
 
+  static async getAllUsers(request, reply) {
+    try {
+      let users = await User.fetchAll();
+      if(!users) {
+        throw Boom.notFound('User does not exist');
+      } else {
+        reply(users);
+      }
+    } catch(err) {
+      reply(err.isBoom ? err : Boom.badImplementation(err));
+    }
+  }
+
   static async getUserAvailabilities(request, reply) {
     let {userId, eventId} = request.params;
     try {
-      let user = await _getUserById(request.auth.credentials.id);
+      let user = await _getUserById(getUserId(request));
       let permitted = await _permit(user, eventId);
       let viewedUser = await _getUserById(userId);
       if (!viewedUser) {
@@ -129,7 +159,7 @@ export default class {
   static async updateCurrent(request, reply) {
     let payload = request.payload;
     try {
-      let user = await _getUserById(request.auth.credentials.id);
+      let user = await _getUserById(getUserId(request));
       let updated = await user.update(payload);
       request.auth.session.set(updated);
       reply(updated);
@@ -140,7 +170,7 @@ export default class {
 
   static async delete(request, reply) {
     try {
-      let user = await _getUserById(request.auth.credentials.id);
+      let user = await _getUserById(getUserId(request));
       await _user.destroy();
       request.auth.session.clear();
       reply('OK')

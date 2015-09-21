@@ -10,6 +10,7 @@ var envDevel = {
   'API_PORT': '8000',
   'DB_HOST': 'localhost',
   'PGPORT': '5432',
+  'PRIVATE_KEY': 'opensesame',
   'DB_USER': process.env.USER,
   'DB_NAME': 'timi',
   'PG_DATA': './data'
@@ -21,6 +22,7 @@ var envDevelSharon = {
   'API_PORT': '8000',
   'DB_HOST': 'localhost',
   'PGPORT': '5432',
+  'PRIVATE_KEY': 'opensesame',
   'DB_USER': 'postgres',
   'DB_PASSWORD': 'root',
   'DB_NAME': 'timi',
@@ -68,5 +70,5 @@ gulp.task('watch', function() {
   gulp.watch('./src/**/*.js', ['compile']);
 });
 
-gulp.task('sharon', ['compile', 'watch' ]);
-gulp.task('default', ['compile', 'watch', 'serve']);
+gulp.task('sharon', ['watch' ]);
+gulp.task('default', ['watch', 'serve']);

@@ -1,10 +1,19 @@
 import bookshelf from './config/bookshelf';
 import moment from 'moment';
+import Bcrypt from 'bcrypt';
 import Promise from 'bluebird';
+import _ from 'lodash';
 
 export default async function() {
-  // users
-  await bookshelf.knex('users').insert([
+  let hashPasswords = (users) => {
+    return _.map(users, (user) => {
+      let salt = Bcrypt.genSaltSync(5);
+      user.password = Bcrypt.hashSync(user.password, salt);
+      return user;
+    });
+  };
+
+  let userData = hashPasswords([
     {
       email: "evansb@gmail.com",
       password: "evansebastian",
@@ -36,6 +45,11 @@ export default async function() {
       name: "Nathan Azaria"
     }
   ]);
+
+  console.log(userData);
+
+  // users
+  await bookshelf.knex('users').insert(userData);
 
   // events
   await bookshelf.knex('events').insert([

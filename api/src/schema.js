@@ -13,7 +13,7 @@ export default function () {
       t.string('email').unique().notNullable();
       t.string('password').notNullable();
       t.string('name');
-      t.timestamps().notNullable().defaultTo(new Date());
+      t.timestamps();
     })
     .createTable('events',  (t) => {
       t.increments().primary();
@@ -25,7 +25,7 @@ export default function () {
         .onDelete('cascade')
         .onUpdate('cascade');
       t.string('location');
-      t.timestamps().notNullable().defaultTo(new Date());
+      t.timestamps();
     })
     .createTable('events_users', (t) => {
       t.integer('event_id').unsigned().notNullable().references('events.id').onDelete('cascade').onUpdate('cascade');
@@ -33,8 +33,7 @@ export default function () {
       t.boolean('important').notNullable().defaultTo(false);
       t.boolean('participated').notNullable().defaultTo(false);
       t.boolean('confirmed').notNullable().defaultTo(false);
-      t.timestamps().notNullable().defaultTo(new Date());
-
+      t.timestamps();
       t.primary(['event_id', 'user_id']);
     })
     .dropTableIfExists('timeslots')
@@ -43,21 +42,19 @@ export default function () {
       t.integer('event_id').unsigned().notNullable().references('events.id').onDelete('cascade').onUpdate('cascade');
       t.timestamp('start').notNullable();
       t.timestamp('end').notNullable();
-      t.timestamps().notNullable().defaultTo(new Date());
+      t.timestamps();
     })
     .createTable('availabilities', (t) => {
       t.integer('user_id').unsigned().notNullable().references('users.id').onDelete('cascade').onUpdate('cascade');
       t.integer('timeslot_id').unsigned().notNullable().references('timeslots.id').onDelete('cascade').onUpdate('cascade');
       t.integer('weight').unsigned().notNullable();
-      t.timestamps().notNullable().defaultTo(new Date());
-
+      t.timestamps();
       t.primary(['user_id', 'timeslot_id']);
     })
     .createTable('confirmations', (t) => {
       t.integer('user_id').unsigned().notNullable().references('users.id').onDelete('cascade').onUpdate('cascade');
       t.integer('timeslot_id').unsigned().notNullable().references('timeslots.id').onDelete('cascade').onUpdate('cascade');
-      t.timestamps().notNullable().defaultTo(new Date());
-
+      t.timestamps();
       t.primary(['user_id', 'timeslot_id']);
     });
 }
