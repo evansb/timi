@@ -62,6 +62,14 @@ $ionicons-font-path: "../bower_components/ionic/fonts" !default;
 @import "./theme";
 @import "../src/components/ionic-datepicker/ionic-datepicker.styles";
 
+body > .inner {
+  display: none;
+}
+
+body.pg-loaded > .inner {
+  display: block;
+}
+
 .padding-big {
   padding-left: 40px !important;
   padding-right: 40px !important;
@@ -383,4 +391,11 @@ $ionicons-font-path: "../bower_components/ionic/fonts" !default;
 .timi-header-button-light {
   @extend .button-light;
   color: $light !important;
+}
+
+.pg-loading-logo {
+  position: relative;
+  width: 60%;
+  height: 100%;
+  left: 0;
 }
