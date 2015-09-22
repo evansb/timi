@@ -5,7 +5,7 @@ exports.sendInvitationEmail = (mailer, event, owner, users) => {
 
   users.map((user) => {
     let data = {
-      from: 'timeapp.me@gmail.com',
+      from: 'timiapp.me@gmail.com',
       to: user.get('email'),
       subject: ownerName + ' invites you to event ' + eventName,
       html: {
@@ -33,7 +33,7 @@ exports.sendConfirmationEmail = (mailer, event, users) => {
   let eventName = event.get('name');
   users.map((user) => {
     let data = {
-      from: 'timeapp.me@gmail.com',
+      from: 'timiapp.me@gmail.com',
       to: user.get('email'),
       subject: 'Please confirm your availabilities for event ' + eventName,
       html: {
@@ -58,7 +58,7 @@ exports.sendScheduleEmail = (mailer, event, users) => {
   let eventName = event.get('name');
   users.map((user) => {
     let data = {
-      from: 'timeapp.me@gmail.com',
+      from: 'timiapp.me@gmail.com',
       to: user.get('email'),
       subject: 'The event ' + eventName + ' has been scheduled',
       html: {
