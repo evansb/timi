@@ -4,6 +4,8 @@ import User         from '../models/user';
 import Event        from '../models/event';
 import Mailer       from '../mailer';
 import JWT          from 'jsonwebtoken';
+import generateTimeslots from '../calculation';
+import Promise      from 'bluebird';
 
 let _permit = async (user, eventId) => {
   let result = await user.belongToEvent(eventId);
@@ -39,20 +41,51 @@ let _getEventById = (eventId) => {
   });
 };
 
+let ownerInList = (ownerId, list) => {
+  let result = false;
+  list.forEach((participant) => {
+    if(participant.id === ownerId) {
+      result = true;
+    }
+  });
+  return result;
+};
+
+let fetchCalender = (participants) => {
+  return Promise.map(participants, (participant) => {
+    return _getUserById(participant.id)
+      .then((user) => {
+        if(!user) {
+          throw new Error('This user does not exist');
+        } else {
+          return [user.get('NUSMods'), user.get('google_id')];
+        }
+      });
+  });
+};
+
 export default class {
 
   static async create(request, reply) {
     let eventParams = request.payload;
-    let timeslots = eventParams.timeslots;
+    let ranges = eventParams.ranges;
+    let duration = eventParams.duration;
     let participantsParams = eventParams.participants;
-    delete eventParams.timeslots;
     delete eventParams.participants;
+    delete eventParams.ranges;
+    delete eventParams.duration;
+
     try {
+      let calenders = await fetchCalender(participantsParams);
+      let NUSModsLinks = calenders.map((_) => _[0]).filter((c) => c !== null);
+      let googleIds = calenders.map((_) => _[1]).filter((c) => c !== null);
+      let timeslots = await generateTimeslots(duration, ranges, NUSModsLinks, googleIds);
+
       let user = await _getUserById(getUserId(request));
       let userId = user.get('id');
       eventParams.owner_id = userId;
-      if (participantsParams.indexOf(userId) < 0) {
-        participantsParams.push(userId);
+      if (!ownerInList(userId, participantsParams)) {
+        participantsParams.push({id: userId, registered: true, important: false});
       }
       let event = await transactions.newEvent(eventParams, timeslots, participantsParams);
       reply(event);

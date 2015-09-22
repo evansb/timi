@@ -75,6 +75,8 @@ module.exports = [
           '"name":"Date with Sharon", ' +
           '"deadline": "2020-02-10", ' +
           '"duration":"3600000", ' +
+          '"latitude":"23.75", ' +
+          '"longitude":"-45.82", ' +
           '"ranges": [{"date": "2020-02-10", "start": "18:00", "end": "22:00"}, ' +
       '               {"date": "2020-03-10", "start": "18:00", "end": "22:00"}], ' +
           '"participants": [{"id": 1, "registered": true, "important": true}, ' +

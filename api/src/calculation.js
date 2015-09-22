@@ -19,9 +19,12 @@ let dayMap = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 
 // r should be in format of {date: 'YYYY-MM-DD', start: 'HH:MM', end: 'HH:MM'}
 // return the corresponding interval
 let generateInterval = (r) => {
-  let start = r.date.concat(' ', r.start);
-  let end = r.date.concat(' ', r.end);
-  return [new Date(start), new Date(end)];
+  let start = new Date(r.date.concat(' ', r.start));
+  let end = new Date(r.date.concat(' ', r.end));
+  if(start.toString() === "Invalid Date" || end.toString() === "Invalid Date" || start >= end) {
+    throw new Error('invalid time range');
+  }
+  return [start, end];
 };
 
 
@@ -138,7 +141,6 @@ let f = async (duration, ranges, NUSModsLinks, GCs) => {
 
   let intersections = overlappingPairs.map(findIntersection);
 
-
   // 4. padding and splitting
   let finalResult = [];
 
@@ -156,7 +158,7 @@ let f = async (duration, ranges, NUSModsLinks, GCs) => {
       }
     }
   });
-  console.log(finalResult);
+  //console.log(finalResult);
   return finalResult;
 }
 
@@ -206,4 +208,4 @@ let NUSModsLinks = [
   'http://modsn.us/zDqUG'
 ];
 
-f(input.duration, input.ranges, NUSModsLinks);
+export default f;
