@@ -21,6 +21,7 @@ let input = {
 }
 
 let data = input.ranges;
+let duration = input.duration;
 
 let NUSModsLinks = ['http://modsn.us/racU2', 'http://modsn.us/wzaC7'];
 
@@ -126,12 +127,15 @@ let removePadding = async (organizedData) => {
     organizedData[date].forEach((interval) => {
       let start = interval[0];
       let end = interval[1];
-      let numOfSlots = (end - start)/input.duration;
-      let padding = (end - start)%input.duration/2;
+      let numOfSlots = (end - start)/duration;
+      let padding = (end - start)%duration/2;
       if(numOfSlots >= 1) {
-        let newStart = Moment(start).add(padding, 'milliseconds').toDate();
-        let newEnd = Moment(end).subtract(padding, 'milliseconds').toDate();
-        finalResult.push([newStart, newEnd]);
+        let trimmedStart = Moment(start).add(padding, 'milliseconds');
+        for(let i=0; i<numOfSlots; i++) {
+          let newStart = Moment(trimmedStart).add(i*duration, 'milliseconds').toDate();
+          let newEnd = Moment(trimmedStart).add((i+1)*duration, 'milliseconds').toDate();
+          finalResult.push([newStart, newEnd]);
+        }
       }
     });
   }
