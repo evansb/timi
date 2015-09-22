@@ -51,8 +51,8 @@ let ownerInList = (ownerId, list) => {
   return result;
 };
 
-let fetchCalender = (participants) => {
-  return Promise.map(participants, (participant) => {
+let fetchCalender = async (participants) => {
+  let calenders = await Promise.map(participants, (participant) => {
     return _getUserById(participant.id)
       .then((user) => {
         if(!user) {
@@ -62,6 +62,10 @@ let fetchCalender = (participants) => {
         }
       });
   });
+
+  let NUSModsC = calenders.map((_) => _[0]).filter((c) => c !== null);
+  let googleC = calenders.map((_) => _[1]).filter((c) => c !== null);
+  return [NUSModsC, googleC];
 };
 
 export default class {
@@ -77,9 +81,7 @@ export default class {
 
     try {
       let calenders = await fetchCalender(participantsParams);
-      let NUSModsLinks = calenders.map((_) => _[0]).filter((c) => c !== null);
-      let googleIds = calenders.map((_) => _[1]).filter((c) => c !== null);
-      let timeslots = await generateTimeslots(duration, ranges, NUSModsLinks, googleIds);
+      let timeslots = await generateTimeslots(duration, ranges, calenders[0], calenders[1]);
 
       let user = await _getUserById(getUserId(request));
       let userId = user.get('id');
