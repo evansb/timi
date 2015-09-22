@@ -9,13 +9,18 @@ let inEvenWeek = (date) => {
   return true;
 }
 
-let data = [
-  {date: '2020-02-01', start:'01:00', end:'02:00'},
-  {date: '2020-02-01', start:'03:00', end:'04:00'},
-  {date: '2020-02-01', start:'05:00', end:'19:00'},
-  {date: '2020-02-01', start:'20:00', end:'20:30'},
-  {date: '2020-01-03', start:'10:00', end:'18:00'}
-];
+let input = {
+  duration: 3600000,
+  ranges: [
+    {date: '2020-02-03', start:'01:00', end:'23:00'},
+    {date: '2020-02-01', start:'03:00', end:'04:00'},
+    {date: '2020-02-01', start:'05:00', end:'19:00'},
+    {date: '2020-02-01', start:'20:00', end:'20:30'},
+    {date: '2020-01-03', start:'10:00', end:'18:00'}
+  ]
+}
+
+let data = input.ranges;
 
 let NUSModsLinks = ['http://modsn.us/racU2', 'http://modsn.us/wzaC7'];
 
@@ -77,23 +82,22 @@ let availableIntervalsInThisDay = async (dateString) => {
   let endOfThisDay = Moment(date).add(1, 'days').startOf('day').toDate();
 
   if(mergedLength === 0) {
-    return [];
-  }
+    reversedIntervals.push([startOfThisDay, endOfThisDay]);
+  } else {
+    if(mergedIntervals[0][0] > startOfThisDay) {
+      reversedIntervals.push([startOfThisDay, mergedIntervals[0][0]]);
+    }
 
-  if(mergedIntervals[0][0] > startOfThisDay) {
-    reversedIntervals.push([startOfThisDay, mergedIntervals[0][0]]);
-  }
+    for(var i=1;i < mergedLength; i++) {
+      let previousEnd = mergedIntervals[i-1][1];
+      let thisStart = mergedIntervals[i][0];
+      reversedIntervals.push([previousEnd, thisStart]);
+    }
 
-  for(var i=1;i < mergedLength; i++) {
-    let previousEnd = mergedIntervals[i-1][1];
-    let thisStart = mergedIntervals[i][0];
-    reversedIntervals.push([previousEnd, thisStart]);
+    if(mergedIntervals[mergedLength-1][1] < endOfThisDay) {
+      reversedIntervals.push([mergedIntervals[mergedLength-1][1], endOfThisDay]);
+    }
   }
-
-  if(mergedIntervals[mergedLength-1][1] < endOfThisDay) {
-    reversedIntervals.push([mergedIntervals[mergedLength-1][1], endOfThisDay]);
-  }
-
   return reversedIntervals;
 };
 
@@ -116,7 +120,25 @@ let finalIntervals = async (organizedData) => {
   return organizedData;
 };
 
-finalIntervals(organizedData).then(console.log);
+let removePadding = async (organizedData) => {
+  let finalResult = [];
+  for(let date in organizedData) {
+    organizedData[date].forEach((interval) => {
+      let start = interval[0];
+      let end = interval[1];
+      let numOfSlots = (end - start)/input.duration;
+      let padding = (end - start)%input.duration/2;
+      if(numOfSlots >= 1) {
+        let newStart = Moment(start).add(padding, 'milliseconds').toDate();
+        let newEnd = Moment(end).subtract(padding, 'milliseconds').toDate();
+        finalResult.push([newStart, newEnd]);
+      }
+    });
+  }
+  console.log(finalResult);
+}
+
+finalIntervals(organizedData).then(removePadding);
 
 //console.log(getAllClasses(NUSModsLinks));
 
