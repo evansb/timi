@@ -71,12 +71,15 @@ var Event = bookshelf.model('Event', {
     return this.participants().query({
       where: {
         participated: true,
-        confirmed: true
       }
     });
   },
   unparticipated_participants: function () {
-    return this.participants().where('participated', false);
+    return this.participants().query({
+      where: {
+        participated: false
+      }
+    });
   },
   isFullyParticipated: function() {
     return this.hasMany('EventUser').query('where', 'participated', '=', false).count()
