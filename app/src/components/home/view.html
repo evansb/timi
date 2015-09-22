@@ -10,15 +10,15 @@
   </ion-header-bar>
   <ion-content>
     <label class="item timi-select">
-      <select ng-model="idx">
-        <option value="{{context.idx}}" ng-repeat="context in contexts">
+      <select ng-model="form.idx" required="required">
+        <option ng-repeat="context in contexts" value="{{context.idx}}">
           <i class="icon {{context.icon}}"></i> {{ context.title }}
         </option>
       </select>
     </label>
     <div class='list padding-medium'>
       <timi-event-card
-        ng-repeat="event in contexts[idx].get()"
+        ng-repeat="event in contexts[form.idx].get()"
         ng-model='event'>
       </timi-event-card>
     </div>

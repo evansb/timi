@@ -24,6 +24,8 @@ export default ($scope, $state, $timi) => {
       }
     }
   ];
+  $scope.form = { idx: '0' };
+
   $scope.goToCreate = () => {
     $state.go('create');
   };
@@ -51,9 +53,7 @@ export default ($scope, $state, $timi) => {
           $scope.scheduled = _.filter(myEvents, (event) =>
             _.includes(_.pluck(event.confirmed_participants, 'id'), me.id)
           );
-          $scope.owned = _.filter(myEvents, (event) => {
-            event.owner.id == me.id;
-          });
+          $scope.owned = _.filter(myEvents, (event) => event.owner.id == me.id);
          });
       });
     } catch(err) {
