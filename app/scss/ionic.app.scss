@@ -14,19 +14,22 @@ $royal:                           #886aea !default;
 $dark:                            #444 !default;
 */
 // Primary Colors
-$primary1:                        #d40058;
-$primary2:                        #ffde39;
-$primary3:                        #ffffff;
-$primary4:                        #a3a0a0;
-$primary5:                        #58585b;
+$primary1:                        #ffffff;
+$primary2:                        #ee554c;
+$primary3:                        #ffde39;
+$primary4:                        #c3c3c3;
+$primary5:                        #a3a0a0;
+$primary6:                        #58585b;
 
 // Basic
-$light:                           $primary3 !default;
-$positive:                        $primary3 !default;
-$energized:                       $primary1 !default;
-$assertive:                       $primary1 !default;
-$balanced:                        $primary4 !default;
-$dark:                            $primary5 !default;
+$light:                           $primary1 !default;
+$positive:                        $primary2 !default;
+$energized:                       $primary2 !default;
+$assertive:                       $primary2 !default;
+$balanced:                        $primary3 !default;
+$stable:                          $primary4 !default;
+$royal:                           $primary5 !default;
+$dark:                            $primary6 !default;
 
 // Base
 $base-background-color:           $primary1 !default;
@@ -111,9 +114,10 @@ $ionicons-font-path: "../bower_components/ionic/fonts" !default;
   }
   label {
     border-top: 0;
-    border-bottom: 0;
+    border-bottom: 1px solid $positive;
     border-left: 0;
     border-right: 0;
+    margin: 0;
   }
 }
 
@@ -178,14 +182,17 @@ $ionicons-font-path: "../bower_components/ionic/fonts" !default;
 
 .timi-slot {
   @extend .card;
+  border: 1px solid $positive;
+  border-radius: 3px;
+
   .date-big {
-    font-size: 1.3em;
+    font-size: 1.2em;
   }
   .month-big {
     font-size: 1.2em;
   }
   .day-big {
-    font-size: 1em;
+    font-size: 1.5em;
   }
   .x-icon {
     text-align: center;
@@ -194,13 +201,24 @@ $ionicons-font-path: "../bower_components/ionic/fonts" !default;
   }
 }
 
+.timi-slot.inactive {
+  @extend .timi-slot;
+  color: $positive;
+}
+
+.timi-slot.active {
+  @extend .timi-slot;
+  color: $light;
+  background-color: $positive;
+}
+
 .timi-event-header {
 }
 
 .timi-stacked-form {
   @extend .padding-small;
   .col {
-    background-color: $positive;
+    background-color: $light;
   }
 
   label {
@@ -213,6 +231,10 @@ $ionicons-font-path: "../bower_components/ionic/fonts" !default;
   .item {
     border: 0px !important;
   }
+}
+
+.ion-autocomplete {
+  border-bottom: 1px solid $positive !important;
 }
 
 .timi-participant-list {
@@ -273,6 +295,7 @@ $ionicons-font-path: "../bower_components/ionic/fonts" !default;
 
 .timi-pager {
   font-family: 'Wingdings 2';
+
   span {
     font-size: 1.5em !important;
     letter-spacing: 4px !important;
@@ -282,10 +305,12 @@ $ionicons-font-path: "../bower_components/ionic/fonts" !default;
 .timi-invitation-attendance {
   font-size: .9em;
   background-color: $positive;
+  color: $light;
 
   h1 {
     font-size: 2em !important;
     font-weight: bolder;
+    color: $light;
   }
 
   .row {
@@ -352,4 +377,7 @@ $ionicons-font-path: "../bower_components/ionic/fonts" !default;
   img {
     border: 3px solid yellow;
   }
+.timi-header-button-light {
+  @extend .button-light;
+  color: $light !important;
 }

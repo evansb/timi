@@ -1,14 +1,14 @@
 <ion-view ng-controller="EventController">
   <ion-header-bar align-title="center" class="bar-positive">
     <div class="buttons">
-      <button class="button button-clear button-energized"
+      <button class="button button-clear timi-header-button-light"
               ng-click="backToHome()">Cancel</button>
     </div>
     <h1 class="title">
       {{ event.isPending ? 'Your Availability': '' }}
     </h1>
     <div class="buttons">
-      <button ng-if="event.isPending" class="button button-clear button-energized"
+      <button ng-if="event.isPending" class="button button-clear timi-header-button-light"
               ng-click="backToHome()">Submit</button>
     </div>
   </ion-header-bar>
