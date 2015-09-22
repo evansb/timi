@@ -179,8 +179,17 @@ let f = async (duration, ranges, NUSModsLinks, GCs) => {
 let input = {
   duration: 3600000,
   ranges: [
-    {date: '2015-09-02', start:'14:00', end:'18:00'},
-    {date: '2015-09-02', start:'11:00', end:'13:00'}
+    // weekdays, same day, overlap
+    {date: '2015-09-02', start:'15:00', end:'23:00'},
+    {date: '2015-09-02', start:'10:00', end:'16:00'},
+    // weekdays, same day, no overlap
+    {date: '2015-09-03', start:'15:00', end:'20:00'},
+    {date: '2015-09-03', start:'5:00', end:'7:00'},
+    {date: '2015-09-03', start:'11:00', end:'11:40'},
+    // weekends, should be alright for all ranges, except the one less than one hour
+    {date: '2015-09-05', start:'15:00', end:'20:00'},
+    {date: '2015-09-05', start:'5:00', end:'7:00'},
+    {date: '2015-09-05', start:'11:00', end:'11:40'}
   ]
 }
 
@@ -192,9 +201,9 @@ let NUSModsLinks = [
   'http://modsn.us/wzaC7',
   'http://modsn.us/srPA6',
   //'http://modsn.us/qwmkt', bad
-  //'http://modsn.us/zzevJ',
-  //'http://modsn.us/7JuvW',
-  //'http://modsn.us/zDqUG'
+  'http://modsn.us/zzevJ',
+  'http://modsn.us/7JuvW',
+  'http://modsn.us/zDqUG'
 ];
 
 f(input.duration, input.ranges, NUSModsLinks);
