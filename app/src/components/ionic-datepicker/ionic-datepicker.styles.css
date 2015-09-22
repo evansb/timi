@@ -99,3 +99,7 @@
     padding: 10px 0 0 0;
   }
 }
+
+.item-select {
+  border-radius: 3px !important;
+}
