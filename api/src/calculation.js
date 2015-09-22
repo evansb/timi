@@ -1,10 +1,8 @@
 import Moment from 'moment';
-import Timezone from 'moment-timezone';
 import mergeIntervals from './lib/mergeIntervals';
 import NUSMods from './vendor/nusmods';
 import Promise    from 'bluebird';
-import _ from 'lodash';
-
+import boxIntersect1D from 'box-intersect-1d';
 
 // TODO
 let inEvenWeek = (date) => {
@@ -96,12 +94,29 @@ let availableIntervalsInThisDay = async (dateString) => {
     reversedIntervals.push([mergedIntervals[mergedLength-1][1], endOfThisDay]);
   }
 
-  console.log(reversedIntervals);
-
   return reversedIntervals;
 };
 
-availableIntervalsInThisDay('2015-09-22');
+let findIntersection = (overlappingPair) => {
+  let maxStart = overlappingPair[0][0] > overlappingPair[1][0] ? overlappingPair[0][0] : overlappingPair[1][0];
+  let minEnd = overlappingPair[0][1] > overlappingPair[1][1] ? overlappingPair[1][1] : overlappingPair[0][1];
+  return [maxStart, minEnd];
+};
+
+let finalIntervals = async (organizedData) => {
+  for(var date in organizedData) {
+    let input = organizedData[date];
+    let available = await availableIntervalsInThisDay(date);
+    let overlappingPairs = [];
+    boxIntersect1D.bipartite(input, available, function(r, b) {
+      overlappingPairs.push([input[r], available[b]]);
+    });
+    organizedData[date] = overlappingPairs.map(findIntersection);
+  }
+  return organizedData;
+};
+
+finalIntervals(organizedData).then(console.log);
 
 //console.log(getAllClasses(NUSModsLinks));
 
