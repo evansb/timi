@@ -10,17 +10,26 @@ var userSchema = Joi.object().keys({
   name: Joi.string().max(30)
 });
 
-var timeslotSchema = Joi.object().keys({
+var rangeSchema = Joi.object().keys({
+  date: Joi.date().required().min(new Date()),
   start: Joi.date().required().min(new Date()),
   end: Joi.date().required().min(Joi.ref('start'))
+});
+
+var participantSchema = Joi.object().keys({
+  id: idSchema,
+  registered: Joi.boolean().required(),
+  important: Joi.boolean().required()
 });
 
 var eventSchema = Joi.object().keys({
   name: Joi.string().max(50).required(),
   deadline: Joi.date().min(new Date()),
-  participants: Joi.array().items(idSchema).min(1).unique().required(),
-  location: Joi.string().max(50).required(),
-  timeslots: Joi.array().items(timeslotSchema).min(1).unique().required()
+  duration: Joi.number().integer().positive().required(),
+  latitude: Joi.number().precision(2),
+  longitude: Joi.number().precision(2),
+  ranges: Joi.array().items(rangeSchema).min(1).unique().required(),
+  participants: Joi.array().items(participantSchema).min(1).unique().required()
 });
 
 var availabilitySchema = Joi.object().keys({
