@@ -323,9 +323,19 @@ $ionicons-font-path: "../bower_components/ionic/fonts" !default;
 }
 
 .item-select {
-  height: 40px;
+  height: 2em;
 }
 
-.timi-select {
+.timi-select select {
   text-align: left;
+  width: 100%;
+  font-size: 1.5em;
+  border: none;
+  background: transparent;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding: 2px 2px 2px 2px;
+  border: none;
+  background: transparent url("http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png") no-repeat right;
 }

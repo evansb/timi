@@ -1,20 +1,29 @@
 import _ from 'lodash';
 
 export default ($scope, $state, $timi) => {
-  $scope.contexts = {
-    Invites: {
-      title: 'Invites',
-      get() {
+  $scope.contexts = [
+    {
+      idx: 0,
+      title: 'Event Invites',
+      get: () => {
         return $scope.invites;
       }
     },
-    Scheduled: {
-      title: 'Scheduled',
-      get() {
+    {
+      idx: 1,
+      title: 'Scheduled Events',
+      get: () => {
         return $scope.scheduled;
       }
+    },
+    {
+      idx: 2,
+      title: 'Your Events',
+      get: () => {
+        return $scope.owned;
+      }
     }
-  };
+  ];
   $scope.goToCreate = () => {
     $state.go('create');
   };
@@ -42,6 +51,9 @@ export default ($scope, $state, $timi) => {
           $scope.scheduled = _.filter(myEvents, (event) =>
             _.includes(_.pluck(event.confirmed_participants, 'id'), me.id)
           );
+          $scope.owned = _.filter(myEvents, (event) => {
+            event.owner.id == me.id;
+          });
          });
       });
     } catch(err) {
