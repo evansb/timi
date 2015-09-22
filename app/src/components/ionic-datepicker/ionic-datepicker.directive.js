@@ -1,11 +1,7 @@
 //By Rajeshwar Patlolla - rajeshwar.patlolla@gmail.com
 //https://github.com/rajeshwarpatlolla
 
-angular.module('ionic-datepicker')
-  .directive('ionicDatepicker', IonicDatepicker);
-
-IonicDatepicker.$inject = ['$ionicPopup', '$ionicModal', 'IonicDatepickerService'];
-function IonicDatepicker($ionicPopup, $ionicModal, IonicDatepickerService) {
+export default function($ionicPopup, $ionicModal, IonicDatepickerService) {
   return {
     restrict: 'AE',
     replace: true,
@@ -263,7 +259,7 @@ function IonicDatepicker($ionicPopup, $ionicModal, IonicDatepickerService) {
       };
 
       //Getting the reference for the 'ionic-datepicker' modal.
-      $ionicModal.fromTemplateUrl('ionic-datepicker-modal.html', {
+      $ionicModal.fromTemplateUrl(__dirname + '/ionic-datepicker-modal.html', {
         scope: scope,
         animation: 'slide-in-up'
       }).then(function (modal) {
@@ -291,7 +287,7 @@ function IonicDatepicker($ionicPopup, $ionicModal, IonicDatepickerService) {
         } else {
           //Getting the reference for the 'ionic-datepicker' popup.
           $ionicPopup.show({
-            templateUrl: 'ionic-datepicker-popup.html',
+            templateUrl: __dirname + 'ionic-datepicker-popup.html',
             title: scope.titleLabel,
             subTitle: '',
             scope: scope,

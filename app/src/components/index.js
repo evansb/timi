@@ -7,6 +7,7 @@ import forgot         from './forgot'
 import settings       from './settings'
 import participants   from './participants'
 import notification   from './notification'
+import datepicker     from './ionic-datepicker'
 
-export default [home, create, event, login,
+export default [home, create, event, login, datepicker,
   signup, forgot, notification, settings, participants];
