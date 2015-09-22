@@ -45,6 +45,11 @@ $checkbox-off-border-default:     $energized !default;
 $checkbox-on-bg-default:          $energized !default;
 $checkbox-on-border-default:      $energized !default;
 
+$item-avatar-width:               80px !default;
+$item-avatar-height:              80px !default;
+$item-avatar-border-radius:       50% !default;
+
+
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700,600,300);
 
 // The path for our ionicons font files, relative to the built CSS in www/css
@@ -297,13 +302,6 @@ $ionicons-font-path: "../bower_components/ionic/fonts" !default;
   }
 }
 
-.item-avatar-centered {
-  display: -webkit-flex;
-  display: flex;
-  -webkit-align-items: center;
-  align-items: center;
-}
-
 .timi-invitation-attendance {
   font-size: .9em;
   background-color: $positive;
@@ -344,6 +342,40 @@ $ionicons-font-path: "../bower_components/ionic/fonts" !default;
       border-radius: 12px;
       box-shadow:0 0 8px black;
     }
+  }
+}
+
+.item-select {
+  height: 2em;
+}
+
+.timi-select select {
+  text-align: left;
+  width: 100%;
+  font-size: 1.5em;
+  border: none;
+  background: transparent;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding: 2px 2px 2px 2px;
+  border: none;
+  background: transparent url("http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png") no-repeat right;
+}
+
+.avatar-outer {
+  position: relative;
+  height: 90px;
+}
+
+.item-avatar-centered {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  left: 50%;
+  margin-left: -60px;
+  img {
+    border: 3px solid yellow;
   }
 }
 
