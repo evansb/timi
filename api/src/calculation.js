@@ -177,7 +177,7 @@ let f = async (duration, ranges, NUSModsLinks, GCs) => {
 //let NUSModsLinks = ['http://modsn.us/racU2', 'http://modsn.us/wzaC7'];
 
 let input = {
-  duration: 3600000,
+  duration: 3602346,
   ranges: [
     // weekdays, same day, overlap
     {date: '2015-09-02', start:'15:00', end:'23:00'},
