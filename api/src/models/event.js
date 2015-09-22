@@ -26,6 +26,9 @@ var Event = bookshelf.model('Event', {
   owner: function () {
     return this.belongsTo('User', 'owner_id');
   },
+  getOwner: function () {
+    return this.owner().fetch();
+  },
   involvedUsers: function () {
     return this.belongsToMany('User', 'events_users', 'event_id', 'user_id');
   },
@@ -73,6 +76,19 @@ var Event = bookshelf.model('Event', {
     });
   },
   unparticipated_participants: function () {
+    return this.participants().where('participated', false);
+  },
+  isFullyParticipated: function() {
+    return this.hasMany('EventUser').query('where', 'participated', '=', false).count()
+      .then((count) => parseInt(count) < 1);
+  },
+  isFullyConfirmed: function() {
+    return this.hasMany('EventUser').query('where', 'confirmed', '=', false).count()
+      .then((count) => parseInt(count) < 1);
+  },
+  top3: function() {
+    return this.getResult()
+      .then((result) => result.toArray().slice(0, 3));
     return this.participants().query({
       where: {
         participated: false,

@@ -48,8 +48,15 @@ var User = bookshelf.model('User', {
   participate: function(eventId) {
     return EventUser.where({event_id: eventId, user_id: this.get('id')}).save({participated: true}, {method: 'update', patch: true});
   },
+  confirm: function(eventId) {
+    return EventUser.where({event_id: eventId, user_id: this.get('id')}).save({confirmed: true}, {method: 'update', patch: true});
+  },
   update: function(params) {
     return this.save(params, {method: 'update', patch: true});
+  },
+  hasParticipated: function(eventId) {
+    return EventUser.where({event_id: eventId, user_id: this.get('id')}).fetch()
+      .then((eventUser) => eventUser.get('participated'));
   }
 });
 

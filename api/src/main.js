@@ -8,6 +8,9 @@ import Inert       from 'inert';
 import Vision      from 'vision';
 import HapiSwagger from 'hapi-swagger';
 import Pack        from '../package';
+import Handlebars  from 'handlebars';
+import Mailer      from './config/mailer';
+import Path        from 'path';
 import seed        from './seed';
 
 if (process.env.NODE_ENV === 'development') {
@@ -68,6 +71,10 @@ server.register([
   {
     register: HapiSwagger,
     options: swaggerOptions
+  },
+  {
+    register: Mailer.mailer,
+    options: Mailer.options
   }], (err) => {
   if (err) {
     throw err;
