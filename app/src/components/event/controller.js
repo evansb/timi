@@ -9,7 +9,6 @@ export default ($scope, $location, $state, $stateParams, $timi) => {
         eventId: $stateParams.eventId
       }, (event) => {
         $scope.event = event;
-        console.log($scope.event);
       });
     } catch(err) {
       console.log(err);
@@ -38,6 +37,10 @@ export default ($scope, $location, $state, $stateParams, $timi) => {
   };
 
   $scope.selectTimeSlot = (id) => {
+    if (!$scope.event.isPending) {
+      return;
+    }
+
     if ($scope.event.timeslots[id].isSelected) {
       $scope.selected -= 1;
       $scope.event.timeslots[id].isSelected = false;
