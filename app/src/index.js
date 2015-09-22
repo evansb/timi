@@ -8,7 +8,7 @@ import 'angular-local-storage';
 import 'angular-ui-router';
 import 'satellizer';
 import 'ionic';
-import 'ionic-datepicker';
+import './components/ionic-datepicker/ionic-datepicker.app';
 import 'ionic-timepicker';
 import 'ion-autocomplete';
 
