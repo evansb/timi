@@ -58,7 +58,7 @@ let fetchCalender = async (participants) => {
         if(!user) {
           throw new Error('This user does not exist');
         } else {
-          return [user.get('NUSMods'), user.get('google_id')];
+          return [user.get('nusmods'), user.get('google_id')];
         }
       });
   });
