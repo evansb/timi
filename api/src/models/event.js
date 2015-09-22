@@ -76,7 +76,12 @@ var Event = bookshelf.model('Event', {
     });
   },
   unparticipated_participants: function () {
-    return this.participants().where('participated', false);
+    return this.participants().query({
+      where: {
+        participated: true,
+        confirmed: true
+      }
+    });
   },
   isFullyParticipated: function() {
     return this.hasMany('EventUser').query('where', 'participated', '=', false).count()
