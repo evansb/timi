@@ -8,7 +8,6 @@ import 'angular-local-storage';
 import 'angular-ui-router';
 import 'satellizer';
 import 'ionic';
-import 'ionic-datepicker';
 import 'ionic-timepicker';
 import 'ion-autocomplete';
 
@@ -19,7 +18,6 @@ import components     from './components';
 
 let app = angular.module('timi', [
   'ionic',
-  'ionic-datepicker',
   'ionic-timepicker',
   'ion-autocomplete',
   'satellizer',
@@ -45,7 +43,7 @@ _.forEach(components, (component) => {
       app.controller(key, value);
     } else if (key.endsWith('Config')) {
       app.config(value);
-    } else if (key.startsWith('$')) {
+    } else if (key.startsWith('$') || key.endsWith('Service')) {
       app.service(key, value);
     } else if (key.endsWith('Factory')) {
       app.factory(key, value);
