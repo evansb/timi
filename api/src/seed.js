@@ -61,29 +61,29 @@ export default async function() {
       name: "CS3216 Assignment 3 Meeting",
       deadline: moment('2015-09-18').toDate(),
       owner_id: 1,
-      latitude: 10.28,
-      longitude: 5.00
+      latitude: 1.295047,
+      longitude: 103.773848,
     },
     {
       name: "Lunch",
       deadline: moment('2015-09-25').toDate(),
       owner_id: 1,
-      latitude: 10.28,
-      longitude: 5.00
+      latitude: 1.295047,
+      longitude: 103.773848,
     },
     {
       name: "NUSSU commIT Meeting 4",
       deadline: moment('2015-10-01').toDate(),
       owner_id: 2,
-      latitude: 10.28,
-      longitude: 5.00
+      latitude: 1.295047,
+      longitude: 103.773848,
     },
     {
       name: "CS1101S Avengers Meeting",
       deadline: moment('2015-10-15').toDate(),
       owner_id: 1,
-      latitude: 14.28,
-      longitude: 5.90
+      latitude: 1.295047,
+      longitude: 103.773848,
     }
   ]);
 
