@@ -1,49 +1,52 @@
 import moment from 'moment';
 import _ from 'lodash';
 
-export default ($scope, $state, $timi, localStorageService) => {
+export default ($scope, $state, $timi, $rootScope, localStorageService) => {
   let save = () => {
     let h = moment($scope.deadline.time).get('hour');
     let m = moment($scope.deadline.time).get('minute');
     $scope.newEvent.rawDeadline = $scope.deadline;
-    console.log($scope.deadline.date);
     $scope.newEvent.deadline = moment($scope.deadline.date)
       .add(h, 'hours').add(m, 'minutes').toDate().toString();
-    console.log($scope.newEvent.deadline);
     $scope.newEvent.participants = $scope.participants;
     localStorageService.set('newEvent', $scope.newEvent);
   };
   $scope.newEvent = localStorageService.get('newEvent') || {};
   $scope.step = 1;
+
   $scope.previous = () => {
     save();
     $scope.step = Math.max($scope.step - 1, 1);
   }
+
   $scope.next = () => {
+    save();
     if ($scope.step == 2) {
-      save();
-      (async () => {
-        try {
-          let { name, deadline, participants, location } = $scope.newEvent;
-          $timi.Event.create({
-            name: name,
-            deadline: deadline,
-            participants: _.map(participants, (par) => par.id),
-            location: location,
-            timeslots: [{
-              start: deadline,
-              end: moment(deadline).add(2, 'hours').toDate().toString()
-            }]
-          }, () => $scope.step = Math.min($scope.step + 1, 3));
-        } catch(err) {
-          console.log(err);
-        }
-      })();
+      $scope.createEvent();
     } else {
-      save();
       $scope.step = Math.min($scope.step + 1, 3);
     }
   }
+
+  $scope.createEvent = () => {
+    let { name, deadline, participants, location } = $scope.newEvent;
+    let newEvent = {
+      name: name,
+      deadline: deadline,
+      participants: _.map(participants, (par) => par.id),
+      location: location,
+      timeslots: [{
+        start: deadline,
+        end: moment(deadline).add(2, 'hours').toDate().toString()
+      }]
+    };
+    $timi.createEvent(newEvent);
+  }
+
+  $rootScope.$on('eventCreated', () => {
+    localStorageService.remove('newEvent');
+    $scope.backToHome();
+  });
 
   $scope.users = [];
 

@@ -3,7 +3,8 @@ const base = 'http://localhost:8000/api';
 
 var activeUser = null;
 
-export default function($resource) {
+export default function($resource, $rootScope) {
+
   let resource = (url, params, methods) => {
     return $resource(base + url, params, methods);
   };
@@ -11,6 +12,16 @@ export default function($resource) {
   this.MyEvents = resource('/me/events/:eventId', {
     eventId: '@id'
   });
+
+  this.fetchMyEvents = function() {
+    this.MyEvents.query((events) => $rootScope.$broadcast('myEvents', events));
+  };
+
+  this.createEvent = function(options) {
+    this.Event.create(options, (event) => {
+      $rootScope.$broadcast('eventCreated', event);
+    });
+  };
 
   this.Event = resource('/events/:eventId', { eventId: '@id' }, {
     create: { method: 'POST' }

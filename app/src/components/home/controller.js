@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-export default ($scope, $state, $timi) => {
+export default ($scope, $state, $timi, $rootScope) => {
   $scope.contexts = [
     {
       idx: 0,
@@ -35,29 +35,25 @@ export default ($scope, $state, $timi) => {
   $scope.goToDetails = (event) => {
     $state.go('event', { eventId: event.id });
   };
-  $scope.slideIndex = 0;
-  $scope.slideChanged = (index) => {
-    $scope.slideIndex = index;
-  };
 
   $scope.invites = [];
   $scope.scheduled = [];
 
-  (async () => {
-    try {
-      let myEvents = $timi.MyEvents.query(() => {
-        let me = $timi.Self.get(() => {
-          $scope.invites = _.filter(myEvents, (event) =>
-            _.includes(_.pluck(event.unconfirmed_participants, 'id'), me.id)
-          ).map(event => _.assign(event, { isPending: true }));
-          $scope.scheduled = _.filter(myEvents, (event) =>
-            _.includes(_.pluck(event.confirmed_participants, 'id'), me.id)
-          );
-          $scope.owned = _.filter(myEvents, (event) => event.owner.id == me.id);
-         });
-      });
-    } catch(err) {
-      console.log(err);
-    }
-  })()
+  $rootScope.$on('myEvents', (e, myEvents) => {
+    let me = $timi.Self.get(() => {
+      $scope.invites = _.filter(myEvents, (event) =>
+        _.includes(_.pluck(event.unconfirmed_participants, 'id'), me.id)
+      ).map(event => _.assign(event, { isPending: true }));
+      $scope.scheduled = _.filter(myEvents, (event) =>
+        _.includes(_.pluck(event.confirmed_participants, 'id'), me.id)
+      );
+      $scope.owned = _.filter(myEvents, (event) => event.owner.id == me.id);
+     });
+  });
+  
+  $rootScope.$on('newEvent', (e) => {
+    $timi.fetchMyEvents();
+  });
+
+  $timi.fetchMyEvents();
 }
