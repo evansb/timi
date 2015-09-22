@@ -1,5 +1,5 @@
 
-export default ($scope, $state, $auth) => {
+export default ($scope, $state, $auth, $timi) => {
   $scope.backToHome = () => {
       $state.go('home')
   };

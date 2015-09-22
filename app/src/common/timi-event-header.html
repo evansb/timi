@@ -20,7 +20,7 @@
         <div class="row">
           <div class="col">
             <h1>
-              {{ event.participated_participants.length || 0}}
+              {{ (event.participated_participants.length + ((selected > 0 && event.isPending) ? 1 : 0)) || 0}}
             </h1>
           </div>
         </div>
@@ -32,11 +32,11 @@
         <div class="mask">
         </div>
       </div>
-      <div class="col col-33" ng-click="viewParticipants()">
+      <div class="col col-33" ng-click="event.isPending ? clearSelection() : viewParticipants()">
         <div class="row">
           <div class="col">
             <h1>
-              {{ event.unparticipated_participants.length || 0 }}
+              {{ (event.unparticipated_participants.length + (((selected == 0) && event.isPending) ? 1 : 0)) || 0 }}
             </h1>
           </div>
         </div>

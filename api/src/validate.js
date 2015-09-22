@@ -70,9 +70,7 @@ exports.newAvailabilities = {
   params: {
     eventId: idSchema
   },
-  payload: {
-    availabilities: availabilitiesSchema
-  }
+  payload: availabilitiesSchema
 };
 
 exports.eventTimeslots = {
@@ -104,7 +102,5 @@ exports.newConfirmations = {
   params: {
     eventId: idSchema
   },
-  payload: {
-    confirmations: confirmationsSchema
-  }
+  payload: confirmationsSchema
 };

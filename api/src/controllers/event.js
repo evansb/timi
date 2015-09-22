@@ -2,6 +2,7 @@ import Boom         from 'boom';
 import transactions from '../transactions';
 import User         from '../models/user';
 import Event        from '../models/event';
+import Mailer       from '../mailer';
 import JWT          from 'jsonwebtoken';
 
 let _permit = async (user, eventId) => {
@@ -41,20 +42,22 @@ let _getEventById = (eventId) => {
 export default class {
 
   static async create(request, reply) {
-    let event = request.payload;
-    let timeslots = event.timeslots;
-    let participants = event.participants;
-    delete event.timeslots;
-    delete event.participants;
+    let eventParams = request.payload;
+    let timeslots = eventParams.timeslots;
+    let participantsParams = eventParams.participants;
+    delete eventParams.timeslots;
+    delete eventParams.participants;
     try {
       let user = await _getUserById(getUserId(request));
       let userId = user.get('id');
-      event.owner_id = userId;
-      if (participants.indexOf(userId) < 0) {
-        participants.push(userId);
+      eventParams.owner_id = userId;
+      if (participantsParams.indexOf(userId) < 0) {
+        participantsParams.push(userId);
       }
-      let result = await transactions.newEvent(event, timeslots, participants);
-      reply(result);
+      let event = await transactions.newEvent(eventParams, timeslots, participantsParams);
+      reply(event);
+      let participants = await event.getParticipants();
+      Mailer.sendInvitationEmail(request.server.plugins.mailer, event, user, participants);
     } catch(err) {
       reply(err.isBoom ? err : Boom.badImplementation(err));
     }
@@ -62,13 +65,23 @@ export default class {
 
   static async createAvailabilities(request, reply) {
     let eventId = request.params.eventId;
-    let availabilities = request.payload.availabilities;
+    let availabilities = request.payload;
     try {
       let user = await _getUserById(getUserId(request))
       let permitted = await _permit(user, eventId);
-      let result = await transactions.newAvailabilities(permitted, eventId,
-        availabilities);
-      reply(result);
+      let hasParticipated = await user.hasParticipated(eventId);
+      if(hasParticipated) {
+        reply(Boom.conflict('You have submitted your availabilities before'));
+      } else {
+        let event = await _getEventById(eventId);
+        let result = await transactions.newAvailabilities(permitted, eventId, availabilities);
+        reply(result);
+        let fullyParticipated = await event.isFullyParticipated();
+        if(fullyParticipated) {
+          let participants = await event.getParticipants();
+          Mailer.sendConfirmationEmail(request.server.plugins.mailer, event, participants);
+        }
+      }
     } catch(err) {
       reply(err.isBoom ? err : Boom.badImplementation(err));
     }
@@ -143,9 +156,28 @@ export default class {
       reply(err.isBoom ? err : Boom.badImplementation(err));
     }
   }
-
-  //TODO
-  static createConfirmations(request, reply) {
-    reply('OK');
+  static async createConfirmations(request, reply) {
+    let eventId = request.params.eventId;
+    let confirmations = request.payload;
+    try {
+      let user = await _getUserById(request.auth.credentials.id)
+      let permitted = await _permit(user, eventId);
+      let event = await _getEventById(eventId);
+      let fullyParticipated = await event.isFullyParticipated();
+      if(!fullyParticipated) {
+        reply(Boom.badRequest('This event is still in polling stage'));
+      } else {
+        let top3 = await event.top3();
+        let result = await transactions.newConfirmations(permitted, eventId, top3, confirmations);
+        reply(result);
+        let fullyConfirmed = await event.isFullyConfirmed();
+        if(fullyConfirmed) {
+          let participants = await event.getParticipants();
+          Mailer.sendScheduleEmail(request.server.plugins.mailer, event, participants);
+        }
+      }
+    } catch(err) {
+      reply(err.isBoom ? err : Boom.badImplementation(err));
+    }
   }
 }

@@ -85,7 +85,7 @@ export default class {
     try {
       let eventId = request.params.eventId;
       let user = await _getUserById(getUserId(request));
-      let permitted = await _permit(_user, eventId);
+      let permitted = await _permit(user, eventId);
       let availability = await permitted.availableForEvent(eventId);
       reply(availability);
     } catch(err) {

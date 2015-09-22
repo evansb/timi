@@ -26,4 +26,27 @@ export default ($scope, $location, $state, $stateParams, $timi) => {
   $scope.backToHome = () => {
     $state.go('home');
   };
+
+  $scope.selected = 0;
+
+  $scope.clearSelection = () => {
+    for (var i = 0; i < $scope.event.timeslots.length; i++) {
+      $scope.event.timeslots[i].isSelected = false;
+    }
+    $scope.selected = 0;
+  };
+
+  $scope.selectTimeSlot = (id) => {
+    if (!$scope.event.isPending) {
+      return;
+    }
+
+    if ($scope.event.timeslots[id].isSelected) {
+      $scope.selected -= 1;
+      $scope.event.timeslots[id].isSelected = false;
+    } else {
+      $scope.selected += 1;
+      $scope.event.timeslots[id].isSelected = true;
+    }
+  };
 }
