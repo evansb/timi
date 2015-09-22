@@ -59,27 +59,49 @@ let split = (timeString) => {
   return timeString.slice(0,2).concat(':', timeString.slice(2,4));
 };
 
-let classesInThisDay = async (dateString) => {
+let availableIntervalsInThisDay = async (dateString) => {
   let date = new Date(dateString);
   let allClasses = await getAllClasses(NUSModsLinks);
   let day = dayMap[date.getDay()];
-  let result = [];
+  let intervals = [];
 
   allClasses.forEach((cls) => {
     if(cls['DayText'] === day) {
       let datetime = {date: dateString, start: split(cls.StartTime), end: split(cls.EndTime)};
-      result.push(generateRange(datetime));
+      intervals.push(generateRange(datetime));
     }
   });
 
-  console.log(result);
+  let mergedIntervals = mergeIntervals(intervals);
+  let mergedLength = mergedIntervals.length;
+  let reversedIntervals = [];
+  let startOfThisDay = Moment(date).startOf('day').toDate();
+  let endOfThisDay = Moment(date).add(1, 'days').startOf('day').toDate();
 
-  let mergedResult = mergeIntervals(result);
-  console.log(mergedResult);
-  return mergedResult;
+  if(mergedLength === 0) {
+    return [];
+  }
+
+  if(mergedIntervals[0][0] > startOfThisDay) {
+    reversedIntervals.push([startOfThisDay, mergedIntervals[0][0]]);
+  }
+
+  for(var i=1;i < mergedLength; i++) {
+    let previousEnd = mergedIntervals[i-1][1];
+    let thisStart = mergedIntervals[i][0];
+    reversedIntervals.push([previousEnd, thisStart]);
+  }
+
+  if(mergedIntervals[mergedLength-1][1] < endOfThisDay) {
+    reversedIntervals.push([mergedIntervals[mergedLength-1][1], endOfThisDay]);
+  }
+
+  console.log(reversedIntervals);
+
+  return reversedIntervals;
 };
 
-classesInThisDay('2015-09-22');
+availableIntervalsInThisDay('2015-09-22');
 
 //console.log(getAllClasses(NUSModsLinks));
 
