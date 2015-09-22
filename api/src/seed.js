@@ -17,12 +17,14 @@ export default async function() {
     {
       email: "evansb@gmail.com",
       password: "evansebastian",
-      name: "Evan Sebastian"
+      name: "Evan Sebastian",
+      NUSMods: 'http://modsn.us/wzaC7'
     },
     {
       email: "v.sharon.lynn@gmail.com",
       password: "sharonlynn",
-      name: "Sharon Lynn"
+      name: "Sharon Lynn",
+      NUSMods: 'http://modsn.us/racU2'
     },
     {
       email: "patriciawongxiwei@gmail.com",
@@ -57,25 +59,29 @@ export default async function() {
       name: "CS3216 Assignment 3 Meeting",
       deadline: moment('2015-09-18').toDate(),
       owner_id: 1,
-      location: "COM1 Level 2",
+      latitude: 10.28,
+      longitude: 5.00
     },
     {
       name: "Lunch",
       deadline: moment('2015-09-25').toDate(),
       owner_id: 1,
-      location: "PGPR e-Canteen",
+      latitude: 10.28,
+      longitude: 5.00
     },
     {
       name: "NUSSU commIT Meeting 4",
       deadline: moment('2015-10-01').toDate(),
       owner_id: 2,
-      location: "YIH NUSSU Sec",
+      latitude: 10.28,
+      longitude: 5.00
     },
     {
       name: "CS1101S Avengers Meeting",
       deadline: moment('2015-10-15').toDate(),
       owner_id: 1,
-      location: "COM1-0215",
+      latitude: 14.28,
+      longitude: 5.90
     }
   ]);
 

@@ -74,8 +74,13 @@ module.exports = [
         '{' +
           '"name":"Date with Sharon", ' +
           '"deadline": "2020-02-10", ' +
-          '"timeslots": [{"start": "2020-02-10", "end": "2020-02-11"}, {"start": "2020-03-10", "end": "2020-03-11"}], ' +
-          '"participants": [1]' +
+          '"duration":"3600000", ' +
+          '"latitude":"23.75", ' +
+          '"longitude":"-45.82", ' +
+          '"ranges": [{"date": "2020-02-10", "start": "18:00", "end": "22:00"}, ' +
+      '               {"date": "2020-03-10", "start": "18:00", "end": "22:00"}], ' +
+          '"participants": [{"id": 1, "registered": true, "important": true}, ' +
+      '                     {"id": 2, "registered": true, "important": false}] ' +
         '}',
       auth: 'jwt',
       validate: validate.newEvent,

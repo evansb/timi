@@ -14,10 +14,11 @@ exports.newEvent = (eventParams, timeslots, participants) => {
       .save(null, {transacting: t})
       .then((event) => {
         let eventId = event.get('id');
-        let createSlots = Promise.map(timeslots, (timeslot) => new Timeslot(timeslot, {hasTimestamps: true}).save('event_id', eventId, {transacting: t}));
+
+        let createSlots = Promise.map(timeslots, (timeslot) => new Timeslot({start: timeslot[0], end: timeslot[1]}, {hasTimestamps: true}).save('event_id', eventId, {transacting: t}));
         let createParticipants = Promise.map(participants, (participant) => {
-          let eventUser = {user_id: participant, event_id: eventId};
-          return User.where('id', participant).fetch()
+          let eventUser = {user_id: participant.id, event_id: eventId, important: participant.important};
+          return User.where('id', participant.id).fetch()
             .then((user) => {
               if(!user) {
                 return Promise.reject(Boom.notFound('Participant does not exist'));
