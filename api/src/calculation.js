@@ -103,14 +103,14 @@ let f = async (duration, ranges, NUSModsLinks, GCs) => {
   let groupedRanges = {};
   ranges.map((range) => {
     let date = Moment(range.date).format('YYYY-MM-DD');
-    if(groupedRanges[date] === undefined) {
+    if (groupedRanges[date] === undefined) {
       groupedRanges[date] = [];
     }
     groupedRanges[date].push(generateInterval(range));
   });
 
   // (b) sort and merge ranges to make sure no overlapping
-  for(var date in groupedRanges) {
+  for (var date in groupedRanges) {
     groupedRanges[date] = mergeIntervals(groupedRanges[date]);
   }
 
@@ -122,7 +122,7 @@ let f = async (duration, ranges, NUSModsLinks, GCs) => {
 
   let overlappingPairs = [];
 
-  for(var date in groupedRanges) {
+  for (var date in groupedRanges) {
     let input = groupedRanges[date];
     let classInThisDay = getClassesInThisDay(date, allClasses);
     let availableIntervalsInThisDay = reverseIntervals(new Date(date), classInThisDay);
@@ -131,7 +131,7 @@ let f = async (duration, ranges, NUSModsLinks, GCs) => {
 
     // can use bipartite here because both input and availableIntervalsInThisDay have no overlapping(merged),
     // so their intersections also have no overlapping
-    boxIntersect1D.bipartite(input, availableIntervalsInThisDay, function(r, b) {
+    boxIntersect1D.bipartite(input, availableIntervalsInThisDay, function (r, b) {
       overlappingPairs.push([input[r], availableIntervalsInThisDay[b]]);
     });
   }
@@ -143,22 +143,22 @@ let f = async (duration, ranges, NUSModsLinks, GCs) => {
   let finalResult = [];
 
   intersections.forEach((interval) => {
-      let start = interval[0];
-      let end = interval[1];
-      let numOfSlots = Math.floor((end - start) / duration);
-      let padding = (end - start) % duration / 2;
-      if(numOfSlots >= 1) {
-        let trimmedStart = Moment(start).add(padding, 'milliseconds');
-        for(let i=0; i<numOfSlots; i++) {
-          let newStart = Moment(trimmedStart).add(i * duration, 'milliseconds').toDate();
-          let newEnd = Moment(trimmedStart).add((i + 1) * duration, 'milliseconds').toDate();
-          finalResult.push([newStart, newEnd]);
-        }
+    let start = interval[0];
+    let end = interval[1];
+    let numOfSlots = Math.floor((end - start) / duration);
+    let padding = (end - start) % duration / 2;
+    if (numOfSlots >= 1) {
+      let trimmedStart = Moment(start).add(padding, 'milliseconds');
+      for (let i = 0; i < numOfSlots; i++) {
+        let newStart = Moment(trimmedStart).add(i * duration, 'milliseconds').toDate();
+        let newEnd = Moment(trimmedStart).add((i + 1) * duration, 'milliseconds').toDate();
+        finalResult.push([newStart, newEnd]);
       }
+    }
   });
   console.log(finalResult);
   return finalResult;
-
+}
 
 //let input = {
 //  duration: 3600000,
