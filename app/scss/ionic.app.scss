@@ -56,10 +56,21 @@ $item-avatar-border-radius:       50% !default;
 $ionicons-font-path: "../bower_components/ionic/fonts" !default;
 
 // Include all of Ionic
+@import "../node_modules/please-wait/build/please-wait.css";
+@import '../bower_components/spinkit/scss/spinners/9-cube-grid';
 @import "../bower_components/ionic/scss/ionic";
 @import "../bower_components/ion-autocomplete/dist/ion-autocomplete";
 @import "../bower_components/Ionicons/scss/ionicons";
+@import "./spinner";
 @import "./theme";
+
+body > .inner {
+  display: none;
+}
+
+body.pg-loaded > .inner {
+  display: block;
+}
 
 .padding-big {
   padding-left: 40px !important;
@@ -382,4 +393,11 @@ $ionicons-font-path: "../bower_components/ionic/fonts" !default;
 .timi-header-button-light {
   @extend .button-light;
   color: $light !important;
+}
+
+.pg-loading-logo {
+  position: relative;
+  width: 60%;
+  height: 100%;
+  left: 0;
 }

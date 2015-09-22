@@ -11,6 +11,7 @@ import 'ionic';
 import 'ionic-timepicker';
 import 'ion-autocomplete';
 
+import splash         from './splash';
 import _              from 'lodash'
 import startup        from './startup';
 import common         from './common';
@@ -55,3 +56,11 @@ _.forEach(components, (component) => {
 
 // Initialize the app
 app.run(startup)
+
+window.onload = () => {
+  var splashScreen;
+  splashScreen = splash();
+  setTimeout(() => {
+    splashScreen.finish();
+  }, 2);
+};
