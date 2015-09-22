@@ -60,6 +60,7 @@ $ionicons-font-path: "../bower_components/ionic/fonts" !default;
 @import "../bower_components/ion-autocomplete/dist/ion-autocomplete";
 @import "../bower_components/Ionicons/scss/ionicons";
 @import "./theme";
+@import "../src/components/ionic-datepicker/ionic-datepicker.styles";
 
 .padding-big {
   padding-left: 40px !important;

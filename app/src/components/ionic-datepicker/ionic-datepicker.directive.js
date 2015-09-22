@@ -21,11 +21,11 @@ export default function($ionicPopup, $ionicModal, IonicDatepickerService) {
       scope.setLabel = scope.inputObj.setLabel ? (scope.inputObj.setLabel) : 'Set';
       scope.errorMsgLabel = scope.inputObj.errorMsgLabel ? (scope.inputObj.errorMsgLabel) : 'Please select a date.';
       scope.setButtonType = scope.inputObj.setButtonType ? (scope.inputObj.setButtonType) : 'button-positive';
-      scope.todayButtonType = scope.inputObj.todayButtonType ? (scope.inputObj.todayButtonType) : 'button-stable';
+      scope.todayButtonType = scope.inputObj.todayButtonType ? (scope.inputObj.todayButtonType) : 'button-positive';
       scope.closeButtonType = scope.inputObj.closeButtonType ? (scope.inputObj.closeButtonType) : 'button-stable';
       scope.templateType = scope.inputObj.templateType ? (scope.inputObj.templateType) : 'modal';
-      scope.modalHeaderColor = scope.inputObj.modalHeaderColor ? (scope.inputObj.modalHeaderColor) : 'bar-stable';
-      scope.modalFooterColor = scope.inputObj.modalFooterColor ? (scope.inputObj.modalFooterColor) : 'bar-stable';
+      scope.modalHeaderColor = scope.inputObj.modalHeaderColor ? (scope.inputObj.modalHeaderColor) : 'bar-positive';
+      scope.modalFooterColor = scope.inputObj.modalFooterColor ? (scope.inputObj.modalFooterColor) : 'bar-positive';
 
       scope.enableDatesFrom = {epoch: 0, isSet: false};
       scope.enableDatesTo = {epoch: 0, isSet: false};

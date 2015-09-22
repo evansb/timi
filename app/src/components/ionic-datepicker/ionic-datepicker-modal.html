@@ -18,7 +18,8 @@
             <div class="col col-50 month_dropdown">
               <div class="list">
                 <label class="item item-input item-select">
-                  <select ng-model="currentMonth" ng-change="monthChanged(currentMonth)" class="month_select">
+                  <select ng-model="currentMonth" ng-change="monthChanged(currentMonth)"
+                          class="month_select">
                     <option value="{{month}}" ng-repeat="month in monthsList"
                             ng-selected="month == currentMonthSelected">
                       {{month}}
@@ -74,9 +75,8 @@
   </ion-content>
   <ion-footer-bar  ng-class="modalFooterColor">
     <div class="row no_padding">
-      <div class="col-33 text-center" ng-click="closeIonicDatePickerModal()"><button class="button button-clear">{{closeLabel}}</button></div>
-      <div class="col-34 text-center" ng-click="setIonicDatePickerTodayDate()"><button class="button button-clear">{{todayLabel}}</button></div>
-      <div class="col-33 text-center" ng-click="setIonicDatePickerDate()"><button class="button button-clear">{{setLabel}}</button></div>
+      <div class="col-50 text-center" ng-click="setIonicDatePickerDate()"><button class="button button-clear">{{setLabel}}</button></div>
+      <div class="col-50 text-center" ng-click="closeIonicDatePickerModal()"><button class="button button-clear">{{closeLabel}}</button></div>
     </div>
   </ion-footer-bar>
 </ion-modal-view>
