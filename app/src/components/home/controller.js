@@ -1,10 +1,20 @@
 import _ from 'lodash';
 
 export default ($scope, $state, $timi) => {
-  $scope.contexts = [
-    { title: 'Invites', get () { return $scope.invites; } },
-    { title: 'Scheduled', get () { return $scope.scheduled; } }
-  ]
+  $scope.contexts = {
+    Invites: {
+      title: 'Invites',
+      get() {
+        return $scope.invites;
+      }
+    },
+    Scheduled: {
+      title: 'Scheduled',
+      get() {
+        return $scope.scheduled;
+      }
+    }
+  };
   $scope.goToCreate = () => {
     $state.go('create');
   };
