@@ -18,37 +18,39 @@ export default async function() {
       email: "evansb@gmail.com",
       password: "evansebastian",
       name: "Evan Sebastian",
-      NUSMods: 'http://modsn.us/wzaC7'
+      nusmods: 'http://modsn.us/wzaC7'
     },
     {
       email: "v.sharon.lynn@gmail.com",
       password: "sharonlynn",
       name: "Sharon Lynn",
-      NUSMods: 'http://modsn.us/racU2'
+      nusmods: 'http://modsn.us/racU2'
     },
     {
       email: "patriciawongxiwei@gmail.com",
       password: "patriciawongxiwei",
-      name: "Patricia Wong Xi Wei"
+      name: "Patricia Wong Xi Wei",
+      nusmods: "http://modsn.us/srPA6"
     },
     {
       email: "a0133920@u.nus.edu",
       password: "liuyang",
-      name: "Liu Yang"
+      name: "Liu Yang",
+      nusmods: 'http://modsn.us/zDqUG'
     },
     {
       email: "a0126539@u.nus.edu",
       password: "anthony",
-      name: "Anthony Chandra"
+      name: "Anthony Chandra",
+      nusmods: 'http://modsn.us/7JuvW',
     },
     {
       email: "nathanajah@gmail.com",
       password: "nathanazaria",
-      name: "Nathan Azaria"
+      name: "Nathan Azaria",
+      nusmods: 'http://modsn.us/zzevJ',
     }
   ]);
-
-  console.log(userData);
 
   // users
   await bookshelf.knex('users').insert(userData);
@@ -347,5 +349,5 @@ export default async function() {
       timeslot_id: 2,
     }
   ]);
-  console.log("done");
+  console.log("seeding done");
 }
