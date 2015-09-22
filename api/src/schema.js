@@ -12,7 +12,10 @@ export default function () {
       t.increments().primary();
       t.string('email').unique().notNullable();
       t.string('password').notNullable();
-      t.string('name');
+      t.string('name').notNullable();
+      t.string('profile_url');
+      t.string('NUSMods');
+      t.string('google_id');
       t.timestamps();
     })
     .createTable('events',  (t) => {
@@ -24,7 +27,8 @@ export default function () {
         .references('users.id')
         .onDelete('cascade')
         .onUpdate('cascade');
-      t.string('location');
+      t.decimal('latitude');
+      t.decimal('longitude');
       t.timestamps();
     })
     .createTable('events_users', (t) => {

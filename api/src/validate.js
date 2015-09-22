@@ -12,8 +12,8 @@ var userSchema = Joi.object().keys({
 
 var rangeSchema = Joi.object().keys({
   date: Joi.date().required().min(new Date()),
-  start: Joi.required(),
-  end: Joi.required().min(Joi.ref('start'))
+  start: Joi.date().required(),
+  end: Joi.date().required().min(Joi.ref('start'))
 });
 
 var participantSchema = Joi.object().keys({
