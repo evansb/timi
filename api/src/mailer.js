@@ -9,7 +9,7 @@ exports.sendInvitationEmail = (mailer, event, owner, users) => {
       to: user.get('email'),
       subject: ownerName + ' invites you to event ' + eventName,
       html: {
-        path: 'invitation.html'
+        path: '../email/invitation.html'
       },
       context: {
         name: user.get('name'),
@@ -37,7 +37,7 @@ exports.sendConfirmationEmail = (mailer, event, users) => {
       to: user.get('email'),
       subject: 'Please confirm your availabilities for event ' + eventName,
       html: {
-        path: 'confirmation.html'
+        path: '../email/confirmation.html'
       },
       context: {
         name: user.get('name'),
@@ -62,11 +62,12 @@ exports.sendScheduleEmail = (mailer, event, users) => {
       to: user.get('email'),
       subject: 'The event ' + eventName + ' has been scheduled',
       html: {
-        path: 'schedule.html'
+        path: '../email/schedule.html'
       },
       context: {
         name: user.get('name'),
-        eventName: eventName
+        eventName: eventName,
+        eventId: event.get('id')
       }
     };
     mailer.sendMail(data, (err, info) => {
