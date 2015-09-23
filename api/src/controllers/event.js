@@ -1,11 +1,11 @@
-import Boom         from 'boom';
-import transactions from '../transactions';
-import User         from '../models/user';
-import Event        from '../models/event';
-import Mailer       from '../mailer';
-import JWT          from 'jsonwebtoken';
+import Boom              from 'boom';
+import transactions      from '../transactions';
+import User              from '../models/user';
+import Event             from '../models/event';
+import Mailer            from '../mailer';
+import JWT               from 'jsonwebtoken';
 import generateTimeslots from '../calculation';
-import Promise      from 'bluebird';
+import Promise           from 'bluebird';
 
 let _permit = async (user, eventId) => {
   let result = await user.belongToEvent(eventId);
@@ -56,7 +56,7 @@ let fetchCalender = async (participants) => {
     return _getUserById(participant.id)
       .then((user) => {
         if(!user) {
-          throw new Error('This user does not exist');
+          throw Boom.notFound('This user does not exist');
         } else {
           return [user.get('nusmods'), user.get('google_id')];
         }

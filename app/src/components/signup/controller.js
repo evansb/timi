@@ -1,4 +1,3 @@
-import validator from 'validator'
 
 export default ($scope, $notification, $state, $auth) => {
 
@@ -7,7 +6,7 @@ export default ($scope, $notification, $state, $auth) => {
   }
 
   $scope.signup = async () => {
-    if (!validator.isEmail($scope.email)) {
+    if (!$scope.email) {
       let message = 'Invalid email address';
       $notification.send({ type: 'modal', message: message});
     } else if ($scope.password && $scope.password.length < 4) {

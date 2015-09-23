@@ -19,7 +19,8 @@
     "gulp-util": "^2.2.14",
     "shelljs": "^0.3.0",
     "vinyl-buffer": "^1.0.0",
-    "vinyl-source-stream": "^1.1.0"
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.4.0"
   },
   "cordovaPlugins": [
     "cordova-plugin-device",
@@ -33,14 +34,5 @@
       "platform": "android",
       "locator": "browser"
     }
-  ],
-  "dependencies": {
-    "es6-shim": "^0.33.3",
-    "lodash": "^3.10.1",
-    "moment": "^2.10.6",
-    "moment-range": "^2.0.3",
-    "satellizer": "^0.12.5",
-    "validator": "^4.0.5",
-    "watchify": "^3.4.0"
-  }
+  ]
 }

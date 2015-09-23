@@ -1,4 +1,5 @@
 import moment from 'moment';
+import 'moment-range';
 import _ from 'lodash';
 
 export default ($scope, $state, $timi, $rootScope, localStorageService) => {
@@ -15,14 +16,12 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
 
   let slotToRequest = (slot) => {
     let result = [];
-    let timeStart = moment(slot.timeStart).format('hh:mm');
-    let timeEnd = moment(slot.timeEnd).format('hh:mm');
     let range = moment.range(slot.dateStart, slot.dateEnd);
     range.by('days', date => {
       result.push({
-        date: date.format('YYYY-MM-DD'),
-        start: timeStart,
-        end: timeEnd
+        date: date,
+        start: slot.timeStart * 1000,
+        end: slot.timeEnd * 1000
       });
     });
     return result;
