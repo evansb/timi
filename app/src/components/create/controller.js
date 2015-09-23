@@ -15,14 +15,18 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
     deadline: $scope.newEvent.deadline || moment().startOf('tomorrow').valueOf()
   };
 
+  let normalize = (s) => {
+    return moment().startOf('day').add(s, 'seconds').format('HH:mm');
+  };
+
   let slotToRequest = (slot) => {
     let result = [];
     let range = moment.range(slot.dateStart, slot.dateEnd);
     range.by('days', date => {
       result.push({
-        date: date,
-        start: slot.timeStart * 1000,
-        end: slot.timeEnd * 1000
+        date: date.format('YYYY-MM-DD'),
+        start: normalize(slot.timeStart),
+        end: normalize(slot.timeEnd)
       });
     });
     return result;
