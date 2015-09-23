@@ -8,7 +8,8 @@
     <div class='list'>
       <label class='item item-input'>
         <input type='text' placeholder='Title'
-               ng-model='newEvent.name' />
+               ng-model='newEvent.name'
+               validation='min_len:3|required'/>
       </label>
       <label class='item item-input'>
         <input type='text' placeholder='Location'
