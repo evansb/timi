@@ -10,6 +10,9 @@ import 'satellizer';
 import 'ionic';
 import 'ionic-timepicker';
 import 'ion-autocomplete';
+import 'angular-translate';
+import 'angular-translate-loader-static-files';
+import 'angular-validation-ghiscoding';
 
 import _              from 'lodash'
 import startup        from './startup';
@@ -20,10 +23,21 @@ let app = angular.module('timi', [
   'ionic',
   'ionic-timepicker',
   'ion-autocomplete',
+  'pascalprecht.translate',
+  'ghiscoding.validation',
   'satellizer',
   'ngResource',
   'LocalStorageModule'
 ]);
+
+app.config(($translateProvider) => {
+  $translateProvider.useStaticFileLoader({
+    prefix: '../bower_components/angular-validation-ghiscoding/locales/validation/',
+    suffix: '.json'
+  });
+
+  $translateProvider.preferredLanguage('en').fallbackLanguage('en');
+});
 
 components.push(common);
 

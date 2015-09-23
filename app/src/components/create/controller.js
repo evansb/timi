@@ -180,6 +180,7 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
     to: moment().add(5, 'years').toDate(),
     setButtonType: 'button-energized',
     callback: function(val) {
+      if (val === undefined) return;
       let timePart = moment($scope.newEvent.deadline).valueOf() -
         (+moment($scope.newEvent.deadline).startOf('day').valueOf());
       $scope.newEvent.deadline = moment(val).valueOf() + timePart;
@@ -192,8 +193,9 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
     step: 1,
     setButtonType: 'button-energized',
     callback: function(val) {
+      if (val === undefined) return;
       let dayPart = (+moment($scope.newEvent.deadline).startOf('day'));
-      $scope.deadline = dayPart + (val * 1000);
+      $scope.newEvent.deadline = dayPart + (val * 1000);
     }
   };
 
@@ -212,6 +214,7 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
     step: 5,
     setButtonType: 'button-energized',
     callback: function(val) {
+      if (val === undefined) return;
       $scope.newEvent.duration = val * 1000;
     }
   };
