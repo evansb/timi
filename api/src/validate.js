@@ -32,10 +32,10 @@ var participantSchema = Joi.object().keys({
 var eventSchema = Joi.object().keys({
   name: Joi.string().max(50).required(),
   deadline: Joi.date().min(new Date()),
-  duration: Joi.number().integer().positive().required(),
+  duration: Joi.number().integer().positive().required().min(600000),
   latitude: Joi.number(),
   longitude: Joi.number(),
-  ranges: Joi.array().items(rangeSchema).min(1).unique().required(),
+  ranges: Joi.array().items(rangeSchema).min(1).max(10).unique().required(),
   participants: Joi.array().items(participantSchema).min(1).unique().required()
 });
 
