@@ -75,6 +75,7 @@ export default class {
     let ranges = eventParams.ranges;
     let duration = eventParams.duration;
     let participantsParams = eventParams.participants;
+    eventParams.deadline = new Date(eventParams.deadline);
     delete eventParams.participants;
     delete eventParams.ranges;
     delete eventParams.duration;
@@ -195,7 +196,7 @@ export default class {
     let eventId = request.params.eventId;
     let confirmations = request.payload;
     try {
-      let user = await _getUserById(request.auth.credentials.id)
+      let user = await _getUserById(request.auth.credentials.id);
       let permitted = await _permit(user, eventId);
       let event = await _getEventById(eventId);
       let fullyParticipated = await event.isFullyParticipated();
