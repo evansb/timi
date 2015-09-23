@@ -63,6 +63,10 @@ exports.updateUser = {
   payload: updateUserSchema
 };
 
+exports.resetPassword = {
+  payload: passwordSchema
+};
+
 exports.userInfo = {
   params: {
     userId: idSchema
