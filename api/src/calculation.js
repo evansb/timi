@@ -3,6 +3,8 @@ import mergeIntervals from './lib/mergeIntervals';
 import NUSMods from './vendor/nusmods';
 import Promise    from 'bluebird';
 import boxIntersect1D from 'box-intersect-1d';
+import Boom from 'boom';
+
 
 let dayMap = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
@@ -23,7 +25,7 @@ let generateInterval = (r) => {
   let start = new Date(date.concat(' ', r.start));
   let end = new Date(date.concat(' ', r.end));
   if(start.toString() === "Invalid Date" || end.toString() === "Invalid Date" || start >= end) {
-    throw new Error('invalid time range');
+    throw new Boom.badRequest('invalid time range');
   }
   return [start, end];
 };
