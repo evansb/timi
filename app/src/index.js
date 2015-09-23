@@ -30,12 +30,11 @@ let app = angular.module('timi', [
   'LocalStorageModule'
 ]);
 
-app.config(($translateProvider) => {
-  $translateProvider.useStaticFileLoader({
-    prefix: '../bower_components/angular-validation-ghiscoding/locales/validation/',
+app.config(function ($translateProvider) {
+  $translateProvider.useStaticFilesLoader({
+    prefix: '/bower_components/angular-validation-ghiscoding/locales/validation/',
     suffix: '.json'
   });
-
   $translateProvider.preferredLanguage('en').fallbackLanguage('en');
 });
 
@@ -43,7 +42,7 @@ components.push(common);
 
 // Require credentials for all request
 app.config(($httpProvider, $authProvider) => {
-  $authProvider.signupRedirect = '/home';  
+  $authProvider.signupRedirect = '/home';
   $authProvider.baseUrl = (window.location.hostname == 'localhost')?
     'http://localhost:8000/api': 'http://timiapp.me/api';
   $authProvider.loginUrl = '/me/login';
