@@ -114,7 +114,7 @@ export default class {
         throw Boom.badRequest('User with this email exists');
       } else {
         let token = JWT.sign(user, process.env.PRIVATE_KEY);
-        reply({ token }).header('Authorization', token);
+        reply({ token }).header('Authorization', token).code(201);
       }
     } catch(err) {
       reply(err.isBoom ? err : Boom.badImplementation(err));
@@ -185,7 +185,7 @@ export default class {
     try {
       let user = await _getUserById(getUserId(request));
       let updated = await user.updatePassword(password);
-      let token = JWT.sign(user, process.env.PRIVATE_KEY);
+      let token = JWT.sign(updated, process.env.PRIVATE_KEY);
       reply({ token }).header('Authorization', token);
     } catch(err) {
       reply(err.isBoom ? err : Boom.badImplementation(err));

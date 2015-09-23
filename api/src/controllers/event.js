@@ -58,15 +58,45 @@ let fetchCalender = async (participants) => {
         if(!user) {
           throw Boom.notFound('This user does not exist');
         } else {
-          return [user.get('nusmods'), user.get('google_id')];
+          return [user, user.get('nusmods'), user.get('google_id'), participant.important];
         }
       });
   });
 
-  let NUSModsC = calenders.map((_) => _[0]).filter((c) => c !== null);
-  let googleC = calenders.map((_) => _[1]).filter((c) => c !== null);
-  return [NUSModsC, googleC];
+  let important = calenders.filter((_) => _[3]);
+  let normal = calenders.filter((_) => !_[3]);
+  return {important: important, normal: normal};
 };
+
+let mapToNUSMods = (calenders) => {
+  return calenders.map((_) => _[1]).filter((c) => c !== null);
+};
+
+let mapToGoogleC = (calenders) => {
+  return calenders.map((_) => _[2]).filter((c) => c !== null);
+};
+
+let calculateTimeslots = async (duration, ranges, userCalenders) => {
+  // get those should not be removed: either important or no calender
+  let normalNoCanlentder = userCalenders.normal.filter((_) => _[1]===null && _[2]===null);
+  let must = userCalenders.important.concat(normalNoCanlentder);
+
+  // get those can be removed
+  let fulfilledOptional = userCalenders.normal.filter((_) => _[1]!==null || _[2]!==null);
+  let nonFulfilledOptional = [];
+
+  let thisRound = must.concat(fulfilledOptional);
+  let minimumRequirement = Math.ceil(thisRound.length/2);
+  let timeslots = await generateTimeslots(duration, ranges, mapToNUSMods(thisRound), mapToGoogleC(thisRound));
+
+  while(fulfilledOptional.length > 0 && timeslots.length === 0 && thisRound.length > minimumRequirement) {
+    nonFulfilledOptional.push(fulfilledOptional.pop());
+    thisRound = must.concat(fulfilledOptional);
+    timeslots = await generateTimeslots(duration, ranges, mapToNUSMods(thisRound), mapToGoogleC(thisRound));
+  }
+  return {timeslots: timeslots, nonFulfilled: nonFulfilledOptional};
+}
+
 
 export default class {
 
@@ -75,15 +105,14 @@ export default class {
     let ranges = eventParams.ranges;
     let duration = eventParams.duration;
     let participantsParams = eventParams.participants;
+    eventParams.deadline = new Date(eventParams.deadline);
     delete eventParams.participants;
     delete eventParams.ranges;
     delete eventParams.duration;
 
     try {
-      let calenders = await fetchCalender(participantsParams);
-      console.log(duration, ranges, calenders[0], calenders[1]);
-      let timeslots = await generateTimeslots(duration, ranges, calenders[0], calenders[1]);
-      let userId = await _getUserById(1).get('id');
+      let user = await _getUserById(getUserId(request));
+      let userId = user.get('id');
       eventParams.owner_id = userId;
       if (!ownerInList(userId, participantsParams)) {
         participantsParams.push({id: userId, registered: true, important: false});
@@ -92,6 +121,21 @@ export default class {
       reply(event);
       // let participants = await event.getParticipants();
       // Mailer.sendInvitationEmail(request.server.plugins.mailer, event, user, participants);
+
+      let calenders = await fetchCalender(participantsParams);
+      let calculated = await calculateTimeslots(duration, ranges, calenders);
+
+      let timeslots = calculated.timeslots;
+
+      if(timeslots.length === 0) {
+        reply('Sorry, there is no possible timeslots for this event');
+      } else {
+        let event = await transactions.newEvent(eventParams, timeslots, participantsParams);
+        event = await _getEventById(event.get('id'));
+        reply({ event: event, nonFulfillUser: calculated.nonFulfilled}).code(201);
+        let participants = await event.getParticipants();
+        Mailer.sendInvitationEmail(request.server.plugins.mailer, event, user, participants);
+      }
     } catch(err) {
       reply(err.isBoom ? err : Boom.badImplementation(err));
     }
@@ -194,7 +238,7 @@ export default class {
     let eventId = request.params.eventId;
     let confirmations = request.payload;
     try {
-      let user = await _getUserById(request.auth.credentials.id)
+      let user = await _getUserById(getUserId(request));
       let permitted = await _permit(user, eventId);
       let event = await _getEventById(eventId);
       let fullyParticipated = await event.isFullyParticipated();
