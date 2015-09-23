@@ -4,6 +4,7 @@ import NUSMods from './vendor/nusmods';
 import Promise    from 'bluebird';
 import boxIntersect1D from 'box-intersect-1d';
 import Boom from 'boom';
+import getWeekText from './calender';
 
 
 let dayMap = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -59,7 +60,7 @@ let reverseIntervals = (date, intervals) => {
     }
   }
   return reversedIntervals;
-}
+};
 
 // input a pair of intersecting intervals (a pair of pair), output their overlap (a pair)
 // it only works for intersecting intervals, if not, output will be wrong
@@ -84,18 +85,19 @@ let split = (timeString) => {
 
 let getClassesInThisDay = (dateString, allClasses) => {
   let date = new Date(dateString);
-  let day = dayMap[date.getDay()];
+  let dayText = dayMap[date.getDay()];
+  let weekText = getWeekText(date);
   let intervals = [];
 
   allClasses.forEach((cls) => {
-    if(cls['DayText'] === day) {
-      let datetime = {date: dateString, start: split(cls.StartTime), end: split(cls.EndTime)};
+    if(cls.DayText === dayText && weekText.indexOf(cls.WeekText) >=0) {
+      let datetime = {date: new Date(dateString), start: split(cls.StartTime), end: split(cls.EndTime)};
       intervals.push(generateInterval(datetime));
     }
   });
 
   return mergeIntervals(intervals);
-}
+};
 
 
 
@@ -161,9 +163,8 @@ let f = async (duration, ranges, NUSModsLinks, GCs) => {
       }
     }
   });
-  //console.log(finalResult);
   return finalResult;
-}
+};
 
 //let input = {
 //  duration: 3600000,
