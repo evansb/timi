@@ -81,18 +81,17 @@ export default class {
 
     try {
       let calenders = await fetchCalender(participantsParams);
+      console.log(duration, ranges, calenders[0], calenders[1]);
       let timeslots = await generateTimeslots(duration, ranges, calenders[0], calenders[1]);
-
-      let user = await _getUserById(getUserId(request));
-      let userId = user.get('id');
+      let userId = await _getUserById(1).get('id');
       eventParams.owner_id = userId;
       if (!ownerInList(userId, participantsParams)) {
         participantsParams.push({id: userId, registered: true, important: false});
       }
       let event = await transactions.newEvent(eventParams, timeslots, participantsParams);
       reply(event);
-      let participants = await event.getParticipants();
-      Mailer.sendInvitationEmail(request.server.plugins.mailer, event, user, participants);
+      // let participants = await event.getParticipants();
+      // Mailer.sendInvitationEmail(request.server.plugins.mailer, event, user, participants);
     } catch(err) {
       reply(err.isBoom ? err : Boom.badImplementation(err));
     }

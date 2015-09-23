@@ -8,10 +8,11 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
 
   $scope.newEvent = localStorageService.get('newEvent') || {};
   $scope.newEvent = {
+    name: $scope.newEvent.name || "",
     timeslots: $scope.newEvent.timeslots || [],
     duration: $scope.newEvent.duration || 3600000,
     participants: $scope.newEvent.participants || {},
-    deadline: $scope.newEvent.deadline || moment().startOf('tomorrow')
+    deadline: $scope.newEvent.deadline || moment().startOf('tomorrow').valueOf()
   };
 
   let slotToRequest = (slot) => {
@@ -175,9 +176,10 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
     to: moment().add(5, 'years').toDate(),
     setButtonType: 'button-energized',
     callback: function(val) {
-      let timePart = $scope.deadline -
-        (+moment($scope.deadline).startOf('day'));
-      $scope.deadline = (val * 1000) + timePart;
+      let timePart = moment($scope.newEvent.deadline).valueOf() -
+        (+moment($scope.newEvent.deadline).startOf('day').valueOf());
+      $scope.newEvent.deadline = moment(val).valueOf() + timePart;
+      console.log($scope.newEvent.deadline);
     }
   };
 
@@ -186,7 +188,7 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
     step: 1,
     setButtonType: 'button-energized',
     callback: function(val) {
-      let dayPart = (+moment($scope.deadline).startOf('day'));
+      let dayPart = (+moment($scope.newEvent.deadline).startOf('day'));
       $scope.deadline = dayPart + (val * 1000);
     }
   };

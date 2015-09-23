@@ -8,13 +8,11 @@
     <div class='list'>
       <label class='item item-input'>
         <input type='text' placeholder='Title'
-               ng-model='newEvent.name'
-               ng-model-options=" {getterSetter: true }" >
+               ng-model='newEvent.name' />
       </label>
       <label class='item item-input'>
         <input type='text' placeholder='Location'
-               ng-model='newEvent.location'
-               ng-model-options=" {getterSetter: true }">
+               ng-model='newEvent.location' />
       </label>
       <label class='item item-input'>
         <span class='input-label'>Duration</span>
@@ -23,7 +21,6 @@
             {{ displayDuration(newEvent.duration) }}
           </button>
         </ionic-timepicker>
-        <input type='text'>
       </label>
     </div>
   </div>

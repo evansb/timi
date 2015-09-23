@@ -120,7 +120,7 @@ let f = async (duration, ranges, NUSModsLinks, GCs) => {
   // 2. pre-process NUSMods
 
   let allClasses = await getAllClasses(NUSModsLinks);
-
+  console.log(allClasses);
   // 3. calculate intervals
 
   let overlappingPairs = [];
@@ -158,7 +158,7 @@ let f = async (duration, ranges, NUSModsLinks, GCs) => {
       }
     }
   });
-  //console.log(finalResult);
+
   return finalResult;
 }
 
