@@ -56,7 +56,7 @@ let fetchCalender = async (participants) => {
     return _getUserById(participant.id)
       .then((user) => {
         if(!user) {
-          throw new Error('This user does not exist');
+          throw Boom.notFound('This user does not exist');
         } else {
           return [user.get('NUSMods'), user.get('google_id')];
         }
