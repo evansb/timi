@@ -8,106 +8,97 @@
     <div class='list'>
       <label class='item item-input'>
         <input type='text' placeholder='Title'
-               ng-model='newEvent.name'
-               ng-model-options=" {getterSetter: true }" >
+               ng-model='newEvent.name' />
       </label>
       <label class='item item-input'>
         <input type='text' placeholder='Location'
-               ng-model='newEvent.location'
-               ng-model-options=" {getterSetter: true }">
+               ng-model='newEvent.location' />
       </label>
       <label class='item item-input'>
         <span class='input-label'>Duration</span>
         <ionic-timepicker input-obj="timepickerDuration">
           <button class="button button-clear button-energized">
-            {{ (duration.time) || "Tap to change" }}
+            {{ displayDuration(newEvent.duration) }}
           </button>
         </ionic-timepicker>
-        <input type='text'>
       </label>
     </div>
   </div>
 </div>
 
-<div class='row'>
-  <div class='col text-center'>
-    <h4 class='positive'>Possible Dates</h4>
-  </div>
-</div>
-<div class='row timi-inline-form'>
-  <div class='col'>
-    <div class='list'>
-      <label class='item item-input'>
-        <span class='input-label'>From</span>
-        <ionic-datepicker input-obj="datepickerStart">
-          <button class="button button-clear button-energized">
-            {{ (datepicker.startValue | date: 'dd MMM yyyy') || "Tap to change" }}
-          </button>
-        </ionic-datepicker>
-      </label>
-      <label class='item item-input'>
-        <span class='input-label'>To</span>
-        <ionic-datepicker input-obj="datepickerEnd">
-          <button class="button button-clear button-energized">
-            {{ (datepicker.endValue | date: 'dd MMM yyyy') || "Tap to change" }}
-          </button>
-        </ionic-datepicker>
-        <input type='text'>
-      </label>
-    </div>
-  </div>
-</div>
-<div class='row'>
-  <div class='col text-center'>
-    <h4 class='positive'>Possible Times</h4>
-  </div>
-</div>
-<div class='row timi-inline-form'>
-  <div class='col'>
-    <div class='list'>
-      <label class='item item-input'>
-        <span class='input-label'>From</span>
-        <ionic-timepicker input-obj="timepickerStart">
-          <button class="button button-clear button-energized">
-            {{ (timepicker.startValue | date: 'hh:mm') || "Tap to change" }}
-          </button>
-        </ionic-timepicker>
-      </label>
-      <label class='item item-input'>
-        <span class='input-label'>To</span>
-        <ionic-timepicker input-obj="timepickerEnd">
-          <button class="button button-clear button-energized">
-            {{ (timepicker.endValue | date: 'hh:mm') || "Tap to change" }}
-          </button>
-        </ionic-timepicker>
-      </label>
-    </div>
-  </div>
-</div>
 <div class="row">
   <div class="col text-center">
-    <h4 class='positive'>Deadline</h4>
+    <h4 class='positive'>Indicate By</h4>
   </div>
 </div>
 <div class='row timi-inline-form'>
-  <div class='col'>
-    <div class='list'>
-      <label class='item item-input'>
-        <span class='input-label'>Date</span>
-        <ionic-datepicker input-obj="datepickerDeadline">
-          <button class="button button-clear button-energized">
-            {{ (deadline.date | date: 'dd MMM yyyy') || "Tap to change" }}
-          </button>
-        </ionic-datepicker>
-      </label>
-      <label class='item item-input'>
-        <span class='input-label'>Time</span>
-        <ionic-timepicker input-obj="timepickerDeadline">
-          <button class="button button-clear button-energized">
-            {{ (deadline.time) || "Tap to change" }}
-          </button>
-        </ionic-timepicker>
-      </label>
-    </div>
+  <label class='col-50 text-center'>
+    <ionic-datepicker input-obj="datepickerDeadline">
+      <button class="button button-clear button-energized">
+        {{ formatDate(newEvent.deadline) }}
+      </button>
+    </ionic-datepicker>
+  </label>
+  <label class='col-50 text-center'>
+    <ionic-timepicker input-obj="timepickerDeadline">
+      <button class="button button-clear button-energized">
+        {{ formatTime(newEvent.deadline) }}
+      </button>
+    </ionic-timepicker>
+  </label>
+</div>
+
+<div class='row'>
+  <div class='col text-center'>
+    <h4 class='positive'>Date/Time Availability</h4>
   </div>
+</div>
+  <div class='row'>
+    <label class='col-50 text-right'>
+      <ionic-datepicker input-obj="datepickerStart">
+        <button class="button button-clear button-energized">
+          {{ formatDate(datepicker.startValue) }}
+        </button>
+      </ionic-datepicker>
+    </label>
+    <label class='col-50'>
+      <ionic-datepicker input-obj="datepickerEnd">
+        <button class="button button-clear button-energized">
+          {{ formatDate(datepicker.endValue) }}
+        </button>
+      </ionic-datepicker>
+    </label>
+  </div>
+  <div class='row'>
+    <label class='col-50 text-right'>
+      <ionic-timepicker input-obj="timepickerStart">
+        <button class="button button-clear button-energized">
+          {{ normalize(timepicker.startValue) }}
+        </button>
+      </ionic-timepicker>
+    </label>
+    <label class='col-50'>
+      <ionic-timepicker input-obj="timepickerEnd">
+        <button class="button button-clear button-energized">
+          {{ normalize(timepicker.endValue) }}
+        </button>
+      </ionic-timepicker>
+    </label>
+  </div>
+<div class='row'>
+  <div class="col col-50">
+    <button class='button button-outline button-energized button-block'
+            ng-click='addTimeslot()'>
+      Add
+    </button>
+  </div>
+  <div class="col">
+    <button class='button button-outline button-energized button-block'
+            ng-click='clearTimeslot()'>
+      Clear
+    </button>
+  </div>
+</div>
+  <timi-availability-card ng-repeat="slot in newEvent.timeslots" ng-model="slot">
+  </timi-availability-card>
 </div>

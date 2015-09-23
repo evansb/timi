@@ -6,8 +6,8 @@ exports.options = {
   transport: {
     service: 'Gmail',
     auth: {
-      user: 'our username',
-      pass: 'our password'
+      user: 'timiapp.me@gmail.com',
+      pass: 'timiopensesame'
     }
   },
   views: {

@@ -19,8 +19,8 @@ var updateUserSchema = Joi.object().keys({
 
 var rangeSchema = Joi.object().keys({
   date: Joi.date().required().min(new Date()),
-  start: Joi.date().required(),
-  end: Joi.date().required()
+  start: Joi.string().required(),
+  end: Joi.string().required()
 });
 
 var participantSchema = Joi.object().keys({

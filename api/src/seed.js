@@ -18,37 +18,39 @@ export default async function() {
       email: "evansb@gmail.com",
       password: "evansebastian",
       name: "Evan Sebastian",
-      NUSMods: 'http://modsn.us/wzaC7'
+      nusmods: 'http://modsn.us/wzaC7'
     },
     {
       email: "v.sharon.lynn@gmail.com",
       password: "sharonlynn",
       name: "Sharon Lynn",
-      NUSMods: 'http://modsn.us/racU2'
+      nusmods: 'http://modsn.us/racU2'
     },
     {
       email: "patriciawongxiwei@gmail.com",
       password: "patriciawongxiwei",
-      name: "Patricia Wong Xi Wei"
+      name: "Patricia Wong Xi Wei",
+      nusmods: "http://modsn.us/srPA6"
     },
     {
       email: "a0133920@u.nus.edu",
       password: "liuyang",
-      name: "Liu Yang"
+      name: "Liu Yang",
+      nusmods: 'http://modsn.us/zDqUG'
     },
     {
       email: "a0126539@u.nus.edu",
       password: "anthony",
-      name: "Anthony Chandra"
+      name: "Anthony Chandra",
+      nusmods: 'http://modsn.us/7JuvW',
     },
     {
       email: "nathanajah@gmail.com",
       password: "nathanazaria",
-      name: "Nathan Azaria"
+      name: "Nathan Azaria",
+      nusmods: 'http://modsn.us/zzevJ',
     }
   ]);
-
-  console.log(userData);
 
   // users
   await bookshelf.knex('users').insert(userData);
@@ -59,29 +61,29 @@ export default async function() {
       name: "CS3216 Assignment 3 Meeting",
       deadline: moment('2015-09-18').toDate(),
       owner_id: 1,
-      latitude: 10.28,
-      longitude: 5.00
+      latitude: 1.295047,
+      longitude: 103.773848,
     },
     {
       name: "Lunch",
       deadline: moment('2015-09-25').toDate(),
       owner_id: 1,
-      latitude: 10.28,
-      longitude: 5.00
+      latitude: 1.295047,
+      longitude: 103.773848,
     },
     {
       name: "NUSSU commIT Meeting 4",
       deadline: moment('2015-10-01').toDate(),
       owner_id: 2,
-      latitude: 10.28,
-      longitude: 5.00
+      latitude: 1.295047,
+      longitude: 103.773848,
     },
     {
       name: "CS1101S Avengers Meeting",
       deadline: moment('2015-10-15').toDate(),
       owner_id: 1,
-      latitude: 14.28,
-      longitude: 5.90
+      latitude: 1.295047,
+      longitude: 103.773848,
     }
   ]);
 
@@ -347,5 +349,5 @@ export default async function() {
       timeslot_id: 2,
     }
   ]);
-  console.log("done");
+  console.log("seeding done");
 }

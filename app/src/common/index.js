@@ -6,13 +6,15 @@ import timiEventHeader			from './timiEventHeader';
 import timiFullButton				from './timiFullButton';
 import timiPersonCard				from './timiPersonCard';
 import timiSlotCard					from './timiSlotCard';
+import timiAvailabilityCard	from './timiAvailabilityCard';
 
 let directives = {
 	timiEventCard,
 	timiEventHeader,
 	timiFullButton,
 	timiPersonCard,
-	timiSlotCard
+	timiSlotCard,
+	timiAvailabilityCard
 };
 
 let services = { $timi };

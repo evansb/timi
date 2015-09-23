@@ -14,7 +14,7 @@ export default function () {
       t.string('password').notNullable();
       t.string('name').notNullable();
       t.string('profile_url');
-      t.string('NUSMods');
+      t.string('nusmods');
       t.string('google_id');
       t.timestamps();
     })

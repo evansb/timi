@@ -29,7 +29,8 @@ components.push(common);
 
 // Require credentials for all request
 app.config(($httpProvider, $authProvider) => {
-  $authProvider.baseUrl = 'http://localhost:8000/api/';
+  $authProvider.baseUrl = (window.location.hostname == 'localhost')?
+    'http://localhost:8000/api': 'http://timiapp.me/api';
   $authProvider.loginUrl = '/me/login';
   $authProvider.signupUrl = '/me/signup';
   $authProvider.unlinkUrl = '/me/logout';

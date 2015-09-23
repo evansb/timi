@@ -9,7 +9,15 @@
     "angular-local-storage": "~0.2.2",
     "angular-moment": "~0.10.3",
     "angular-resource": "1.4.3",
+    "bower": "*",
+    "es6-shim": "~0.33.3",
+    "install": "~1.0.4",
     "ion-autocomplete": "~0.3.0",
-    "ionic-timepicker": "~0.3.0"
+    "ionic-timepicker": "~0.3.0",
+    "jquery": "~2.1.4",
+    "lodash": "~3.10.1",
+    "moment": "~2.10.6",
+    "moment-range": "~2.0.3",
+    "satellizer": "~0.12.5"
   }
 }
