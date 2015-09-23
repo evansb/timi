@@ -213,7 +213,7 @@ module.exports = [
       description: 'Update the information of the current user',
       notes: 'Sample payload: { "email": "hello@example.com", "password": "newhelloworld", "name": "hello"}',
       auth: 'jwt',
-      validate: validate.newUser,
+      validate: validate.updateUser,
       handler: UserController.updateCurrent
     }
   },
