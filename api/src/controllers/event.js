@@ -91,7 +91,7 @@ export default class {
         participantsParams.push({id: userId, registered: true, important: false});
       }
       let event = await transactions.newEvent(eventParams, timeslots, participantsParams);
-      reply(event);
+      reply(_getEventById(event.get('id')));
       let participants = await event.getParticipants();
       Mailer.sendInvitationEmail(request.server.plugins.mailer, event, user, participants);
     } catch(err) {
@@ -196,7 +196,7 @@ export default class {
     let eventId = request.params.eventId;
     let confirmations = request.payload;
     try {
-      let user = await _getUserById(request.auth.credentials.id);
+      let user = await _getUserById(getUserId(request));
       let permitted = await _permit(user, eventId);
       let event = await _getEventById(eventId);
       let fullyParticipated = await event.isFullyParticipated();
