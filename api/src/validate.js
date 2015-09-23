@@ -2,7 +2,7 @@ import Joi from 'joi';
 
 var emailSchema = Joi.string().email().required();
 var idSchema = Joi.number().integer().positive().required();
-var passwordSchema = Joi.string().min(4).required();
+var passwordSchema = Joi.string().min(4).max(50).required();
 
 var userSchema = Joi.object().keys({
   email: emailSchema,
@@ -32,7 +32,7 @@ var participantSchema = Joi.object().keys({
 var eventSchema = Joi.object().keys({
   name: Joi.string().max(50).required(),
   deadline: Joi.date().min(new Date()),
-  duration: Joi.number().integer().positive().required().min(600000),
+  duration: Joi.number().integer().positive().required().min(600000).max(86400000),
   latitude: Joi.number(),
   longitude: Joi.number(),
   ranges: Joi.array().items(rangeSchema).min(1).max(10).unique().required(),
