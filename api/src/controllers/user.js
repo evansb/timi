@@ -8,7 +8,20 @@ let compare = Promise.promisify(Bcrypt.compare);
 
 let _getUserById = (userId) => {
   return User.where('id', userId).fetch();
-}
+};
+
+let _getUserWithEvents = (userId) => {
+  return User.where('id', userId).fetch({
+    withRelated: [
+      'involvedEvents',
+      'ownEvents',
+      'participated_events',
+      'unparticipated_events',
+      'confirmed_events',
+      'unconfirmed_events'
+    ]
+  });
+};
 
 let _permit = async (user, eventId) => {
   let result = await user.belongToEvent(eventId);
@@ -28,8 +41,8 @@ let getUserId = (request) => {
 export default class {
   static async getCurrent(request, reply) {
     try {
-      let user = await _getUserById(getUserId(request));
-      reply(user);
+      let user = await _getUserWithEvents(getUserId(request));
+      reply(user.toJSON());
     } catch(err) {
       reply(Boom.notFound('User not found'));
     }
@@ -148,7 +161,7 @@ export default class {
           throw Boom.notFound('User not in the event');
         } else {
           let availability = await result.availableForEvent(eventId);
-          reply(result);
+          reply(availability);
         }
       }
     } catch(err) {
@@ -161,8 +174,19 @@ export default class {
     try {
       let user = await _getUserById(getUserId(request));
       let updated = await user.update(payload);
-      request.auth.session.set(updated);
       reply(updated);
+    } catch(err) {
+      reply(err.isBoom ? err : Boom.badImplementation(err));
+    }
+  }
+
+  static async resetCurrentPassword(request, reply) {
+    let password = request.payload;
+    try {
+      let user = await _getUserById(getUserId(request));
+      let updated = await user.updatePassword(password);
+      let token = JWT.sign(user, process.env.PRIVATE_KEY);
+      reply({ token }).header('Authorization', token);
     } catch(err) {
       reply(err.isBoom ? err : Boom.badImplementation(err));
     }
@@ -172,8 +196,7 @@ export default class {
     try {
       let user = await _getUserById(getUserId(request));
       await _user.destroy();
-      request.auth.session.clear();
-      reply('OK')
+      reply('OK');
     } catch(err) {
       reply(err.isBoom ? err : Boom.badImplementation(err));
     }

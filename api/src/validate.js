@@ -7,13 +7,20 @@ var passwordSchema = Joi.string().min(4).required();
 var userSchema = Joi.object().keys({
   email: emailSchema,
   password: passwordSchema,
-  name: Joi.string().max(30)
+  name: Joi.string().max(30),
+  nusmods: Joi.string().max(30)
+});
+
+var updateUserSchema = Joi.object().keys({
+  email: emailSchema,
+  name: Joi.string().max(30),
+  nusmods: Joi.string().max(30)
 });
 
 var rangeSchema = Joi.object().keys({
   date: Joi.date().required().min(new Date()),
   start: Joi.date().required(),
-  end: Joi.date().required().min(Joi.ref('start'))
+  end: Joi.date().required()
 });
 
 var participantSchema = Joi.object().keys({
@@ -26,8 +33,8 @@ var eventSchema = Joi.object().keys({
   name: Joi.string().max(50).required(),
   deadline: Joi.date().min(new Date()),
   duration: Joi.number().integer().positive().required(),
-  latitude: Joi.number().precision(2),
-  longitude: Joi.number().precision(2),
+  latitude: Joi.number(),
+  longitude: Joi.number(),
   ranges: Joi.array().items(rangeSchema).min(1).unique().required(),
   participants: Joi.array().items(participantSchema).min(1).unique().required()
 });
@@ -50,6 +57,14 @@ exports.userLogin = {
 
 exports.newUser = {
   payload: userSchema
+};
+
+exports.updateUser = {
+  payload: updateUserSchema
+};
+
+exports.resetPassword = {
+  payload: passwordSchema
 };
 
 exports.userInfo = {

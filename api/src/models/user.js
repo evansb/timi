@@ -2,6 +2,7 @@ import bookshelf from '../config/bookshelf';
 import Bcrypt from 'bcrypt';
 import Promise from 'bluebird';
 import EventUser from './event_user';
+import Event from './event';
 
 Promise.promisifyAll(Bcrypt);
 
@@ -21,6 +22,11 @@ var User = bookshelf.model('User', {
         }
       });
   },
+  updatePassword: function (newPw) {
+    return Bcrypt.genSaltAsync(5)
+      .then((salt) => Bcrypt.hashAsync(newPw, salt))
+      .then((password) => this.save('password', password, {method: 'update', patch: true}));
+  },
   involvedEvents: function () {
     return this.belongsToMany('Event', 'events_users', 'user_id', 'event_id');
   },
@@ -28,10 +34,32 @@ var User = bookshelf.model('User', {
     return this.hasMany('Event', 'owner_id');
   },
   participated_events: function (){
-    this.invited_events.where('participated', true);
+    return this.involvedEvents().query({
+      where: {
+        participated: true
+      }
+    });
   },
   unparticipated_events: function () {
-    this.invited_events.where('participated', false);
+    return this.involvedEvents().query({
+      where: {
+        participated: false
+      }
+    });
+  },
+  confirmed_events: function (){
+    return this.involvedEvents().query({
+      where: {
+        confirmed: true
+      }
+    });
+  },
+  unconfirmed_events: function () {
+    return this.involvedEvents().query({
+      where: {
+        confirmed: false
+      }
+    });
   },
   belongToEvent: function (eventId) {
     return EventUser

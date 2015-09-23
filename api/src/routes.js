@@ -206,6 +206,18 @@ module.exports = [
     }
   },
   {
+    method: 'POST',
+    path: '/api/me/reset',
+    config: {
+      tags: ['api'],
+      description: 'Reset password of the current user',
+      notes: 'Sample payload: "myNewPassword"',
+      auth: 'jwt',
+      validate: validate.resetPassword,
+      handler: UserController.resetCurrentPassword
+    }
+  },
+  {
     method: 'PUT',
     path: '/api/me',
     config: {
@@ -213,7 +225,7 @@ module.exports = [
       description: 'Update the information of the current user',
       notes: 'Sample payload: { "email": "hello@example.com", "password": "newhelloworld", "name": "hello"}',
       auth: 'jwt',
-      validate: validate.newUser,
+      validate: validate.updateUser,
       handler: UserController.updateCurrent
     }
   },

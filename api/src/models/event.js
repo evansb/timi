@@ -1,6 +1,8 @@
-import bookshelf from '../config/bookshelf';
-import Timeslot from './timeslot';
-import User from './user';
+import bookshelf    from '../config/bookshelf';
+import Timeslot     from './timeslot';
+import User         from './user';
+import Promise      from 'bluebird';
+
 
 var Event = bookshelf.model('Event', {
   tableName: 'events',
@@ -21,7 +23,18 @@ var Event = bookshelf.model('Event', {
         count('availabilities as available_count').
         groupBy('timeslots.id').
         orderBy('available_count', 'desc');
-    }).fetch();
+    })
+      .fetch()
+      .then((timeslots) => {
+        return Promise.map(timeslots.toArray(), (ts) => {
+          return ts.allImportantAvailable().
+            then((result) => {
+              ts.availableForAllImportant = result;
+              return ts;
+          });
+        })
+      })
+      .then((timeslots) => timeslots.filter((ts) => ts.availableForAllImportant));
   },
   owner: function () {
     return this.belongsTo('User', 'owner_id');
@@ -70,13 +83,16 @@ var Event = bookshelf.model('Event', {
   participated_participants: function () {
     return this.participants().query({
       where: {
-        participated: true,
-        confirmed: true
+        participated: true
       }
     });
   },
   unparticipated_participants: function () {
-    return this.participants().where('participated', false);
+    return this.participants().query({
+      where: {
+        participated: false
+      }
+    });
   },
   isFullyParticipated: function() {
     return this.hasMany('EventUser').query('where', 'participated', '=', false).count()
