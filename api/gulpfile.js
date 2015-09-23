@@ -50,7 +50,7 @@ gulp.task('db-init-devel', function(done) {
 gulp.task('serve', [], function() {
   nodemon({
     script: 'js/main.js',
-    tasks: [],
+    tasks: ['compile'],
     ext: 'js',
     env: envDevel
   });

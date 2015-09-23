@@ -12,7 +12,7 @@ export default function () {
       t.increments().primary();
       t.string('email').unique().notNullable();
       t.string('password').notNullable();
-      t.string('name').notNullable();
+      t.string('name');
       t.string('profile_url');
       t.string('nusmods');
       t.string('google_id');
