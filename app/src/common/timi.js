@@ -1,5 +1,6 @@
 
-const base = 'http://localhost:8000/api';
+const base = (window.location.hostname == 'localhost')?
+  'http://localhost:8000/api': 'http://timiapp.me/api';
 
 var activeUser = null;
 
