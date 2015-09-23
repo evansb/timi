@@ -1,0 +1,14 @@
+<div class="timi-slot">
+  <div class="row">
+    <div class="col col-75">
+      <strong class='energized'>
+        {{ showRange() }}
+      </strong>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col col-75">
+      {{ hourMinute(slot.timeStart) }} to {{ hourMinute(slot.timeEnd) }}
+    </div>
+  </div>
+</div>
