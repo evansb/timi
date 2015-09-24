@@ -49,6 +49,9 @@ app.config(($httpProvider, $authProvider) => {
   $authProvider.signupUrl = '/users';
   $authProvider.unlinkUrl = '/me/logout';
   $httpProvider.defaults.withCredentials = true;
+  $authProvider.google({
+    clientId: '489077244467-j10hj8t8l225omb1juj0vrs6ef8657n4.apps.googleusercontent.com'
+  });
 })
 
 // Load all components
