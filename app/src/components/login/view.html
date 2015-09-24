@@ -26,8 +26,12 @@
                      ng-model="password"
                      ng-required="true"
                      ng-minlength="4"
-                     placeholder="Password">
+                     placeholder="Password"
+                     name='password'
+                     validation='min_len:8:alt=Minimum 8 characters long.|required:alt=Required.'
+                     validation-error-to='password-error'>
             </label>
+            <span id='password-error' class='timi-invalid'></span>
           </div>
         </div>
       </div>
