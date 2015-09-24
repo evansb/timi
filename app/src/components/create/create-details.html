@@ -19,7 +19,8 @@
                placeholder='Location'
                ng-model='newEvent.location'
                id='autocomplete'
-               ng-focus='geolocate()'/>
+               ng-focus='geolocate()'
+               ng-blur='toggleAutocompleteOnFocus(false)'/>
       </label>
       <label class='item item-input'>
         <span class='input-label'>Duration</span>
