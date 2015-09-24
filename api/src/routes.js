@@ -65,7 +65,7 @@ module.exports = [
     config: {
       tags: ['api'],
       description: 'Get details of an event',
-      auth: 'jwt',
+      auth: false,
       validate: {
         params: {
           eventId: Joi.number()
@@ -94,7 +94,7 @@ module.exports = [
           '"participants": [{"id": 1, "registered": true, "important": true}, ' +
       '                     {"id": 2, "registered": true, "important": false}] ' +
         '}',
-      auth: 'jwt',
+      auth: false,
       validate: validate.newEvent,
       handler: EventController.create
     }
@@ -107,7 +107,7 @@ module.exports = [
       tags: ['api'],
       description: 'Indicate availabilities for specified event',
       notes: 'Sample payload: [{"timeslot_id": 7, "weight": 10}, {"timeslot_id": 8, "weight": 1}]',
-      auth: 'jwt',
+      auth: false,
       validate: validate.newAvailabilities,
       handler: EventController.createAvailabilities
     }
@@ -249,18 +249,6 @@ module.exports = [
       description: 'Remove of the current user',
       auth: 'jwt',
       handler: UserController.delete
-    }
-  },
-  {
-    method: 'POST',
-    path: '/api/events/{eventId}/confirmations',
-    config: {
-      tags: ['api'],
-      description: 'Indicate confirmation for specified event result',
-      notes: 'Sample payload: [5, 6, 7]',
-      auth: 'jwt',
-      validate: validate.newConfirmations,
-      handler: EventController.createConfirmations
     }
   }
 ];
