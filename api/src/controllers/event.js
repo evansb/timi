@@ -117,10 +117,6 @@ export default class {
       if (!ownerInList(userId, participantsParams)) {
         participantsParams.push({id: userId, registered: true, important: false});
       }
-      let event = await transactions.newEvent(eventParams, timeslots, participantsParams);
-      reply(event);
-      // let participants = await event.getParticipants();
-      // Mailer.sendInvitationEmail(request.server.plugins.mailer, event, user, participants);
 
       let calenders = await fetchCalender(participantsParams);
       let calculated = await calculateTimeslots(duration, ranges, calenders);
@@ -136,6 +132,7 @@ export default class {
         let participants = await event.getParticipants();
         Mailer.sendInvitationEmail(request.server.plugins.mailer, event, user, participants);
       }
+
     } catch(err) {
       reply(err.isBoom ? err : Boom.badImplementation(err));
     }

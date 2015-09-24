@@ -57,7 +57,7 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
       duration } = $scope.newEvent;
     let newEvent = {
       name: name,
-      deadline: moment(deadline).toDate().toString(),
+      deadline: moment(deadline).toDate(),
       ranges: ranges,
       duration: duration,
       participants: _.map(participants, (par) => {

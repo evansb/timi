@@ -104,7 +104,6 @@ let getClassesInThisDay = (dateString, allClasses) => {
 // Part 3: main function, to be export
 
 let f = async (duration, ranges, NUSModsLinks, GCs) => {
-
   // 1. pre-process the input data
 
   // (a). group ranges by date
@@ -125,7 +124,6 @@ let f = async (duration, ranges, NUSModsLinks, GCs) => {
   // 2. pre-process NUSMods
 
   let allClasses = await getAllClasses(NUSModsLinks);
-  console.log(allClasses);
   // 3. calculate intervals
 
   let overlappingPairs = [];
