@@ -1,0 +1,31 @@
+<div class='row'>
+  <div class='col text-center header'>
+    <h3 class='positive'>Add Available Dates</h3>
+  </div>
+</div>
+<ion-list ng-controller="MyCtrl"
+          show-delete="shouldShowDelete"
+          show-reorder="shouldShowReorder"
+          can-swipe="listCanSwipe">
+  <ion-item ng-repeat="item in items"
+            class="item-thumbnail-left">
+
+    <img ng-src="{{item.img}}">
+    <h2>FooBar</h2>
+    <p>BarFoo</p>
+    <ion-option-button class="button-positive"
+                       ng-click="share(item)">
+      Share
+    </ion-option-button>
+    <ion-option-button class="button-info"
+                       ng-click="edit(item)">
+      Edit
+    </ion-option-button>
+    <ion-delete-button class="ion-minus-circled"
+                       ng-click="items.splice($index, 1)">
+    </ion-delete-button>
+    <ion-reorder-button class="ion-navicon"
+                        on-reorder="reorderItem(item, $fromIndex, $toIndex)">
+    </ion-reorder-button>
+  </ion-item>
+</ion-list>

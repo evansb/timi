@@ -47,10 +47,10 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
 
   $scope.next = () => {
     save();
-    if ($scope.step == 2) {
+    if ($scope.step == 3) {
       $scope.createEvent();
     }
-    $scope.step = Math.min($scope.step + 1, 3);
+    $scope.step = Math.min($scope.step + 1, 4);
   }
 
   $scope.createEvent = () => {
