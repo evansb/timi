@@ -226,9 +226,15 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
   }
 
   //Location Autocomplete
-  $scope.autocompleteOnFocus = false;
+  $scope.autocompleteOnFocus = 'false';
+  $scope.autocompleteOnBlur = () => {
+    setTimeout(() => {
+      $scope.toggleAutocompleteOnFocus('false');
+      $scope.$apply();
+    },
+    21);
+  };
   $scope.toggleAutocompleteOnFocus = (status) => {
-    console.log('toggle');
     $scope.autocompleteOnFocus = status;
   };
 
@@ -254,7 +260,7 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
   // Bias the autocomplete object to the user's geographical location,
   // as supplied by the browser's 'navigator.geolocation' object.
   $scope.geolocate = () => {
-    $scope.toggleAutocompleteOnFocus(true);
+    $scope.toggleAutocompleteOnFocus('true');
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function(position) {
         var geolocation = {
