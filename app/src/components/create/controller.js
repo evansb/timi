@@ -128,13 +128,13 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
   $scope.datepicker = {
     startValue: moment().startOf('tomorrow').valueOf(),
     endValue: moment().startOf('tomorrow').add(1, 'day').valueOf(),
-    endValid: true
+    invalid: false
   };
 
   $scope.timepicker = {
     startValue: 3600 * 9,
     endValue: 3600 * 17,
-    endValid: true
+    invalid: false
   };
 
   $scope.datepickerStart = {
@@ -167,6 +167,8 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
     callback: function(val) {
       if(val == undefined) return;
       $scope.timepicker.startValue = val;
+
+      $scope.timepicker.invalid = $scope.timepicker.endValue < $scope.timepicker.startValue;
     }
   };
 
@@ -178,6 +180,9 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
     callback: function(val) {
       if(val == undefined) return;
       $scope.timepicker.endValue = val;
+
+      console.log($scope.timepicker);
+      $scope.timepicker.invalid = $scope.timepicker.endValue < $scope.timepicker.startValue;
     }
   };
 
