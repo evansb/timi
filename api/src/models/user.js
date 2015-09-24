@@ -33,31 +33,24 @@ var User = bookshelf.model('User', {
   ownEvents: function () {
     return this.hasMany('Event', 'owner_id');
   },
-  participated_events: function (){
+  goingEvents: function (){
     return this.involvedEvents().query({
       where: {
         participated: true
       }
     });
   },
-  unparticipated_events: function () {
+  notGoingEvents: function () {
     return this.involvedEvents().query({
       where: {
         participated: false
       }
     });
   },
-  confirmed_events: function (){
+  pendingEvents: function () {
     return this.involvedEvents().query({
       where: {
-        confirmed: true
-      }
-    });
-  },
-  unconfirmed_events: function () {
-    return this.involvedEvents().query({
-      where: {
-        confirmed: false
+        participated: null
       }
     });
   },
@@ -73,18 +66,19 @@ var User = bookshelf.model('User', {
   availableForEvent: function (eventId) {
     return this.timeslots().withPivot(['weight']).query({where: {event_id: eventId}}).fetch();
   },
-  participate: function(eventId) {
+  going: function(eventId) {
     return EventUser.where({event_id: eventId, user_id: this.get('id')}).save({participated: true}, {method: 'update', patch: true});
   },
-  confirm: function(eventId) {
-    return EventUser.where({event_id: eventId, user_id: this.get('id')}).save({confirmed: true}, {method: 'update', patch: true});
+  notGoing: function(eventId) {
+    return EventUser.where({event_id: eventId, user_id: this.get('id')}).save({participated: false}, {method: 'update', patch: true});
   },
   update: function(params) {
     return this.save(params, {method: 'update', patch: true});
   },
   hasParticipated: function(eventId) {
     return EventUser.where({event_id: eventId, user_id: this.get('id')}).fetch()
-      .then((eventUser) => eventUser.get('participated'));
+      .then((eventUser) => eventUser.get('participated'))
+      .then((result) => result !== null);
   }
 });
 

@@ -8,7 +8,7 @@ var userSchema = Joi.object().keys({
   email: emailSchema,
   password: passwordSchema,
   name: Joi.string().max(30),
-  nusmods: Joi.string().max(30)
+  nusmods: Joi.string().max(30),
 });
 
 var updateUserSchema = Joi.object().keys({
@@ -33,6 +33,7 @@ var eventSchema = Joi.object().keys({
   name: Joi.string().max(50).required(),
   deadline: Joi.date().min(new Date()),
   duration: Joi.number().integer().positive().required().min(600000).max(86400000),
+  location: Joi.string().max(50),
   latitude: Joi.number(),
   longitude: Joi.number(),
   ranges: Joi.array().items(rangeSchema).min(1).max(10).unique().required(),
@@ -118,7 +119,7 @@ exports.eventResult = {
 exports.eventTimeslotAvailabilities = {
   params: {
     eventId: idSchema.required(),
-    timeslotId: idSchema.required(),
+    timeslotId: idSchema.required()
   }
 };
 
