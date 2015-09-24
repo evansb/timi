@@ -7,15 +7,19 @@
   <div class='col'>
     <div class='list'>
       <label class='item item-input'>
-        <input type='text' placeholder='Title'
+        <input type='text'
                name='title'
+               placeholder='Title'
                ng-model='newEvent.name'
-               validation='min_len:3|required'/>
+               validation='required'/>
       </label>
       <label class='item item-input'>
-        <input type='text' name='location'
+        <input type='text'
+               name='location'
                placeholder='Location'
-               ng-model='newEvent.location' />
+               ng-model='newEvent.location'
+               id='autocomplete'
+               ng-focus='geolocate()'/>
       </label>
       <label class='item item-input'>
         <span class='input-label'>Duration</span>
