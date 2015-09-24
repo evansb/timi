@@ -7,26 +7,35 @@
       <div ng-if='step == 2'>
         <button class='button button-clear timi-header-button-light' ng-click='previous()'>Back</button>
       </div>
+      <div ng-if='step == 3'>
+        <button class='button button-clear timi-header-button-light' ng-click='previous()'>Back</button>
+      </div>
     </div>
     <div class='title timi-pager text-center'>
       <div ng-if='step == 1'>
-        <span>&#106;&#107;</span>
+        <span>&#x2460;&#x2461;&#x2462;</span>
       </div>
       <div ng-if='step == 2'>
-        <span>&#117;&#107;</span>
+        <span>&#x2776;&#x2461;&#x2462;</span>
       </div>
       <div ng-if='step == 3'>
-        <span>&#117;&#118;</span>
+        <span>&#x2776;&#x2777;&#x2462;</span>
+      </div>
+      <div ng-if='step == 4'>
+        <span>&#x2776;&#x2777;&#x2778;</span>
       </div>
     </div>
     <div class='buttons'>
       <div ng-if='step == 1'>
-        <button class='button button-clear timi-header-button-light' ng-click='next()'>Invite</button>
+        <button class='button button-clear timi-header-button-light' ng-click='next()'>Add Dates</button>
       </div>
       <div ng-if='step == 2'>
-        <button class='button button-clear timi-header-button-light' ng-click='next()'>Finish</button>
+        <button class='button button-clear timi-header-button-light' ng-click='next()'>Invites<button>
       </div>
       <div ng-if='step == 3'>
+        <button class='button button-clear timi-header-button-light' ng-click='next()'>Finish</button>
+      </div>
+      <div ng-if='step == 4'>
         <button class='button button-clear timi-header-button-light' ng-click='backToHome()'>Home</button>
       </div>
     </div>
@@ -36,9 +45,12 @@
       <create-details></create-details>
     </div>
     <div ng-if='step == 2'>
-      <create-participants></create-participants>
+      <create-availability></create-availability>
     </div>
     <div ng-if='step == 3'>
+      <create-participants></create-participants>
+    </div>
+    <div ng-if='step == 4'>
       <create-link></create-link>
     </div>
   </ion-content>

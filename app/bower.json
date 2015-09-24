@@ -9,6 +9,7 @@
     "angular-local-storage": "~0.2.2",
     "angular-moment": "~0.10.3",
     "angular-resource": "1.4.3",
+    "angular-validation-ghiscoding": "~1.4.8",
     "bower": "*",
     "es6-shim": "~0.33.3",
     "install": "~1.0.4",

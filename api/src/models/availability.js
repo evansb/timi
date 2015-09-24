@@ -3,7 +3,6 @@ import bookshelf from '../config/bookshelf';
 var Availability = bookshelf.model('Availability', {
   tableName: 'availabilities',
   idAttribute: null,
-  hidden: ['created_at', 'updated_at'],
   user: function () {
     return this.belongsTo('User', 'user_id');
   },

@@ -12,7 +12,13 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
     timeslots: $scope.newEvent.timeslots || [],
     duration: $scope.newEvent.duration || 3600000,
     participants: $scope.newEvent.participants || {},
-    deadline: $scope.newEvent.deadline || moment().startOf('tomorrow').valueOf()
+    deadline: $scope.newEvent.deadline || moment().add(1, 'days').add(1, 'hours').startOf('hour').valueOf()
+  };
+
+  localStorageService.set('newEvent', $scope.newEvent);
+
+  let normalize = (s) => {
+    return moment().startOf('day').add(s, 'seconds').format('HH:mm');
   };
 
   let slotToRequest = (slot) => {
@@ -20,9 +26,9 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
     let range = moment.range(slot.dateStart, slot.dateEnd);
     range.by('days', date => {
       result.push({
-        date: date,
-        start: slot.timeStart * 1000,
-        end: slot.timeEnd * 1000
+        date: date.format('YYYY-MM-DD'),
+        start: normalize(slot.timeStart),
+        end: normalize(slot.timeEnd)
       });
     });
     return result;
@@ -40,11 +46,10 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
 
   $scope.next = () => {
     save();
-    if ($scope.step == 2) {
+    if ($scope.step == 3) {
       $scope.createEvent();
-    } else {
-      $scope.step = Math.min($scope.step + 1, 3);
     }
+    $scope.step = Math.min($scope.step + 1, 4);
   }
 
   $scope.createEvent = () => {
@@ -53,7 +58,7 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
       duration } = $scope.newEvent;
     let newEvent = {
       name: name,
-      deadline: moment(deadline).toDate().toString(),
+      deadline: moment(deadline).toDate(),
       ranges: ranges,
       duration: duration,
       participants: _.map(participants, (par) => {
@@ -66,14 +71,13 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
       latitude: 0.0,
       longitude: 0.0
     };
-    console.log(newEvent);
     $timi.createEvent(newEvent);
   }
 
   $rootScope.$on('eventCreated', () => {
     localStorageService.remove('newEvent');
     $scope.newEvent = {};
-    $scope.backToHome();
+    $scope.next();
   });
 
   $scope.getUser = function(query) {
@@ -99,7 +103,6 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
       timeEnd: $scope.timepicker.endValue
     };
     $scope.newEvent.timeslots.push(slot);
-    console.log($scope.newEvent.timeslots);
   };
 
   $scope.clearTimeslot = function() {
@@ -151,6 +154,7 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
   };
 
   $scope.timepickerStart = {
+    inputEpochTime: $scope.timepicker.startValue,
     titleLabel: 'Start Time',
     step: 1,
     setButtonType: 'button-energized',
@@ -161,6 +165,7 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
   };
 
   $scope.timepickerEnd = {
+    inputEpochTime: $scope.timepicker.endValue,
     titleLabel: 'End Time',
     step: 1,
     setButtonType: 'button-energized',
@@ -176,20 +181,22 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
     to: moment().add(5, 'years').toDate(),
     setButtonType: 'button-energized',
     callback: function(val) {
+      if (val === undefined) return;
       let timePart = moment($scope.newEvent.deadline).valueOf() -
         (+moment($scope.newEvent.deadline).startOf('day').valueOf());
       $scope.newEvent.deadline = moment(val).valueOf() + timePart;
-      console.log($scope.newEvent.deadline);
     }
   };
 
   $scope.timepickerDeadline = {
+    inputEpochTime: ((new Date()).getHours() + 1) * 3600,
     titleLabel: 'Time',
     step: 1,
     setButtonType: 'button-energized',
     callback: function(val) {
+      if (val === undefined) return;
       let dayPart = (+moment($scope.newEvent.deadline).startOf('day'));
-      $scope.deadline = dayPart + (val * 1000);
+      $scope.newEvent.deadline = dayPart + (val * 1000);
     }
   };
 
@@ -204,10 +211,12 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
   })();
 
   $scope.timepickerDuration = {
+    inputEpochTime: 3600,
     titleLabel: 'Duration',
     step: 5,
     setButtonType: 'button-energized',
     callback: function(val) {
+      if (val === undefined) return;
       $scope.newEvent.duration = val * 1000;
     }
   };
@@ -215,4 +224,49 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
   $scope.displayDuration = val => {
     return moment().startOf('day').add(val, 'milliseconds').format('HH [h] mm [min]');
   }
+
+  //Location Autocomplete
+  $scope.autocompleteOnFocus = false;
+  $scope.toggleAutocompleteOnFocus = (status) => {
+    console.log('toggle');
+    $scope.autocompleteOnFocus = status;
+  };
+
+  let placeSearch, autocomplete;
+
+  let initAutocomplete = () => {
+    // Create the autocomplete object, restricting the search to geographical
+    // location types.
+    autocomplete = new google.maps.places.Autocomplete(
+        /** @type {!HTMLInputElement} */(document.getElementById('autocomplete')),
+        {types: ['geocode']});
+
+    // When the user selects an address from the dropdown, populate the address
+    // fields in the form.
+    autocomplete.addListener('place_changed', () => {
+      $scope.newEvent.latitude = autocomplete.getPlace().geometry.location.lat();
+      $scope.newEvent.longitude = autocomplete.getPlace().geometry.location.lng();
+      $scope.newEvent.location = autocomplete.getPlace().name;
+    });
+  }
+  window.initAutocomplete = initAutocomplete;
+
+  // Bias the autocomplete object to the user's geographical location,
+  // as supplied by the browser's 'navigator.geolocation' object.
+  $scope.geolocate = () => {
+    $scope.toggleAutocompleteOnFocus(true);
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        var geolocation = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+        var circle = new google.maps.Circle({
+          center: geolocation,
+          radius: position.coords.accuracy
+        });
+        autocomplete.setBounds(circle.getBounds());
+      });
+    }
+  };
 };

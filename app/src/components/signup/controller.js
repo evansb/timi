@@ -1,5 +1,5 @@
 
-export default ($scope, $notification, $state, $auth) => {
+export default ($scope, $notification, $state, $auth, $http) => {
 
   if ($auth.isAuthenticated()) {
     $state.go('home');
@@ -19,6 +19,11 @@ export default ($scope, $notification, $state, $auth) => {
           password: $scope.password
         });
         $http.defaults.headers.common.Authorization = user.token;
+        let login = await $auth.login({
+          email: $scope.email,
+          password: $scope.password
+        });
+        $state.go('home');
       } catch(err) {
         if (err.status === 400) {
           let message = 'A user with that email already exists. try login?';

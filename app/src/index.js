@@ -10,6 +10,9 @@ import 'satellizer';
 import 'ionic';
 import 'ionic-timepicker';
 import 'ion-autocomplete';
+import 'angular-translate';
+import 'angular-translate-loader-static-files';
+import 'angular-validation-ghiscoding';
 
 import _              from 'lodash'
 import startup        from './startup';
@@ -20,19 +23,30 @@ let app = angular.module('timi', [
   'ionic',
   'ionic-timepicker',
   'ion-autocomplete',
+  'pascalprecht.translate',
+  'ghiscoding.validation',
   'satellizer',
   'ngResource',
   'LocalStorageModule'
 ]);
 
+app.config(function ($translateProvider) {
+  $translateProvider.useStaticFilesLoader({
+    prefix: '/bower_components/angular-validation-ghiscoding/locales/validation/',
+    suffix: '.json'
+  });
+  $translateProvider.preferredLanguage('en').fallbackLanguage('en');
+});
+
 components.push(common);
 
 // Require credentials for all request
 app.config(($httpProvider, $authProvider) => {
+  $authProvider.signupRedirect = '/home';
   $authProvider.baseUrl = (window.location.hostname == 'localhost')?
     'http://localhost:8000/api': 'http://timiapp.me/api';
   $authProvider.loginUrl = '/me/login';
-  $authProvider.signupUrl = '/me/signup';
+  $authProvider.signupUrl = '/users';
   $authProvider.unlinkUrl = '/me/logout';
   $httpProvider.defaults.withCredentials = true;
 })

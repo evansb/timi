@@ -3,6 +3,9 @@ import mergeIntervals from './lib/mergeIntervals';
 import NUSMods from './vendor/nusmods';
 import Promise    from 'bluebird';
 import boxIntersect1D from 'box-intersect-1d';
+import Boom from 'boom';
+import getWeekText from './calendar';
+
 
 let dayMap = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
@@ -19,10 +22,11 @@ let dayMap = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 
 // r should be in format of {date: 'YYYY-MM-DD', start: 'HH:MM', end: 'HH:MM'}
 // return the corresponding interval
 let generateInterval = (r) => {
-  let start = new Date(r.date.concat(' ', r.start));
-  let end = new Date(r.date.concat(' ', r.end));
+  let date = Moment(r.date).format('YYYY-MM-DD');
+  let start = new Date(date.concat(' ', r.start));
+  let end = new Date(date.concat(' ', r.end));
   if(start.toString() === "Invalid Date" || end.toString() === "Invalid Date" || start >= end) {
-    throw new Error('invalid time range');
+    throw new Boom.badRequest('invalid time range');
   }
   return [start, end];
 };
@@ -56,7 +60,7 @@ let reverseIntervals = (date, intervals) => {
     }
   }
   return reversedIntervals;
-}
+};
 
 // input a pair of intersecting intervals (a pair of pair), output their overlap (a pair)
 // it only works for intersecting intervals, if not, output will be wrong
@@ -81,25 +85,25 @@ let split = (timeString) => {
 
 let getClassesInThisDay = (dateString, allClasses) => {
   let date = new Date(dateString);
-  let day = dayMap[date.getDay()];
+  let dayText = dayMap[date.getDay()];
+  let weekText = getWeekText(date);
   let intervals = [];
 
   allClasses.forEach((cls) => {
-    if(cls['DayText'] === day) {
-      let datetime = {date: dateString, start: split(cls.StartTime), end: split(cls.EndTime)};
+    if(cls.DayText === dayText && weekText.indexOf(cls.WeekText) >=0) {
+      let datetime = {date: new Date(dateString), start: split(cls.StartTime), end: split(cls.EndTime)};
       intervals.push(generateInterval(datetime));
     }
   });
 
   return mergeIntervals(intervals);
-}
+};
 
 
 
 // Part 3: main function, to be export
 
 let f = async (duration, ranges, NUSModsLinks, GCs) => {
-
   // 1. pre-process the input data
 
   // (a). group ranges by date
@@ -120,7 +124,6 @@ let f = async (duration, ranges, NUSModsLinks, GCs) => {
   // 2. pre-process NUSMods
 
   let allClasses = await getAllClasses(NUSModsLinks);
-  console.log(allClasses);
   // 3. calculate intervals
 
   let overlappingPairs = [];
@@ -158,9 +161,8 @@ let f = async (duration, ranges, NUSModsLinks, GCs) => {
       }
     }
   });
-
   return finalResult;
-}
+};
 
 //let input = {
 //  duration: 3600000,

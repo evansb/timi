@@ -6,7 +6,6 @@ import Promise      from 'bluebird';
 
 var Timeslot = bookshelf.model('Timeslot', {
   tableName: 'timeslots',
-  hidden: ['created_at', 'updated_at'],
   event: function () {
     return this.belongsTo('Event', 'event_id');
   },

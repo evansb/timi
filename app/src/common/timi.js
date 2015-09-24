@@ -28,8 +28,19 @@ export default function($resource, $rootScope) {
     }
   };
 
-  this.Event = resource('/events/:eventId', { eventId: '@id' }, {
-    create: { method: 'POST' }
+  this.Event = resource('/events/:eventId/:verb', { eventId: '@id', verb: '' }, {
+    create: {
+      method: 'POST',
+      params: {
+        verb: null
+      }
+    },
+    submitAvailability: {
+      method: 'POST',
+      params: {
+        verb: 'availabilities'
+      }
+    }
   });
 
   this.createEvent = function(options) {
@@ -70,4 +81,9 @@ export default function($resource, $rootScope) {
     }
   }
 
+  this.submitAvailability = (eventId, availability) => {
+    this.Event.submitAvailability({ eventId }, availability, e => {
+      $rootScope.$broadcast('availabilitySubmitted', eventId);
+    });
+  }
 }

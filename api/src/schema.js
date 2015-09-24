@@ -12,7 +12,7 @@ export default function () {
       t.increments().primary();
       t.string('email').unique().notNullable();
       t.string('password').notNullable();
-      t.string('name').notNullable();
+      t.string('name');
       t.string('profile_url');
       t.string('nusmods');
       t.string('google_id');
@@ -21,7 +21,7 @@ export default function () {
     .createTable('events',  (t) => {
       t.increments().primary();
       t.string('name').notNullable();
-      t.timestamp('deadline');
+      t.datetime('deadline');
       t.integer('owner_id').unsigned()
         .notNullable()
         .references('users.id')
@@ -44,8 +44,8 @@ export default function () {
     .createTable('timeslots', (t) => {
       t.increments().primary();
       t.integer('event_id').unsigned().notNullable().references('events.id').onDelete('cascade').onUpdate('cascade');
-      t.timestamp('start').notNullable();
-      t.timestamp('end').notNullable();
+      t.datetime('start').notNullable();
+      t.datetime('end').notNullable();
       t.timestamps();
     })
     .createTable('availabilities', (t) => {
