@@ -12,7 +12,7 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
     timeslots: $scope.newEvent.timeslots || [],
     duration: $scope.newEvent.duration || 3600000,
     participants: $scope.newEvent.participants || {},
-    deadline: $scope.newEvent.deadline || moment().add(1, 'days').add(1, 'hours').startOf('hour').valueOf()
+    deadline: $scope.newEvent.deadline || moment().add(1, 'hours').startOf('hour').valueOf()
   };
 
   localStorageService.set('newEvent', $scope.newEvent);
@@ -191,6 +191,10 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
       let timePart = moment($scope.newEvent.deadline).valueOf() -
         (+moment($scope.newEvent.deadline).startOf('day').valueOf());
       $scope.newEvent.deadline = moment(val).valueOf() + timePart;
+
+      if ($scope.newEvent.deadline < moment().valueOf()){
+        $scope.isError.deadline = true;
+      }
     }
   };
 
@@ -203,6 +207,12 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
       if (val === undefined) return;
       let dayPart = (+moment($scope.newEvent.deadline).startOf('day'));
       $scope.newEvent.deadline = dayPart + (val * 1000);
+
+      console.log($scope.newEvent.deadline);
+      console.log(moment().valueOf());
+      if ($scope.newEvent.deadline < moment().valueOf()){
+        $scope.isError.deadline = true;
+      }
     }
   };
 
@@ -281,5 +291,9 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
         autocomplete.setBounds(circle.getBounds());
       });
     }
+  };
+
+  $scope.isError = {
+    deadline: false
   };
 };
