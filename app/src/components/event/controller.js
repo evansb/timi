@@ -33,12 +33,25 @@ export default ($scope, $state, $stateParams, $timi, $rootScope) => {
     $state.go('home');
   };
 
+  $scope.submitAvailability = () => {
+    let availability =
+      _($scope.event.timeslots)
+        .filter(slot => slot.isSelected)
+        .map(slot => { return { timeslot_id: slot.id, weight: 10 }; })
+        .value();
+    $timi.submitAvailability($scope.event.id, availability);
+  }
+
   $scope.selected = 0;
 
   $scope.clearSelection = () => {
     _.each($scope.event.timeslots, slot => { slot.isSelected = false; });
     $scope.selected = 0;
   };
+
+  $rootScope.$on('availabilitySubmitted', (e) => {
+    $state.go('home');
+  });
 
   $scope.selectTimeSlot = (id) => {
     if (!$scope.event.isPending) {
