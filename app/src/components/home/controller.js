@@ -41,11 +41,12 @@ export default ($scope, $state, $timi, $rootScope) => {
 
   $rootScope.$on('myEvents', (e, myEvents) => {
     let me = $timi.Self.get(() => {
+      console.log(myEvents);
       $scope.invites = _.filter(myEvents, (event) =>
-        _.includes(_.pluck(event.unconfirmed_participants, 'id'), me.id)
+        _.includes(_.pluck(event.pendingParticipants, 'id'), me.id)
       ).map(event => _.assign(event, { isPending: true }));
       $scope.scheduled = _.filter(myEvents, (event) =>
-        _.includes(_.pluck(event.confirmed_participants, 'id'), me.id)
+        _.includes(_.pluck(event.goingParticipants, 'id'), me.id)
       );
       $scope.owned = _.filter(myEvents, (event) => event.owner.id == me.id);
      });

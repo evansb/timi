@@ -399,3 +399,13 @@ body.pg-loaded > .inner {
   height: 100%;
   left: 0;
 }
+
+.timi-invalid {
+  color: red !important;
+}
+
+.timi-invalid:not(:empty):before {
+  font-family: 'Ionicons';
+  content: '\f100' !important;
+  margin-right: 0.5em;
+}

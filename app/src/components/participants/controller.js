@@ -9,9 +9,9 @@ export default ($scope, $stateParams, $state, $timi) => {
         eventId: $stateParams.eventId
       }, (event) => {
         $scope.event = event;
-        event.participated_participants.header = 'Going';
-        event.unparticipated_participants.header = 'Not Going';
-        event.unconfirmed_participants.header = 'Pending';
+        event.goingParticipants.header = 'Going';
+        event.notGoingParticipants.header = 'Not Going';
+        event.pendingParticipants.header = 'Pending';
       });
     } catch(err) {
       console.log(err);
