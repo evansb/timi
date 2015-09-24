@@ -6,7 +6,6 @@ import Promise      from 'bluebird';
 
 var Event = bookshelf.model('Event', {
   tableName: 'events',
-  hidden: ['created_at', 'updated_at'],
   timeslots: function () {
     return this.hasMany('Timeslot', 'event_id');
   },

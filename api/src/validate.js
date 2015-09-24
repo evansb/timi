@@ -1,7 +1,7 @@
 import Joi from 'joi';
 
 var emailSchema = Joi.string().email().required();
-var idSchema = Joi.number().integer().positive().required();
+var idSchema = Joi.number().integer().positive();
 var passwordSchema = Joi.string().min(4).max(50).required();
 
 var userSchema = Joi.object().keys({
@@ -24,7 +24,7 @@ var rangeSchema = Joi.object().keys({
 });
 
 var participantSchema = Joi.object().keys({
-  id: idSchema,
+  id: idSchema.required(),
   registered: Joi.boolean().required(),
   important: Joi.boolean().required()
 });
@@ -69,20 +69,20 @@ exports.resetPassword = {
 
 exports.userInfo = {
   params: {
-    userId: idSchema
+    userId: idSchema.required()
   }
 };
 
 exports.myEventsAvailabilities = {
   params: {
-    eventId: idSchema
+    eventId: idSchema.required()
   }
 };
 
 exports.userEventsAvailabilities = {
   params: {
-    userId: idSchema,
-    eventId: idSchema
+    userId: idSchema.required(),
+    eventId: idSchema.required()
   }
 };
 
@@ -92,39 +92,39 @@ exports.newEvent = {
 
 exports.newAvailabilities = {
   params: {
-    eventId: idSchema
+    eventId: idSchema.required()
   },
   payload: availabilitiesSchema
 };
 
 exports.eventTimeslots = {
   params: {
-    eventId: idSchema
+    eventId: idSchema.required()
   }
 };
 
 exports.eventParticipants = {
   params: {
-    eventId: idSchema
+    eventId: idSchema.required()
   }
 };
 
 exports.eventResult = {
   params: {
-    eventId: idSchema
+    eventId: idSchema.required()
   }
 };
 
 exports.eventTimeslotAvailabilities = {
   params: {
-    eventId: idSchema,
-    timeslotId: idSchema
+    eventId: idSchema.required(),
+    timeslotId: idSchema.required(),
   }
 };
 
 exports.newConfirmations = {
   params: {
-    eventId: idSchema
+    eventId: idSchema.required()
   },
   payload: confirmationsSchema
 };
