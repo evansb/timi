@@ -192,9 +192,7 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
         (+moment($scope.newEvent.deadline).startOf('day').valueOf());
       $scope.newEvent.deadline = moment(val).valueOf() + timePart;
 
-      if ($scope.newEvent.deadline < moment().valueOf()){
-        $scope.isError.deadline = true;
-      }
+      $scope.isError.deadline = $scope.newEvent.deadline < moment().valueOf();
     }
   };
 
@@ -210,9 +208,7 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
 
       console.log($scope.newEvent.deadline);
       console.log(moment().valueOf());
-      if ($scope.newEvent.deadline < moment().valueOf()){
-        $scope.isError.deadline = true;
-      }
+      $scope.isError.deadline = $scope.newEvent.deadline < moment().valueOf();
     }
   };
 
