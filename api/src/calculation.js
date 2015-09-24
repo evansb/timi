@@ -4,7 +4,7 @@ import NUSMods from './vendor/nusmods';
 import Promise    from 'bluebird';
 import boxIntersect1D from 'box-intersect-1d';
 import Boom from 'boom';
-import getWeekText from './calender';
+import getWeekText from './calendar';
 
 
 let dayMap = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
