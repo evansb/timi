@@ -88,8 +88,7 @@ var Event = bookshelf.model('Event', {
       .then((count) => parseInt(count) < 1);
   },
   top3: function() {
-    return this.getResult()
-      .then((result) => result.toArray().slice(0, 3));
+    return this.getResult().then((result) => result.toArray().slice(0, 3));
   }
 });
 

@@ -9,14 +9,14 @@
     </h1>
     <div class="buttons">
       <button ng-if="event.isPending" class="button button-clear timi-header-button-light"
-              ng-click="backToHome()">Submit</button>
+              ng-click="submitAvailability()">Submit</button>
     </div>
   </ion-header-bar>
   <ion-content class="timi-invitation">
     <div class="padding-top">
       <timi-event-header></timi-event-header>
     </div>
-    <div class="list padding-medium">
+    <div class="list padding-medium" ng-show="event.isPending">
       <timi-slot-card ng-repeat="slot in event.timeslots" ng-model="slot">
       </timi-slot-card>
     </div>

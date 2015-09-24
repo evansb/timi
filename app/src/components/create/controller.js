@@ -1,18 +1,43 @@
 import moment from 'moment';
+import 'moment-range';
 import _ from 'lodash';
 
 export default ($scope, $state, $timi, $rootScope, localStorageService) => {
+  $scope.step = 1;
+  $scope.users = [];
+
+  $scope.newEvent = localStorageService.get('newEvent') || {};
+  $scope.newEvent = {
+    name: $scope.newEvent.name || "",
+    timeslots: $scope.newEvent.timeslots || [],
+    duration: $scope.newEvent.duration || 3600000,
+    participants: $scope.newEvent.participants || {},
+    deadline: $scope.newEvent.deadline || moment().add(1, 'days').add(1, 'hours').startOf('hour').valueOf()
+  };
+
+  localStorageService.set('newEvent', $scope.newEvent);
+
+  let normalize = (s) => {
+    return moment().startOf('day').add(s, 'seconds').format('HH:mm');
+  };
+
+  let slotToRequest = (slot) => {
+    let result = [];
+    let range = moment.range(slot.dateStart, slot.dateEnd);
+    range.by('days', date => {
+      result.push({
+        date: date.format('YYYY-MM-DD'),
+        start: normalize(slot.timeStart),
+        end: normalize(slot.timeEnd)
+      });
+    });
+    return result;
+  }
+
+  // Save progress to Local Storage
   let save = () => {
-    let h = moment($scope.deadline.time).get('hour');
-    let m = moment($scope.deadline.time).get('minute');
-    $scope.newEvent.rawDeadline = $scope.deadline;
-    $scope.newEvent.deadline = moment($scope.deadline.date)
-      .add(h, 'hours').add(m, 'minutes').toDate().toString();
-    $scope.newEvent.participants = $scope.participants;
     localStorageService.set('newEvent', $scope.newEvent);
   };
-  $scope.newEvent = localStorageService.get('newEvent') || {};
-  $scope.step = 1;
 
   $scope.previous = () => {
     save();
@@ -21,34 +46,39 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
 
   $scope.next = () => {
     save();
-    if ($scope.step == 2) {
+    if ($scope.step == 3) {
       $scope.createEvent();
-    } else {
-      $scope.step = Math.min($scope.step + 1, 3);
     }
+    $scope.step = Math.min($scope.step + 1, 4);
   }
 
   $scope.createEvent = () => {
-    let { name, deadline, participants, location } = $scope.newEvent;
+    let ranges = _($scope.newEvent.timeslots).map(slotToRequest).flatten();
+    let { name, deadline, participants, latitude, longitude,
+      duration } = $scope.newEvent;
     let newEvent = {
       name: name,
-      deadline: deadline,
-      participants: _.map(participants, (par) => par.id),
-      location: location,
-      timeslots: [{
-        start: deadline,
-        end: moment(deadline).add(2, 'hours').toDate().toString()
-      }]
+      deadline: moment(deadline).toDate(),
+      ranges: ranges,
+      duration: duration,
+      participants: _.map(participants, (par) => {
+        return {
+          id: par.id,
+          registered: true,
+          important: par.important || false
+        };
+      }),
+      latitude: 0.0,
+      longitude: 0.0
     };
     $timi.createEvent(newEvent);
   }
 
   $rootScope.$on('eventCreated', () => {
     localStorageService.remove('newEvent');
-    $scope.backToHome();
+    $scope.newEvent = {};
+    $scope.next();
   });
-
-  $scope.users = [];
 
   $scope.getUser = function(query) {
     return {
@@ -61,12 +91,28 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
     };
   };
 
-  $scope.clickedMethod = function(callback) {
-    if (!_.includes($scope.participants, callback.item.id))
-      $scope.participants.push(callback.item);
+  $scope.formatDate = (date) => moment(date).format('DD MMM');
+  $scope.formatTime = (time) => moment(time).format('HH:mm');
+  $scope.normalize = (time) => moment().startOf('day')
+    .add(time, 'seconds').format('HH:mm');
+  $scope.addTimeslot = function() {
+    let slot = {
+      dateStart: $scope.datepicker.startValue,
+      dateEnd: $scope.datepicker.endValue,
+      timeStart: $scope.timepicker.startValue,
+      timeEnd: $scope.timepicker.endValue
+    };
+    $scope.newEvent.timeslots.push(slot);
   };
 
-  $scope.participants = $scope.newEvent? ($scope.newEvent.participants || []) : [];
+  $scope.clearTimeslot = function() {
+    $scope.newEvent.timeslots = [];
+  };
+
+  $scope.clickedMethod = function(callback) {
+    if (!_.includes($scope.newEvent.participants, callback.item.id))
+      $scope.newEvent.participants[callback.item.id] = callback.item;
+  };
 
   $scope.backToHome = () => {
     $scope.step = 1;
@@ -74,8 +120,14 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
   };
 
   $scope.datepicker = {
-    endValue: null,
-    startValue: null,
+    startValue: moment().startOf('tomorrow').valueOf(),
+    endValue: moment().startOf('tomorrow').add(1, 'day').valueOf(),
+    endValid: true
+  };
+
+  $scope.timepicker = {
+    startValue: 3600 * 9,
+    endValue: 3600 * 17,
     endValid: true
   };
 
@@ -85,12 +137,8 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
     to: moment().add(5, 'years').toDate(),
     setButtonType: 'button-energized',
     callback: function(val) {
+      if(val == undefined) return;
       $scope.datepicker.startValue = val;
-      if ($scope.datepicker.endValue == null){
-        $scope.datepickerEnd.from = val;
-      } else if ($scope.datepicker.endValue < val) {
-        $scope.datepickerEnd.from = val;
-      }
     }
   };
 
@@ -100,52 +148,31 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
     to: moment().add(5, 'years').toDate(),
     setButtonType: 'button-energized',
     callback: function(val) {
+      if(val == undefined) return;
       $scope.datepicker.endValue = val;
-      if ($scope.datepicker.startValue &&
-          (val < $scope.datepicker.startValue)){
-        $scope.datepicker.endValid = false;
-      }
     }
   };
 
-  $scope.timepicker = {
-    endValue: null,
-    startValue: null,
-    endValid: true
-  };
-
   $scope.timepickerStart = {
+    inputEpochTime: $scope.timepicker.startValue,
     titleLabel: 'Start Time',
     step: 1,
     setButtonType: 'button-energized',
     callback: function(val) {
-      let valFormatted = moment().startOf('day').add(val, 'seconds').format('HH:mm');
-      $scope.timepicker.startValue = valFormatted;
-      if ($scope.timepicker.endValue == null){
-        $scope.timepickerEnd.from = valFormatted;
-      } else if ($scope.timepicker.endValue < val) {
-        $scope.timepickerEnd.from = valFormatted;
-      }
+      if(val == undefined) return;
+      $scope.timepicker.startValue = val;
     }
   };
 
   $scope.timepickerEnd = {
+    inputEpochTime: $scope.timepicker.endValue,
     titleLabel: 'End Time',
     step: 1,
     setButtonType: 'button-energized',
     callback: function(val) {
-      let valFormatted = moment().startOf('day').add(val, 'seconds').format('HH:mm');
-      $scope.timepicker.endValue = valFormatted;
-      if ($scope.timepicker.startValue &&
-          (val < $scope.timepicker.startValue)){
-        $scope.timepicker.endValid = false;
-      }
+      if(val == undefined) return;
+      $scope.timepicker.endValue = val;
     }
-  };
-
-  $scope.deadline = $scope.newEvent.rawDeadline || {
-    date: null,
-    time: null
   };
 
   $scope.datepickerDeadline = {
@@ -154,16 +181,22 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
     to: moment().add(5, 'years').toDate(),
     setButtonType: 'button-energized',
     callback: function(val) {
-      $scope.deadline.date = val;
+      if (val === undefined) return;
+      let timePart = moment($scope.newEvent.deadline).valueOf() -
+        (+moment($scope.newEvent.deadline).startOf('day').valueOf());
+      $scope.newEvent.deadline = moment(val).valueOf() + timePart;
     }
   };
 
   $scope.timepickerDeadline = {
+    inputEpochTime: ((new Date()).getHours() + 1) * 3600,
     titleLabel: 'Time',
     step: 1,
     setButtonType: 'button-energized',
     callback: function(val) {
-      $scope.deadline.time = moment().startOf('day').add(val, 'seconds').format('HH:mm');
+      if (val === undefined) return;
+      let dayPart = (+moment($scope.newEvent.deadline).startOf('day'));
+      $scope.newEvent.deadline = dayPart + (val * 1000);
     }
   };
 
@@ -177,16 +210,63 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
     }
   })();
 
-  $scope.duration = {
-    time: null
-  };
-
   $scope.timepickerDuration = {
+    inputEpochTime: 3600,
     titleLabel: 'Duration',
     step: 5,
     setButtonType: 'button-energized',
     callback: function(val) {
-      $scope.duration.time = moment().startOf('day').add(val, 'seconds').format('HH [h] mm [min]');
+      if (val === undefined) return;
+      $scope.newEvent.duration = val * 1000;
+    }
+  };
+
+  $scope.displayDuration = val => {
+    return moment().startOf('day').add(val, 'milliseconds').format('HH [h] mm [min]');
+  }
+
+  //Location Autocomplete
+  $scope.autocompleteOnFocus = false;
+  $scope.toggleAutocompleteOnFocus = (status) => {
+    console.log('toggle');
+    $scope.autocompleteOnFocus = status;
+  };
+
+  let placeSearch, autocomplete;
+
+  let initAutocomplete = () => {
+    // Create the autocomplete object, restricting the search to geographical
+    // location types.
+    autocomplete = new google.maps.places.Autocomplete(
+        /** @type {!HTMLInputElement} */(document.getElementById('autocomplete')),
+        {types: ['geocode']});
+
+    // When the user selects an address from the dropdown, populate the address
+    // fields in the form.
+    autocomplete.addListener('place_changed', () => {
+      $scope.newEvent.latitude = autocomplete.getPlace().geometry.location.lat();
+      $scope.newEvent.longitude = autocomplete.getPlace().geometry.location.lng();
+      $scope.newEvent.location = autocomplete.getPlace().name;
+    });
+  }
+  window.initAutocomplete = initAutocomplete;
+
+  // Bias the autocomplete object to the user's geographical location,
+  // as supplied by the browser's 'navigator.geolocation' object.
+  $scope.geolocate = () => {
+    $scope.toggleAutocompleteOnFocus(true);
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        var geolocation = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+        var circle = new google.maps.Circle({
+          center: geolocation,
+          radius: position.coords.accuracy
+        });
+        autocomplete.setBounds(circle.getBounds());
+      });
     }
   };
 };

@@ -31,6 +31,7 @@ class NUSMods {
       let modules = responses.map(response => JSON.parse(response[0].body));
       let result = _.flatten(_.zipWith(moduleClass, modules, (mc, module) =>
               _.filter(module, o => o.ClassNo === mc[1])))
+      return result;
     } catch (err) {
       console.log(err);
     }

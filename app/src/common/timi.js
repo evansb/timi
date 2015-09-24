@@ -1,5 +1,6 @@
 
-const base = 'http://localhost:8000/api';
+const base = (window.location.hostname == 'localhost')?
+  'http://localhost:8000/api': 'http://timiapp.me/api';
 
 var activeUser = null;
 
@@ -17,15 +18,36 @@ export default function($resource, $rootScope) {
     this.MyEvents.query((events) => $rootScope.$broadcast('myEvents', events));
   };
 
+  this.getEvent = function(eventId) {
+    try {
+      this.Event.get({ eventId }, (event) => {
+        $rootScope.$broadcast('eventFetched', event);
+      });
+    } catch(err) {
+      $rootScope.$broadcast('eventFetchedErr', err);
+    }
+  };
+
+  this.Event = resource('/events/:eventId/:verb', { eventId: '@id', verb: '' }, {
+    create: {
+      method: 'POST',
+      params: {
+        verb: null
+      }
+    },
+    submitAvailability: {
+      method: 'POST',
+      params: {
+        verb: 'availabilities'
+      }
+    }
+  });
+
   this.createEvent = function(options) {
     this.Event.create(options, (event) => {
       $rootScope.$broadcast('eventCreated', event);
     });
   };
-
-  this.Event = resource('/events/:eventId', { eventId: '@id' }, {
-    create: { method: 'POST' }
-  });
 
   this.User = resource('/users', {}, {
     signup: {
@@ -49,15 +71,19 @@ export default function($resource, $rootScope) {
     }
   });
 
-  this.setActiveUser = (user) => {
-    activeUser = user;
-  }
-
   this.getActiveUser = () => {
-    return activeUser;
+    try {
+      this.Self.get(null, (user) => {
+        $rootScope.$broadcast('meFetched', user);
+      });
+    } catch(err) {
+      $rootScope.$broadcast('meFetchedErr', err);
+    }
   }
 
-  this.isLoggedIn = () => {
-    return activeUser != null;
+  this.submitAvailability = (eventId, availability) => {
+    this.Event.submitAvailability({ eventId }, availability, e => {
+      $rootScope.$broadcast('availabilitySubmitted', eventId);
+    });
   }
 }

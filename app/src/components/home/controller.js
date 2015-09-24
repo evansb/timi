@@ -50,8 +50,8 @@ export default ($scope, $state, $timi, $rootScope) => {
       $scope.owned = _.filter(myEvents, (event) => event.owner.id == me.id);
      });
   });
-  
-  $rootScope.$on('newEvent', (e) => {
+
+  $rootScope.$on('eventCreated', (e) => {
     $timi.fetchMyEvents();
   });
 

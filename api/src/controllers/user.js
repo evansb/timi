@@ -112,7 +112,7 @@ export default class {
         throw Boom.badRequest('User with this email exists');
       } else {
         let token = JWT.sign(user, process.env.PRIVATE_KEY);
-        reply({ token }).header('Authorization', token).code(201);
+        reply({token}).redirect('login').header('Authorization', token).code(201);
       }
     } catch(err) {
       reply(err.isBoom ? err : Boom.badImplementation(err));

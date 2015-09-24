@@ -27,6 +27,18 @@ module.exports = [
     }
   },
   {
+    method: 'POST',
+    path: '/api/me/signup',
+    config: {
+      tags: ['api'],
+      description: 'Sign up a new user',
+      notes: 'Sample payload: { "email": "hello@example.com", "password": "helloworld", "name": "hello"}',
+      auth: false,
+      validate: validate.newUser,
+      handler: UserController.create
+    }
+  },
+  {
     method: 'GET',
     path: '/api/me/logout',
     config: {
