@@ -21,6 +21,7 @@ export default function () {
     .createTable('events',  (t) => {
       t.increments().primary();
       t.string('name').notNullable();
+      t.string('location');
       t.datetime('deadline');
       t.integer('owner_id').unsigned()
         .notNullable()
@@ -35,7 +36,7 @@ export default function () {
       t.integer('event_id').unsigned().notNullable().references('events.id').onDelete('cascade').onUpdate('cascade');
       t.integer('user_id').unsigned().notNullable().references('users.id').onDelete('cascade').onUpdate('cascade');
       t.boolean('important').notNullable().defaultTo(false);
-      t.boolean('participated').notNullable().defaultTo(false);
+      t.boolean('participated');
       t.boolean('confirmed').notNullable().defaultTo(false);
       t.timestamps();
       t.primary(['event_id', 'user_id']);

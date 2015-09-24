@@ -33,10 +33,9 @@ let _getEventById = (eventId) => {
       'timeslots',
       'important_participants',
       'normal_participants',
-      'participated_participants',
-      'unparticipated_participants',
-      'confirmed_participants',
-      'unconfirmed_participants'
+      'goingParticipants',
+      'notGoingParticipants',
+      'pendingParticipants'
     ]
   });
 };

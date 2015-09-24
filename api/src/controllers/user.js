@@ -15,10 +15,9 @@ let _getUserWithEvents = (userId) => {
     withRelated: [
       'involvedEvents',
       'ownEvents',
-      'participated_events',
-      'unparticipated_events',
-      'confirmed_events',
-      'unconfirmed_events'
+      'goingEvents',
+      'notGoingEvents',
+      'pendingEvents',
     ]
   });
 };
@@ -82,10 +81,9 @@ export default class {
           'involvedEvents.timeslots',
           'involvedEvents.important_participants',
           'involvedEvents.normal_participants',
-          'involvedEvents.participated_participants',
-          'involvedEvents.unparticipated_participants',
-          'involvedEvents.confirmed_participants',
-          'involvedEvents.unconfirmed_participants'
+          'involvedEvents.goingParticipants',
+          'involvedEvents.notGoingParticipants',
+          'involvedEvents.pendingParticipants',
         ]
       });
       reply(user.related('involvedEvents').toJSON());

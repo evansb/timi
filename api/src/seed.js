@@ -133,28 +133,24 @@ export default async function() {
       event_id: 3,
       user_id: 1,
       important: true,
-      participated: false,
       confirmed: false,
     },
     {
       event_id: 3,
       user_id: 2,
       important: false,
-      participated: false,
       confirmed: false,
     },
     {
       event_id: 3,
       user_id: 5,
       important: false,
-      participated: false,
       confirmed: false,
     },
     {
       event_id: 3,
       user_id: 6,
       important: false,
-      participated: false,
       confirmed: false,
     },
     { //cmi
