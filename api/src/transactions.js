@@ -47,7 +47,7 @@ exports.newAvailabilities = (user, eventId, availabilities) => {
           }
         });
     })
-      .then(() => user.participate(eventId));
+      .then(() => availabilities.length > 0 ? user.going(eventId) : user.notGoing(eventId));
   });
 };
 

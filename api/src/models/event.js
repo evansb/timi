@@ -41,15 +41,33 @@ var Event = bookshelf.model('Event', {
   getOwner: function () {
     return this.owner().fetch();
   },
-  involvedUsers: function () {
+  participants: function () {
     return this.belongsToMany('User', 'events_users', 'event_id', 'user_id');
   },
-  participants: function () {
-    return this.involvedUsers();
-  },
   getParticipants: function () {
-    return this.involvedUsers()
+    return this.participants()
                .withPivot(['important', 'participated', 'confirmed']).fetch();
+  },
+  goingParticipants: function () {
+    return this.participants().query({
+      where: {
+        participated: true
+      }
+    });
+  },
+  notGoingParticipants: function () {
+    return this.participants().query({
+      where: {
+        participated: false
+      }
+    });
+  },
+  pendingParticipants: function () {
+    return this.participants().query({
+      where: {
+        participated: null
+      }
+    });
   },
   important_participants: function () {
     return this.participants().query({
@@ -65,40 +83,8 @@ var Event = bookshelf.model('Event', {
       }
     });
   },
-  confirmed_participants: function () {
-    return this.participants().query({
-      where: {
-        confirmed: true
-      }
-    });
-  },
-  unconfirmed_participants: function () {
-    return this.participants().query({
-      where: {
-        confirmed: false
-      }
-    });
-  },
-  participated_participants: function () {
-    return this.participants().query({
-      where: {
-        participated: true
-      }
-    });
-  },
-  unparticipated_participants: function () {
-    return this.participants().query({
-      where: {
-        participated: false,
-      }
-    });
-  },
   isFullyParticipated: function() {
-    return this.hasMany('EventUser').query('where', 'participated', '=', false).count()
-      .then((count) => parseInt(count) < 1);
-  },
-  isFullyConfirmed: function() {
-    return this.hasMany('EventUser').query('where', 'confirmed', '=', false).count()
+    return this.hasMany('EventUser').query('where', 'participated', '=', null).count()
       .then((count) => parseInt(count) < 1);
   },
   top3: function() {
