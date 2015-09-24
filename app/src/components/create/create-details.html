@@ -17,7 +17,9 @@
         <input type='text'
                name='location'
                placeholder='Location'
-               ng-model='newEvent.location' />
+               ng-model='newEvent.location'
+               id='autocomplete'
+               ng-focus='geolocate()'/>
       </label>
       <label class='item item-input'>
         <span class='input-label'>Duration</span>

@@ -35,8 +35,9 @@
   </head>
   <body ng-app="timi" manifest="cache.manifest">
     <ion-nav-view ui-view></ion-nav-view>
-
-    <script type="text/javascript" src="dist/app.js"></script>
-    <script type="text/javascript" src="cordova.js"></script>
   </body>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHN3mi7_4Z2LkJK_Ocfg-5dpccTwAJqpY&signed_in=true&libraries=places&callback=initAutocomplete"
+        async defer></script>
+  <script type="text/javascript" src="dist/app.js"></script>
+  <script type="text/javascript" src="cordova.js"></script>
 </html>
