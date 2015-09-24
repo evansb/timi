@@ -12,8 +12,9 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
     timeslots: $scope.newEvent.timeslots || [],
     duration: $scope.newEvent.duration || 3600000,
     participants: $scope.newEvent.participants || {},
-    deadline: $scope.newEvent.deadline || moment().startOf('tomorrow').valueOf()
+    deadline: $scope.newEvent.deadline || moment().add(1, 'days').add(1, 'hours').startOf('hour').valueOf()
   };
+  console.log($scope.newEvent.deadline);
 
   localStorageService.set('newEvent', $scope.newEvent);
 
@@ -154,6 +155,7 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
   };
 
   $scope.timepickerStart = {
+    inputEpochTime: $scope.timepicker.startValue,
     titleLabel: 'Start Time',
     step: 1,
     setButtonType: 'button-energized',
@@ -164,6 +166,7 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
   };
 
   $scope.timepickerEnd = {
+    inputEpochTime: $scope.timepicker.endValue,
     titleLabel: 'End Time',
     step: 1,
     setButtonType: 'button-energized',
@@ -188,6 +191,7 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
   };
 
   $scope.timepickerDeadline = {
+    inputEpochTime: ((new Date()).getHours() + 1) * 3600,
     titleLabel: 'Time',
     step: 1,
     setButtonType: 'button-energized',
@@ -209,6 +213,7 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
   })();
 
   $scope.timepickerDuration = {
+    inputEpochTime: 3600,
     titleLabel: 'Duration',
     step: 5,
     setButtonType: 'button-energized',
