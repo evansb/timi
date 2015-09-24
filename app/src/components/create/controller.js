@@ -14,7 +14,6 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
     participants: $scope.newEvent.participants || {},
     deadline: $scope.newEvent.deadline || moment().add(1, 'days').add(1, 'hours').startOf('hour').valueOf()
   };
-  console.log($scope.newEvent.deadline);
 
   localStorageService.set('newEvent', $scope.newEvent);
 
@@ -186,7 +185,6 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
       let timePart = moment($scope.newEvent.deadline).valueOf() -
         (+moment($scope.newEvent.deadline).startOf('day').valueOf());
       $scope.newEvent.deadline = moment(val).valueOf() + timePart;
-      console.log($scope.newEvent.deadline);
     }
   };
 
@@ -229,8 +227,7 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
 
   //Location Autocomplete
   let placeSearch, autocomplete;
-  if (google.maps) { console.log("loaded"); }
-  else { console.log("unloaded"); }
+
   let initAutocomplete = () => {
     // Create the autocomplete object, restricting the search to geographical
     // location types.
@@ -241,8 +238,9 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
     // When the user selects an address from the dropdown, populate the address
     // fields in the form.
     autocomplete.addListener('place_changed', () => {
-      $scope.newEvent.latitude = autocomplete.getPlace();
-      console.log(autocomplete.getPlace());
+      $scope.newEvent.latitude = autocomplete.getPlace().geometry.location.lat();
+      $scope.newEvent.longitude = autocomplete.getPlace().geometry.location.lng();
+      $scope.newEvent.location = autocomplete.getPlace().name;
     });
   }
   window.initAutocomplete = initAutocomplete;
