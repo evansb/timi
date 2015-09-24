@@ -8,7 +8,7 @@ Promise.promisifyAll(Bcrypt);
 
 var User = bookshelf.model('User', {
   tableName: 'users',
-  hidden: ['password', 'created_at', 'updated_at'],
+  hidden: ['password'],
   trySave: function () {
     return User.where('email', this.get('email'))
       .count()
