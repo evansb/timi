@@ -227,9 +227,10 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
     return moment().startOf('day').add(val, 'milliseconds').format('HH [h] mm [min]');
   }
 
-
-  var placeSearch, autocomplete;
-
+  //Location Autocomplete
+  let placeSearch, autocomplete;
+  if (google.maps) { console.log("loaded"); }
+  else { console.log("unloaded"); }
   let initAutocomplete = () => {
     // Create the autocomplete object, restricting the search to geographical
     // location types.
@@ -245,7 +246,6 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
     });
   }
   window.initAutocomplete = initAutocomplete;
-  initAutocomplete();
 
   // Bias the autocomplete object to the user's geographical location,
   // as supplied by the browser's 'navigator.geolocation' object.
