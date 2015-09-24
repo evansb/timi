@@ -11,8 +11,10 @@
                name='title'
                placeholder='Title'
                ng-model='newEvent.name'
-               validation='required'/>
+               validation='required'
+               validation-error-to='title-error'/>
       </label>
+      <span id='title-error' class='validation text-danger'></span>
       <label class='item item-input'>
         <input type='text'
                name='location'

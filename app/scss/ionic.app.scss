@@ -399,3 +399,12 @@ body.pg-loaded > .inner {
   height: 100%;
   left: 0;
 }
+
+.validation {
+  color: red;
+}
+
+.text-danger :before {
+  font-family: "Ionicons";
+  content: '\f100';
+}
