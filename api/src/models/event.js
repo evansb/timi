@@ -82,16 +82,14 @@ var Event = bookshelf.model('Event', {
   participated_participants: function () {
     return this.participants().query({
       where: {
-        participated: true,
-        confirmed: true
+        participated: true
       }
     });
   },
   unparticipated_participants: function () {
     return this.participants().query({
       where: {
-        participated: true,
-        confirmed: true
+        participated: false,
       }
     });
   },
@@ -104,14 +102,7 @@ var Event = bookshelf.model('Event', {
       .then((count) => parseInt(count) < 1);
   },
   top3: function() {
-    return this.getResult()
-      .then((result) => result.toArray().slice(0, 3));
-    return this.participants().query({
-      where: {
-        participated: false,
-        confirmed: true
-      }
-    });
+    return this.getResult().then((result) => result.toArray().slice(0, 3));
   }
 });
 
