@@ -17,6 +17,10 @@ export default () => {
                     $scope.dmy($scope.slot.dateEnd);
         }
       }
+      $scope.removeTimeslot = $scope.$parent.removeTimeslot;
+      console.log($scope.removeTimeslot);
+      $scope.testFoo = () => console.log("Foo");
+
       $scope.niceDay = (da) => {
         let date = moment(da);
         if (date.calendar().indexOf('/') == -1) {

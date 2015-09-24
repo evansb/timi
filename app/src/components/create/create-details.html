@@ -33,7 +33,6 @@
     </div>
   </div>
 </div>
-
 <div class="row">
   <div class="col text-center">
     <h4 class='positive'>Indicate By</h4>
@@ -54,59 +53,4 @@
       </button>
     </ionic-timepicker>
   </label>
-</div>
-
-<div class='row'>
-  <div class='col text-center'>
-    <h4 class='positive'>Date/Time Availability</h4>
-  </div>
-</div>
-  <div class='row'>
-    <label class='col-50 text-right'>
-      <ionic-datepicker input-obj="datepickerStart">
-        <button class="button button-clear button-energized">
-          {{ formatDate(datepicker.startValue) }}
-        </button>
-      </ionic-datepicker>
-    </label>
-    <label class='col-50'>
-      <ionic-datepicker input-obj="datepickerEnd">
-        <button class="button button-clear button-energized">
-          {{ formatDate(datepicker.endValue) }}
-        </button>
-      </ionic-datepicker>
-    </label>
-  </div>
-  <div class='row'>
-    <label class='col-50 text-right'>
-      <ionic-timepicker input-obj="timepickerStart">
-        <button class="button button-clear button-energized">
-          {{ normalize(timepicker.startValue) }}
-        </button>
-      </ionic-timepicker>
-    </label>
-    <label class='col-50'>
-      <ionic-timepicker input-obj="timepickerEnd">
-        <button class="button button-clear button-energized">
-          {{ normalize(timepicker.endValue) }}
-        </button>
-      </ionic-timepicker>
-    </label>
-  </div>
-<div class='row'>
-  <div class="col col-50">
-    <button class='button button-outline button-energized button-block'
-            ng-click='addTimeslot()'>
-      Add
-    </button>
-  </div>
-  <div class="col">
-    <button class='button button-outline button-energized button-block'
-            ng-click='clearTimeslot()'>
-      Clear
-    </button>
-  </div>
-</div>
-  <timi-availability-card ng-repeat="slot in newEvent.timeslots" ng-model="slot">
-  </timi-availability-card>
 </div>

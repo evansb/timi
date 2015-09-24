@@ -2,7 +2,7 @@ import moment from 'moment';
 import 'moment-range';
 import _ from 'lodash';
 
-export default ($scope, $state, $timi, $rootScope, localStorageService) => {
+export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPopup) => {
   $scope.step = 1;
   $scope.users = [];
 
@@ -95,6 +95,7 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
   $scope.formatTime = (time) => moment(time).format('HH:mm');
   $scope.normalize = (time) => moment().startOf('day')
     .add(time, 'seconds').format('HH:mm');
+
   $scope.addTimeslot = function() {
     let slot = {
       dateStart: $scope.datepicker.startValue,
@@ -102,7 +103,12 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
       timeStart: $scope.timepicker.startValue,
       timeEnd: $scope.timepicker.endValue
     };
-    $scope.newEvent.timeslots.push(slot);
+    $scope.newEvent.timeslots.unshift(slot);
+  };
+
+  $scope.removeTimeslot = function(slot) {
+    console.log("Clicked");
+    _.remove($scope.newEvent.timeslots, (slot2) => slot2 == slot);
   };
 
   $scope.clearTimeslot = function() {
@@ -228,7 +234,6 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
   //Location Autocomplete
   $scope.autocompleteOnFocus = false;
   $scope.toggleAutocompleteOnFocus = (status) => {
-    console.log('toggle');
     $scope.autocompleteOnFocus = status;
   };
 
@@ -249,7 +254,8 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
       $scope.newEvent.location = autocomplete.getPlace().name;
     });
   }
-  window.initAutocomplete = initAutocomplete;
+
+  initAutocomplete();
 
   // Bias the autocomplete object to the user's geographical location,
   // as supplied by the browser's 'navigator.geolocation' object.
