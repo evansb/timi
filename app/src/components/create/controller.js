@@ -15,6 +15,8 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
     deadline: $scope.newEvent.deadline || moment().startOf('tomorrow').valueOf()
   };
 
+  localStorageService.set('newEvent', $scope.newEvent);
+
   let normalize = (s) => {
     return moment().startOf('day').add(s, 'seconds').format('HH:mm');
   };
@@ -46,9 +48,8 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
     save();
     if ($scope.step == 2) {
       $scope.createEvent();
-    } else {
-      $scope.step = Math.min($scope.step + 1, 3);
     }
+    $scope.step = Math.min($scope.step + 1, 3);
   }
 
   $scope.createEvent = () => {
@@ -70,14 +71,13 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
       latitude: 0.0,
       longitude: 0.0
     };
-    console.log(newEvent);
     $timi.createEvent(newEvent);
   }
 
   $rootScope.$on('eventCreated', () => {
     localStorageService.remove('newEvent');
     $scope.newEvent = {};
-    $scope.backToHome();
+    $scope.next();
   });
 
   $scope.getUser = function(query) {
@@ -103,7 +103,6 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
       timeEnd: $scope.timepicker.endValue
     };
     $scope.newEvent.timeslots.push(slot);
-    console.log($scope.newEvent.timeslots);
   };
 
   $scope.clearTimeslot = function() {
