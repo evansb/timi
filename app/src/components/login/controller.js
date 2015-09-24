@@ -29,4 +29,7 @@ export default ($scope, $timi, $notification, $state, $auth, $http) => {
     }
   }
 
+  $scope.$validationOptions = {
+    displayOnlyLastErrorMsg: true
+  };
 };

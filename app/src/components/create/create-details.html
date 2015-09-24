@@ -11,8 +11,10 @@
                name='title'
                placeholder='Title'
                ng-model='newEvent.name'
-               validation='required'/>
+               validation='required'
+               validation-error-to='title-error'/>
       </label>
+      <span id='title-error' class='validation text-danger'></span>
       <label class='item item-input'>
         <input type='text'
                name='location'
@@ -20,12 +22,13 @@
                ng-model='newEvent.location'
                id='autocomplete'
                ng-focus='geolocate()'
-               ng-blur='toggleAutocompleteOnFocus(false)'/>
+               ng-blur='autocompleteOnBlur()'/>
       </label>
       <label class='item item-input'>
         <span class='input-label'>Duration</span>
         <ionic-timepicker input-obj="timepickerDuration">
-          <button class="button button-clear button-energized">
+          <button class="button button-clear button-energized"
+                  ng-disabled="autocompleteOnFocus == 'true'">
             {{ displayDuration(newEvent.duration) }}
           </button>
         </ionic-timepicker>
