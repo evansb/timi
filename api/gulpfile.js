@@ -16,6 +16,19 @@ var envDevel = {
   'PG_DATA': './data'
 };
 
+var envProduction = {
+  'NODE_ENV': 'development',
+  'API_HOST': 'localhost',
+  'API_PORT': '8000',
+  'DB_HOST': 'localhost',
+  'PGPORT': '5432',
+  'PRIVATE_KEY': 'opensesame',
+  'DB_USER': process.env.USER,
+  'DB_PASSWORD': 'opensesame',
+  'DB_NAME': 'timi',
+  'PG_DATA': './data'
+};
+
 var envDevelSharon = {
   'NODE_ENV': 'development',
   'API_HOST': 'localhost',
@@ -53,6 +66,15 @@ gulp.task('serve', [], function() {
     tasks: ['compile'],
     ext: 'js',
     env: envDevel
+  });
+});
+
+gulp.task('production', [], function() {
+  nodemon({
+    script: 'js/main.js',
+    tasks: [],
+    ext: 'js',
+    env: envProduction
   });
 });
 
