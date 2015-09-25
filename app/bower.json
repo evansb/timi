@@ -19,6 +19,7 @@
     "lodash": "~3.10.1",
     "moment": "~2.10.6",
     "moment-range": "~2.0.3",
+    "offline": "~0.7.14",
     "satellizer": "~0.12.5"
   }
 }
