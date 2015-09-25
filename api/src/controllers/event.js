@@ -144,12 +144,18 @@ export default class {
       let user = await _getUserById(getUserId(request));
       let permitted = await _permit(user, eventId);
       let event = await _getEventById(eventId);
-      let result = await transactions.newAvailabilities(permitted, event, availabilities);
-      reply(result);
-      let fullyParticipated = await event.isFullyParticipated();
-      if(fullyParticipated) {
-        let participants = await event.getParticipants();
-        Mailer.sendScheduleEmail(request.server.plugins.mailer, event, participants);
+      let deadline = event.get('deadline');
+
+      if(deadline !== null && deadline <= new Date()) {
+        reply(Boom.methodNotAllowed('This event has been scheduled already'))
+      } else {
+        let result = await transactions.newAvailabilities(permitted, event, availabilities);
+        reply(result);
+        let fullyParticipated = await event.isFullyParticipated();
+        if(fullyParticipated) {
+          let participants = await event.getParticipants();
+          Mailer.sendScheduleEmail(request.server.plugins.mailer, event, participants);
+        }
       }
     } catch(err) {
       reply(err.isBoom ? err : Boom.badImplementation(err));
