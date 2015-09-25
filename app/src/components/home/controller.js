@@ -34,6 +34,7 @@ export default ($scope, $state, $timi, $rootScope, $Offline) => {
       $Offline.showPopup($scope);
     }
   };
+
   $scope.goToSetting = () => {
     $state.go('settings');
   };
@@ -41,12 +42,13 @@ export default ($scope, $state, $timi, $rootScope, $Offline) => {
     $state.go('event', { eventId: event.id });
   };
 
-  $scope.isOnline = true;
   $scope.invites = [];
   $scope.scheduled = [];
+  $scope.isOnline = true;
 
   $Offline.on('up', () => {
     $scope.isOnline = true;
+    $timi.fetchMyEvents();
     $scope.$apply();
   });
 

@@ -1,11 +1,24 @@
 
-export default ($scope, $notification, $state, $auth, $http) => {
+export default ($scope, $notification, $state, $auth, $http, $Offline) => {
 
   if ($auth.isAuthenticated()) {
     $state.go('home');
   }
 
+  $scope.isOnline = true;
+
+  $Offline.on('up', () => {
+    $scope.isOnline = true;
+    $scope.$apply();
+  });
+
+  $Offline.on('down', () => {
+    $scope.isOnline = false;
+    $scope.$apply();
+  });
+
   $scope.signup = async () => {
+    if (!$scope.isOnline) { $Offline.showPopup(); return; }
     if (!$scope.email) {
       let message = 'Invalid email address';
       $notification.send({ type: 'modal', message: message});
@@ -32,16 +45,12 @@ export default ($scope, $notification, $state, $auth, $http) => {
       }
     }
   }
-  
+
   $scope.loginGoogle = async () => {
-    try {
-      let user = await $auth.authenticate('google');
-      $http.defaults.headers.common.Authorization = user.token;
-      $state.go('home');
-    } catch (err) {
-      let message = 'Invalid username/password';
-      $notification.send({ type: 'modal', message: message});
-    }
+    if (!$scope.isOnline) { $Offline.showPopup(); return; }
+    let user = await $auth.authenticate('google');
+    $http.defaults.headers.common.Authorization = user.token;
+    $state.go('home');
   }
 
   $scope.$validationOptions = {
