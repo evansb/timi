@@ -127,11 +127,12 @@ export default class {
       } else {
         let event = await transactions.newEvent(eventParams, timeslots, participantsParams);
         event = await _getEventById(event.get('id'));
-        reply({ event: event, nonFulfillUser: calculated.nonFulfilled}).code(201);
+        let eventResp = event.toJSON();
+        eventResp.nonFulfillUser = calculated.nonFulfilled;
+        reply(eventResp).code(201);
         let participants = await event.getParticipants();
         Mailer.sendInvitationEmail(request.server.plugins.mailer, event, user, participants);
       }
-
     } catch(err) {
       reply(err.isBoom ? err : Boom.badImplementation(err));
     }
@@ -169,7 +170,9 @@ export default class {
       let permitted = await _permit(user, eventId);
       let event = await _getEventById(eventId);
       let result = await event.getResult();
-      reply({event: event.toJSON(), result: result});
+      let eventResp = event.toJSON();
+      eventResp.result = result;
+      reply(eventResp);
     } catch (err) {
       reply(err.isBoom ? err : Boom.badImplementation(err));
     }
