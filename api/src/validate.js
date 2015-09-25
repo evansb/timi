@@ -3,7 +3,7 @@ import Joi from 'joi';
 var emailSchema = Joi.string().email().required();
 var idSchema = Joi.number().integer().positive();
 var passwordSchema = Joi.string().alphanum().min(8).max(30).required();
-var nameSchema = Joi.string().alphanum().max(30);
+var nameSchema = Joi.string().max(30);
 
 var userSchema = Joi.object().keys({
   email: emailSchema,
@@ -34,7 +34,7 @@ var eventSchema = Joi.object().keys({
   name: nameSchema.required(),
   deadline: Joi.date().min(new Date()),
   duration: Joi.number().integer().positive().required().multiple(60000).min(600000).max(86400000),
-  location: Joi.string().alphanum().max(50),
+  location: Joi.string().max(50),
   latitude: Joi.number().min(-90).max(90),
   longitude: Joi.number().min(-180).max(180),
   ranges: Joi.array().items(rangeSchema).min(1).max(10).unique().required(),
