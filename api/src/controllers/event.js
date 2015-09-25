@@ -148,7 +148,7 @@ export default class {
     let eventId = request.params.eventId;
     let availabilities = request.payload;
     try {
-      let user = await _getUserById(getUserId(request));
+      let user = await _getUserById(1);
       let permitted = await _permit(user, eventId);
       let event = await _getEventById(eventId);
       let deadline = event.get('deadline');
