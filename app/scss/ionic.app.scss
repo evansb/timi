@@ -1,68 +1,11 @@
-/*
-To customize the look and feel of Ionic, you can override the variables
-in ionic's _variables.scss file.
 
-For example, you might change some of the default colors:
-
-$light:                           #fff !default;
-$stable:                          #f8f8f8 !default;
-$positive:                        #387ef5 !default;
-$calm:                            #11c1f3 !default;
-$balanced:                        #33cd5f !default;
-$assertive:                       #ef473a !default;
-$royal:                           #886aea !default;
-$dark:                            #444 !default;
-*/
-// Primary Colors
-$primary1:                        #ffffff;
-$primary2:                        #ee554c;
-$primary3:                        #ffde39;
-$primary4:                        #c3c3c3;
-$primary5:                        #a3a0a0;
-$primary6:                        #58585b;
-
-// Basic
-$light:                           $primary1 !default;
-$positive:                        $primary2 !default;
-$energized:                       $primary2 !default;
-$assertive:                       $primary2 !default;
-$balanced:                        $primary3 !default;
-$stable:                          $primary4 !default;
-$royal:                           $primary5 !default;
-$dark:                            $primary6 !default;
-
-// Base
-$base-background-color:           $primary1 !default;
-
-// Font
-$font-family-sans-serif:          "Open Sans Medium", sans-serif !default;
-$font-family-light-sans-serif:    "Open Sans Regular", sans-serif-light !default;
-$font-family-serif:               serif !default;
-$font-family-monospace:           monospace !default;
-
-// Checkbox
-$checkbox-off-border-default:     $energized !default;
-$checkbox-on-bg-default:          $energized !default;
-$checkbox-on-border-default:      $energized !default;
-
-$item-avatar-width:               80px !default;
-$item-avatar-height:              80px !default;
-$item-avatar-border-radius:       50% !default;
-
+@import "./_variable";
+@import "./_common";
 
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700,600,300);
-
-// The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../bower_components/ionic/fonts" !default;
 
-// Include all of Ionic
-@import "../bower_components/offline/themes/offline-theme-chrome-indicator.css";
-@import "../bower_components/offline/themes/offline-language-english-indicator.css";
-@import "../bower_components/ionic/scss/ionic";
-@import "../bower_components/ion-autocomplete/dist/ion-autocomplete";
-@import "../bower_components/Ionicons/scss/ionicons";
-@import "./theme";
-@import "../src/components/ionic-datepicker/ionic-datepicker.styles";
+@import "./vendor";
 
 body > .inner {
   display: none;
@@ -70,27 +13,6 @@ body > .inner {
 
 body.pg-loaded > .inner {
   display: block;
-}
-
-.padding-big {
-  padding-left: 40px !important;
-  padding-right: 40px !important;
-}
-
-.padding-medium {
-  padding-left: 20px !important;
-  padding-right: 20px !important;
-}
-
-.padding-small {
-  padding-left: 10px !important;
-  padding-right: 10px !important;
-}
-
-.only-bottom-border {
-  border-left: none;
-  border-right: none;
-  border-top: none;
 }
 
 .timi-logo {
@@ -183,9 +105,6 @@ body.pg-loaded > .inner {
   border: none;
 }
 
-.header {
-  padding-top: 1em;
-}
 
 .timi-list-title {
   padding-top: 1.5em;
@@ -249,10 +168,6 @@ body.pg-loaded > .inner {
   }
 }
 
-.ion-autocomplete {
-  border-bottom: 1px solid $positive !important;
-}
-
 .timi-participant-list {
   @extend .padding-small;
   small {
@@ -288,19 +203,6 @@ body.pg-loaded > .inner {
     color: rgb(133,100,100);
     font-size: 1.5em;
   }
-}
-
-.slider {
-  position: absolute !important;
-  top: 0 !important;
-  bottom: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-}
-
-.scroll {
-  height: 100%;
-  min-height: 100%;
 }
 
 .timi-home {
@@ -361,10 +263,6 @@ body.pg-loaded > .inner {
   }
 }
 
-.item-select {
-  height: 2em;
-}
-
 .timi-select select {
   text-align: left;
   width: 100%;
@@ -379,32 +277,9 @@ body.pg-loaded > .inner {
   background: transparent url("http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png") no-repeat right;
 }
 
-.avatar-outer {
-  position: relative;
-  height: 90px;
-}
-
-.item-avatar-centered {
-  position: absolute;
-  width: 80px;
-  height: 80px;
-  left: 50%;
-  margin-left: -60px;
-  img {
-    border: 3px solid yellow;
-  }
-}
-
 .timi-header-button-light {
   @extend .button-light;
   color: $light !important;
-}
-
-.pg-loading-logo {
-  position: relative;
-  width: 60%;
-  height: 100%;
-  left: 0;
 }
 
 .timi-invalid {
