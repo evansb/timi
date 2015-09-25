@@ -33,6 +33,17 @@ export default ($scope, $notification, $state, $auth, $http) => {
     }
   }
   
+  $scope.loginGoogle = async () => {
+    try {
+      let user = await $auth.authenticate('google');
+      $http.defaults.headers.common.Authorization = user.token;
+      $state.go('home');
+    } catch (err) {
+      let message = 'Invalid username/password';
+      $notification.send({ type: 'modal', message: message});
+    }
+  }
+
   $scope.$validationOptions = {
     displayOnlyLastErrorMsg: true
   };

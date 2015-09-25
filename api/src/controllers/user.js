@@ -2,9 +2,16 @@ import Promise    from 'bluebird';
 import Boom       from 'boom';
 import Bcrypt     from 'bcrypt';
 import JWT        from 'jsonwebtoken';
+import _request    from 'request';
+import qs         from 'querystring';
 import User       from '../models/user';
+import Buffer     from 'buffer';
 
 let compare = Promise.promisify(Bcrypt.compare);
+let post = Promise.promisify(_request.post);
+let get = Promise.promisify(_request.get);
+
+let third = (p) => p.spread((foo, bar) => Promise.resolve(bar));
 
 let _getUserById = (userId) => {
   return User.where('id', userId).fetch();
@@ -34,15 +41,15 @@ let _permit = async (user, eventId) => {
 let getUserId = (request) => {
   let decoded = JWT.decode(
     request.headers.authorization.split(' ')[1], { complete:true });
-  return decoded.payload.id;
-}
+    return decoded.payload.id;
+  }
 
 export default class {
   static async getCurrent(request, reply) {
     try {
       let user = await _getUserWithEvents(getUserId(request));
       reply(user.toJSON());
-    } catch(err) {
+    } catch (err) {
       reply(Boom.notFound('User not found'));
     }
   }
@@ -59,10 +66,10 @@ export default class {
           reply(Boom.forbidden('Wrong username or password'));
         } else {
           let token = JWT.sign(user, process.env.PRIVATE_KEY);
-          reply({ token }).header('Authorization', token);
+          reply({token}).header('Authorization', token);
         }
       }
-    } catch(err) {
+    } catch (err) {
       reply(err.isBoom ? err : Boom.badImplementation(err));
     }
   }
@@ -99,14 +106,54 @@ export default class {
       let permitted = await _permit(user, eventId);
       let availability = await permitted.availableForEvent(eventId);
       reply(availability);
-    } catch(err) {
+    } catch (err) {
+      reply(err.isBoom ? err : Boom.badImplementation(err));
+    }
+  }
+
+  static async loginGoogle(req, reply) {
+    let accessTokenUrl = 'https://accounts.google.com/o/oauth2/token';
+    let peopleApiUrl = 'https://www.googleapis.com/plus/v1/people/me/openIdConnect';
+    let params = {
+      code: req.payload.code,
+      client_id: req.payload.clientId,
+      client_secret: '0fO-iGZVcKh6iIs_Wl_pfD2m',
+      redirect_uri: req.payload.redirectUri,
+      grant_type: 'authorization_code'
+    };
+    try {
+      let token = await third(post(accessTokenUrl, {json: true, form: params}));
+      let accessToken = token.access_token;
+      let headers = {Authorization: 'Bearer ' + accessToken};
+      let profile = await third(get({url: peopleApiUrl, headers: headers, json: true}));
+      let user = await User.where('google_id', profile.sub).fetch();
+      if (!user) {
+        let nu = {
+          name: profile.name,
+          email: profile.email,
+          password: profile.sub,
+          google_id: profile.sub
+        }
+        let newUser = new User(nu, {hasTimestamps: true});
+        let user = await newUser.trySave();
+        if (!user) {
+          reply(Boom.badRequest('User with this email exists'));
+        } else {
+          let token = JWT.sign(user, process.env.PRIVATE_KEY);
+          reply({token}).header('Authorization', token).code(201);
+        }
+      } else {
+        let token = JWT.sign(user, process.env.PRIVATE_KEY);
+        reply({token}).header('Authorization', token);
+      }
+    } catch (err) {
       reply(err.isBoom ? err : Boom.badImplementation(err));
     }
   }
 
   static async signUp(request, reply) {
     try {
-      let newUser = new User(request.payload, { hasTimestamps: true });
+      let newUser = new User(request.payload, {hasTimestamps: true});
       let user = await newUser.trySave();
       if (!user) {
         throw Boom.badRequest('User with this email exists');
@@ -114,7 +161,7 @@ export default class {
         let token = JWT.sign(user, process.env.PRIVATE_KEY);
         reply({token}).redirect('login').header('Authorization', token).code(201);
       }
-    } catch(err) {
+    } catch (err) {
       reply(err.isBoom ? err : Boom.badImplementation(err));
     }
   }
@@ -126,12 +173,12 @@ export default class {
   static async getUser(request, reply) {
     try {
       let user = await _getUserById(request.params.userId);
-      if(!user) {
+      if (!user) {
         throw Boom.notFound('User does not exist');
       } else {
         reply(user);
       }
-    } catch(err) {
+    } catch (err) {
       reply(err.isBoom ? err : Boom.badImplementation(err));
     }
   }
@@ -139,12 +186,12 @@ export default class {
   static async getAllUsers(request, reply) {
     try {
       let users = await User.fetchAll();
-      if(!users) {
+      if (!users) {
         throw Boom.notFound('User does not exist');
       } else {
         reply(users);
       }
-    } catch(err) {
+    } catch (err) {
       reply(err.isBoom ? err : Boom.badImplementation(err));
     }
   }
@@ -166,7 +213,7 @@ export default class {
           reply(availability);
         }
       }
-    } catch(err) {
+    } catch (err) {
       reply(err.isBoom ? err : Boom.badImplementation(err));
     }
   }
@@ -177,7 +224,7 @@ export default class {
       let user = await _getUserById(getUserId(request));
       let updated = await user.update(payload);
       reply(updated);
-    } catch(err) {
+    } catch (err) {
       reply(err.isBoom ? err : Boom.badImplementation(err));
     }
   }
@@ -188,18 +235,19 @@ export default class {
       let user = await _getUserById(getUserId(request));
       let updated = await user.updatePassword(password);
       let token = JWT.sign(updated, process.env.PRIVATE_KEY);
-      reply({ token }).header('Authorization', token);
-    } catch(err) {
+      reply({token}).header('Authorization', token);
+    } catch (err) {
       reply(err.isBoom ? err : Boom.badImplementation(err));
     }
   }
+
 
   static async delete(request, reply) {
     try {
       let user = await _getUserById(getUserId(request));
       await user.destroy();
       reply('OK');
-    } catch(err) {
+    } catch (err) {
       reply(err.isBoom ? err : Boom.badImplementation(err));
     }
   }
