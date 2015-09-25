@@ -45,7 +45,7 @@ let app = angular.module('timi', [
 app.service('$Offline', function() { return Offline; });
 
 app.config(function ($translateProvider) {
-  window.setInterval(() => Offline.check(), 2000);
+  window.setInterval(() => Offline.check(), 3000);
 
   $translateProvider.useStaticFilesLoader({
     prefix: '/bower_components/angular-validation-ghiscoding/locales/validation/',
