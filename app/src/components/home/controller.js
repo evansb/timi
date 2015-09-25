@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import moment from 'moment';
 
 export default ($scope, $state, $timi, $rootScope) => {
   $scope.contexts = [
@@ -41,18 +42,24 @@ export default ($scope, $state, $timi, $rootScope) => {
 
   $rootScope.$on('myEvents', (e, myEvents) => {
     let me = $timi.Self.get(() => {
-      console.log(myEvents);
-      $scope.invites = _.filter(myEvents, (event) =>
-        _.includes(_.pluck(event.pendingParticipants, 'id'), me.id)
-      ).map(event => _.assign(event, { isPending: true }));
-      $scope.scheduled = _.filter(myEvents, (event) =>
-        _.includes(_.pluck(event.goingParticipants, 'id'), me.id)
-      );
-      $scope.owned = _.filter(myEvents, (event) => event.owner.id == me.id);
+      let myEvents2 = myEvents.map(event => {
+        event.isPending = _.includes(me.id,
+          _.pluck(event.pendingParticipants, 'id'));
+        return event;
+      });
+      $scope.invites = _.filter(myEvents2, (event) =>
+        moment(event.deadline).diff(moment()) > 0);
+      $scope.scheduled = _.filter(myEvents2, (event) =>
+        moment(event.deadline).diff(moment()) <= 0);
+      $scope.owned = _.filter(myEvents2, (event) => event.owner.id == me.id);
      });
   });
 
   $rootScope.$on('eventCreated', (e) => {
+    $timi.fetchMyEvents();
+  });
+
+  $rootScope.$on('availabilitySubmitted', (e) => {
     $timi.fetchMyEvents();
   });
 

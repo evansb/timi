@@ -11,13 +11,25 @@ export default () => {
       $scope.day2 = (date) => moment(date).format('DD');
       $scope.niceDay = (da) => {
         let date = moment(da);
-        if (date.calendar().indexOf('/') == -1) {
-          return date.calendar().split(' ')[0].toUpperCase();
-        } else {
-          return date.format('dddd').toUpperCase();
-        }
+        return date.format('dddd').toUpperCase();
       };
       $scope.hourMinute = (date) => moment(date).format('hh:mm');
+      $scope.getParentClass = () => {
+        if (!$scope.$parent.event.isPending) {
+          return 'timi-slot-disabled';
+        } else {
+          return 'timi-slot'
+        }
+      }
+      $scope.getClass = () => {
+        if (!$scope.$parent.event.isPending) {
+          return 'dark';
+        } else if ($scope.slot.isSelected) {
+          return 'active';
+        } else {
+          return 'inactive';
+        }
+      }
     }
   };
 }
