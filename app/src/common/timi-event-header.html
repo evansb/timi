@@ -20,7 +20,7 @@
         <div class="row">
           <div class="col">
             <h1>
-              {{ (event.participated_participants.length + ((selected > 0 && event.isPending) ? 1 : 0)) || 0}}
+              {{ (event.goingParticipants.length + ((selected > 0 && event.isPending) ? 1 : 0)) || 0}}
             </h1>
           </div>
         </div>
@@ -36,7 +36,8 @@
         <div class="row">
           <div class="col">
             <h1>
-              {{ (event.unparticipated_participants.length + (((selected == 0) && event.isPending) ? 1 : 0)) || 0 }}
+              {{ (event.notGoingParticipants.length +
+                    (((selected == 0) && event.isPending) ? 1 : 0)) || 0 }}
             </h1>
           </div>
         </div>
@@ -52,7 +53,7 @@
         <div class="row">
           <div class="col">
             <h1>
-              {{ event.unconfirmed_participants.length || 0}}
+              {{ event.pendingParticipants.length || 0}}
             </h1>
           </div>
         </div>

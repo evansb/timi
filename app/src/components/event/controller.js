@@ -14,7 +14,7 @@ export default ($scope, $state, $stateParams, $timi, $rootScope) => {
   });
 
   $rootScope.$on('eventFetched', (e, event) => {
-    let unconfirmed = _.pluck(event.unconfirmed_participants, 'id');
+    let unconfirmed = _.pluck(event.pendingParticipants, 'id');
     $scope.event = event;
     $scope.event.isPending = _.includes(unconfirmed, $scope.userId);
   });

@@ -1,0 +1,50 @@
+CACHE MANIFEST
+
+#version 1.0 9-24-2015
+
+CACHE:
+index.html
+splash.css
+splash.js
+dist/app.js
+assets/logo.png
+assets/br_down.png
+
+src/common/timi-availability-card.html
+src/common/timi-event-card.html
+src/common/timi-event-header.html
+src/common/timi-full-button.html
+src/common/timi-person-card.html
+src/common/timi-slot-card.html
+src/components/create/create-availability.html
+src/components/create/create-details.html
+src/components/create/create-link.html
+src/components/create/create-participants.html
+src/components/create/view.html
+src/components/event/view.html
+src/components/forgot/view.html
+src/components/home/view.html
+src/components/ionic-datepicker/ionic-datepicker-modal.html
+src/components/ionic-datepicker/ionic-datepicker-popup.html
+src/components/login/view.html
+src/components/notification/modal-notification.html
+src/components/participants/view.html
+src/components/settings/view.html
+src/components/signup/view.html
+
+#style sheets
+dist/app.min.css
+
+https://fonts.googleapis.com/css?family=Open+Sans:400,700,600,300
+
+#javascript files
+https://maps.googleapis.com/maps-api-v3/api/js/22/6/common.js
+https://maps.googleapis.com/maps-api-v3/api/js/22/6/util.js
+https://maps.googleapis.com/maps-api-v3/api/js/22/6/stats.js
+https://maps.googleapis.com/maps/api/js/AuthenticationService.Authenticate?1shttp%3A%2F%2Flocalhost%3A3000%2F%23%2Flogin&4sAIzaSyDHN3mi7_4Z2LkJK_Ocfg-5dpccTwAJqpY&callback=_xdc_._v1z5aq&token=2323
+https://maps.googleapis.com/maps/api/js?key=AIzaSyDHN3mi7_4Z2LkJK_Ocfg-5dpccTwAJqpY&signed_in=true&libraries=places
+https://maps.googleapis.com/maps-api-v3/api/js/22/6/main.js
+https://maps.googleapis.com/maps-api-v3/api/js/22/6/places.js
+
+NETWORK:
+*

@@ -11,8 +11,10 @@
                name='title'
                placeholder='Title'
                ng-model='newEvent.name'
-               validation='required'/>
+               validation='required'
+               validation-error-to='title-error'/>
       </label>
+      <span id='title-error' class='validation text-danger'></span>
       <label class='item item-input'>
         <input type='text'
                name='location'
@@ -20,12 +22,13 @@
                ng-model='newEvent.location'
                id='autocomplete'
                ng-focus='geolocate()'
-               ng-blur='toggleAutocompleteOnFocus(false)'/>
+               ng-blur='autocompleteOnBlur()'/>
       </label>
       <label class='item item-input'>
         <span class='input-label'>Duration</span>
         <ionic-timepicker input-obj="timepickerDuration">
-          <button class="button button-clear button-energized">
+          <button class="button button-clear button-energized"
+                  ng-disabled="autocompleteOnFocus == 'true'">
             {{ displayDuration(newEvent.duration) }}
           </button>
         </ionic-timepicker>
@@ -33,80 +36,31 @@
     </div>
   </div>
 </div>
-
 <div class="row">
   <div class="col text-center">
     <h4 class='positive'>Indicate By</h4>
   </div>
 </div>
-<div class='row timi-inline-form'>
-  <label class='col-50 text-center'>
-    <ionic-datepicker input-obj="datepickerDeadline">
-      <button class="button button-clear button-energized">
-        {{ formatDate(newEvent.deadline) }}
-      </button>
-    </ionic-datepicker>
-  </label>
-  <label class='col-50 text-center'>
-    <ionic-timepicker input-obj="timepickerDeadline">
-      <button class="button button-clear button-energized">
-        {{ formatTime(newEvent.deadline) }}
-      </button>
-    </ionic-timepicker>
-  </label>
-</div>
-
-<div class='row'>
-  <div class='col text-center'>
-    <h4 class='positive'>Date/Time Availability</h4>
-  </div>
-</div>
+<div class="timi-inline-form">
   <div class='row'>
-    <label class='col-50 text-right'>
-      <ionic-datepicker input-obj="datepickerStart">
+    <label class='col-50 text-center'>
+      <ionic-datepicker input-obj="datepickerDeadline">
         <button class="button button-clear button-energized">
-          {{ formatDate(datepicker.startValue) }}
+          {{ formatDate(newEvent.deadline) }}
         </button>
       </ionic-datepicker>
     </label>
-    <label class='col-50'>
-      <ionic-datepicker input-obj="datepickerEnd">
+    <label class='col-50 text-center'>
+      <ionic-timepicker input-obj="timepickerDeadline">
         <button class="button button-clear button-energized">
-          {{ formatDate(datepicker.endValue) }}
-        </button>
-      </ionic-datepicker>
-    </label>
-  </div>
-  <div class='row'>
-    <label class='col-50 text-right'>
-      <ionic-timepicker input-obj="timepickerStart">
-        <button class="button button-clear button-energized">
-          {{ normalize(timepicker.startValue) }}
-        </button>
-      </ionic-timepicker>
-    </label>
-    <label class='col-50'>
-      <ionic-timepicker input-obj="timepickerEnd">
-        <button class="button button-clear button-energized">
-          {{ normalize(timepicker.endValue) }}
+          {{ formatTime(newEvent.deadline) }}
         </button>
       </ionic-timepicker>
     </label>
   </div>
-<div class='row'>
-  <div class="col col-50">
-    <button class='button button-outline button-energized button-block'
-            ng-click='addTimeslot()'>
-      Add
-    </button>
+  <div class='row' ng-show="isError.deadline">
+    <div class="col text-center">
+      <span id='deadline-error' class='timi-invalid'>Deadline has already passed.</span>
+    </div>
   </div>
-  <div class="col">
-    <button class='button button-outline button-energized button-block'
-            ng-click='clearTimeslot()'>
-      Clear
-    </button>
-  </div>
-</div>
-  <timi-availability-card ng-repeat="slot in newEvent.timeslots" ng-model="slot">
-  </timi-availability-card>
 </div>

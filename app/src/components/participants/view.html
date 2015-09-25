@@ -7,9 +7,9 @@
   </ion-header-bar>
   <ion-content class="timi-invitation">
     <div class="list">
-      <div ng-repeat="data in [ event.participated_participants,
-                                event.unparticipated_participants,
-                                event.unconfirmed_participants ]">
+      <div ng-repeat="data in [ event.goingParticipants,
+                                event.notGoingParticipants,
+                                event.pendingParticipants ]">
         <div class="item item-divider">
           <strong>{{data.length}}</strong> {{data.header}}
         </div>

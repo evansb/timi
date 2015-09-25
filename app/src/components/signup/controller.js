@@ -32,4 +32,8 @@ export default ($scope, $notification, $state, $auth, $http) => {
       }
     }
   }
+  
+  $scope.$validationOptions = {
+    displayOnlyLastErrorMsg: true
+  };
 }

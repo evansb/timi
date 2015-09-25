@@ -2,7 +2,7 @@ import moment from 'moment';
 import 'moment-range';
 import _ from 'lodash';
 
-export default ($scope, $state, $timi, $rootScope, localStorageService) => {
+export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPopup) => {
   $scope.step = 1;
   $scope.users = [];
 
@@ -12,7 +12,7 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
     timeslots: $scope.newEvent.timeslots || [],
     duration: $scope.newEvent.duration || 3600000,
     participants: $scope.newEvent.participants || {},
-    deadline: $scope.newEvent.deadline || moment().add(1, 'days').add(1, 'hours').startOf('hour').valueOf()
+    deadline: $scope.newEvent.deadline || moment().add(1, 'hours').startOf('hour').valueOf()
   };
 
   localStorageService.set('newEvent', $scope.newEvent);
@@ -95,6 +95,7 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
   $scope.formatTime = (time) => moment(time).format('HH:mm');
   $scope.normalize = (time) => moment().startOf('day')
     .add(time, 'seconds').format('HH:mm');
+
   $scope.addTimeslot = function() {
     let slot = {
       dateStart: $scope.datepicker.startValue,
@@ -102,7 +103,12 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
       timeStart: $scope.timepicker.startValue,
       timeEnd: $scope.timepicker.endValue
     };
-    $scope.newEvent.timeslots.push(slot);
+    $scope.newEvent.timeslots.unshift(slot);
+  };
+
+  $scope.removeTimeslot = function(slot) {
+    console.log("Clicked");
+    _.remove($scope.newEvent.timeslots, (slot2) => slot2 == slot);
   };
 
   $scope.clearTimeslot = function() {
@@ -122,13 +128,13 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
   $scope.datepicker = {
     startValue: moment().startOf('tomorrow').valueOf(),
     endValue: moment().startOf('tomorrow').add(1, 'day').valueOf(),
-    endValid: true
+    invalid: false
   };
 
   $scope.timepicker = {
     startValue: 3600 * 9,
     endValue: 3600 * 17,
-    endValid: true
+    invalid: false
   };
 
   $scope.datepickerStart = {
@@ -161,6 +167,8 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
     callback: function(val) {
       if(val == undefined) return;
       $scope.timepicker.startValue = val;
+
+      $scope.timepicker.invalid = $scope.timepicker.endValue < $scope.timepicker.startValue;
     }
   };
 
@@ -172,6 +180,9 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
     callback: function(val) {
       if(val == undefined) return;
       $scope.timepicker.endValue = val;
+
+      console.log($scope.timepicker);
+      $scope.timepicker.invalid = $scope.timepicker.endValue < $scope.timepicker.startValue;
     }
   };
 
@@ -185,6 +196,8 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
       let timePart = moment($scope.newEvent.deadline).valueOf() -
         (+moment($scope.newEvent.deadline).startOf('day').valueOf());
       $scope.newEvent.deadline = moment(val).valueOf() + timePart;
+
+      $scope.isError.deadline = $scope.newEvent.deadline < moment().valueOf();
     }
   };
 
@@ -197,6 +210,10 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
       if (val === undefined) return;
       let dayPart = (+moment($scope.newEvent.deadline).startOf('day'));
       $scope.newEvent.deadline = dayPart + (val * 1000);
+
+      console.log($scope.newEvent.deadline);
+      console.log(moment().valueOf());
+      $scope.isError.deadline = $scope.newEvent.deadline < moment().valueOf();
     }
   };
 
@@ -226,9 +243,15 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
   }
 
   //Location Autocomplete
-  $scope.autocompleteOnFocus = false;
+  $scope.autocompleteOnFocus = 'false';
+  $scope.autocompleteOnBlur = () => {
+    setTimeout(() => {
+      $scope.toggleAutocompleteOnFocus('false');
+      $scope.$apply();
+    },
+    21);
+  };
   $scope.toggleAutocompleteOnFocus = (status) => {
-    console.log('toggle');
     $scope.autocompleteOnFocus = status;
   };
 
@@ -249,12 +272,13 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
       $scope.newEvent.location = autocomplete.getPlace().name;
     });
   }
-  window.initAutocomplete = initAutocomplete;
+
+  initAutocomplete();
 
   // Bias the autocomplete object to the user's geographical location,
   // as supplied by the browser's 'navigator.geolocation' object.
   $scope.geolocate = () => {
-    $scope.toggleAutocompleteOnFocus(true);
+    $scope.toggleAutocompleteOnFocus('true');
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function(position) {
         var geolocation = {
@@ -268,5 +292,9 @@ export default ($scope, $state, $timi, $rootScope, localStorageService) => {
         autocomplete.setBounds(circle.getBounds());
       });
     }
+  };
+
+  $scope.isError = {
+    deadline: false
   };
 };

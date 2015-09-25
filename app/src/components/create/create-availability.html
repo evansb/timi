@@ -3,29 +3,61 @@
     <h3 class='positive'>Add Available Dates</h3>
   </div>
 </div>
-<ion-list ng-controller="MyCtrl"
-          show-delete="shouldShowDelete"
-          show-reorder="shouldShowReorder"
-          can-swipe="listCanSwipe">
-  <ion-item ng-repeat="item in items"
-            class="item-thumbnail-left">
 
-    <img ng-src="{{item.img}}">
-    <h2>FooBar</h2>
-    <p>BarFoo</p>
-    <ion-option-button class="button-positive"
-                       ng-click="share(item)">
-      Share
-    </ion-option-button>
-    <ion-option-button class="button-info"
-                       ng-click="edit(item)">
-      Edit
-    </ion-option-button>
-    <ion-delete-button class="ion-minus-circled"
-                       ng-click="items.splice($index, 1)">
-    </ion-delete-button>
-    <ion-reorder-button class="ion-navicon"
-                        on-reorder="reorderItem(item, $fromIndex, $toIndex)">
-    </ion-reorder-button>
-  </ion-item>
-</ion-list>
+<div class='row'>
+  <label class='col-50 text-right'>
+    <ionic-datepicker input-obj="datepickerStart">
+      <button class="button button-clear button-energized">
+        {{ formatDate(datepicker.startValue) }}
+      </button>
+    </ionic-datepicker>
+  </label>
+  <label class='col-50'>
+    <ionic-datepicker input-obj="datepickerEnd">
+      <button class="button button-clear button-energized">
+        {{ formatDate(datepicker.endValue) }}
+      </button>
+    </ionic-datepicker>
+  </label>
+</div>
+<div class='row'>
+  <label class='col-50 text-right'>
+    <ionic-timepicker input-obj="timepickerStart">
+      <button class="button button-clear button-energized">
+        {{ normalize(timepicker.startValue) }}
+      </button>
+    </ionic-timepicker>
+  </label>
+  <label class='col-50'>
+    <ionic-timepicker input-obj="timepickerEnd">
+      <button class="button button-clear button-energized">
+        {{ normalize(timepicker.endValue) }}
+      </button>
+    </ionic-timepicker>
+  </label>
+</div>
+<div class="row" ng-show='timepicker.invalid'>
+  <div class="col text-center">
+    <span id='timerange-error' class="timi-invalid">End time should be after start time</span>
+  </div>
+</div>
+
+<div class='row'>
+  <div class="col col-50">
+    <button class='button button-outline button-energized button-block'
+        ng-click='addTimeslot()'>
+      Add
+    </button>
+  </div>
+  <div class="col">
+    <button class='button button-outline button-energized button-block'
+        ng-click='clearTimeslot()'>
+      Clear All
+    </button>
+  </div>
+</div>
+
+<div class="list">
+  <timi-availability-card ng-repeat="slot in newEvent.timeslots" ng-model="slot">
+  </timi-availability-card>
+</div>
