@@ -7,7 +7,11 @@ export default function() {
     transclude: true,
     controller: function($scope) {
       $scope.parseDate = (date) => {
-        return moment(date).fromNow();
+        if (moment($scope.event.deadline).diff(moment()) > 0) {
+          return 'Respond ' + moment(date).fromNow();
+        } else {
+          return moment(date).fromNow();
+        }
       }
     },
     templateUrl: __dirname + '/timi-event-card.html'

@@ -212,6 +212,11 @@ body.pg-loaded > .inner {
   }
 }
 
+.timi-slot-disabled {
+  @extend .timi-slot;
+  border: 1px solid $dark;
+}
+
 .timi-slot.inactive {
   @extend .timi-slot;
   color: $positive;

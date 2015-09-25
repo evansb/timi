@@ -141,14 +141,15 @@ export default class {
     let eventId = request.params.eventId;
     let availabilities = request.payload;
     try {
-      let user = await _getUserById(getUserId(request))
+      let user = await _getUserById(getUserId(request));
       let permitted = await _permit(user, eventId);
-      let hasParticipated = await user.hasParticipated(eventId);
-      if(hasParticipated) {
-        reply(Boom.conflict('You have submitted your availabilities before'));
+      let event = await _getEventById(eventId);
+      let deadline = event.get('deadline');
+
+      if(deadline !== null && deadline <= new Date()) {
+        reply(Boom.methodNotAllowed('This event has been scheduled already'))
       } else {
-        let event = await _getEventById(eventId);
-        let result = await transactions.newAvailabilities(permitted, eventId, availabilities);
+        let result = await transactions.newAvailabilities(permitted, event, availabilities);
         reply(result);
         let fullyParticipated = await event.isFullyParticipated();
         if(fullyParticipated) {
@@ -167,7 +168,8 @@ export default class {
       let user = await _getUserById(getUserId(request));
       let permitted = await _permit(user, eventId);
       let event = await _getEventById(eventId);
-      reply(event.toJSON());
+      let result = await event.getResult();
+      reply({event: event.toJSON(), result: result});
     } catch (err) {
       reply(err.isBoom ? err : Boom.badImplementation(err));
     }

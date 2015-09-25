@@ -93,81 +93,69 @@ export default async function() {
       event_id: 1,
       user_id: 1,
       important: true,
-      participated: true,
-      confirmed: true,
+      participated: true
     },
     {
       event_id: 1,
       user_id: 2,
       important: true,
-      participated: true,
-      confirmed: true,
+      participated: true
     },
     {
       event_id: 1,
       user_id: 3,
       important: true,
-      participated: true,
-      confirmed: true,
+      participated: true
     },
     {
       event_id: 1,
       user_id: 4,
       important: true,
-      participated: true,
-      confirmed: true, //2015-09-22 9.00 am
+      participated: true
     },
     {
       event_id: 2,
       user_id: 1,
       important: true,
-      participated: true,
-      confirmed: false,
+      participated: true
     },
     {
       event_id: 2,
       user_id: 2,
       important: true,
-      participated: false,
-      confirmed: false,
+      participated: false
     },
     {
       event_id: 3,
       user_id: 1,
-      important: true,
-      confirmed: false,
+      important: true
     },
     {
       event_id: 3,
       user_id: 2,
-      important: false,
-      confirmed: false,
+      important: false
     },
     {
       event_id: 3,
       user_id: 5,
-      important: false,
-      confirmed: false,
+      important: false
     },
     {
       event_id: 3,
       user_id: 6,
-      important: false,
-      confirmed: false,
+      important: false
     },
     { //cmi
       event_id: 4,
       user_id: 1,
       important: false,
-      participated: true,
-      confirmed: true,
+      participated: true
     },
     { //cmi
       event_id: 4,
       user_id: 6,
       important: false,
-      participated: true,
-      confirmed: true,
+      participated: true
     }
   ]);
   // timeslots
@@ -324,25 +312,6 @@ export default async function() {
       user_id: 1,
       timeslot_id: 5,
       weight: 1,
-    }
-  ]);
-  await bookshelf.knex('confirmations').insert([
-    // confirmations
-    {
-      user_id: 1,
-      timeslot_id: 2,
-    },
-    {
-      user_id: 2,
-      timeslot_id: 2,
-    },
-    {
-      user_id: 3,
-      timeslot_id: 2,
-    },
-    {
-      user_id: 4,
-      timeslot_id: 2,
     }
   ]);
   console.log("seeding done");
