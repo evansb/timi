@@ -1,8 +1,16 @@
 
 import _ from 'lodash';
+import 'offline';
 
 // Work which should be performed when the injector is done loading all modules.
-export default function($ionicPlatform, $auth, $rootScope, $state) {
+export default function($ionicPlatform, $auth, $rootScope, $state, $window) {
+  Offline.options = {
+    checks: {xhr: {url: 'http://localhost:8000/api/status' }},
+    checkOnLoad: true,
+    interceptRequests: true,
+    requests: true,
+    game: false
+  };
   let defaultStatusBar = () => {
       if (window.StatusBar) {
         StatusBar.styleDefault;

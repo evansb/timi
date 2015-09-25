@@ -6,6 +6,18 @@ import EventController  from './controllers/event';
 module.exports = [
   {
     method: 'GET',
+    path: '/api/status',
+    config: {
+      tags: ['api'],
+      description: 'Check API liveness',
+      auth: false,
+      handler: (request, reply) => {
+        reply({ status: 'Running' });
+      }
+    }
+  },
+  {
+    method: 'GET',
     path: '/api/me',
     config: {
       tags: ['api'],
