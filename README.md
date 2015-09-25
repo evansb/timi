@@ -35,3 +35,37 @@ $ cd app && gulp
 ```
 $ ionic serve
 ```
+
+# CS3216 2015/16 Assignment 3 Group 01
+Get your time right with TIMI!
+timiapp.me
+
+Evan Sebastian | A0112054Y
+Sharon Lynn | A0112171Y
+Patricia Wong Xi Wei | A0099112H
+Liu Yang | A0133920N
+
+Contributions:
+
+Evan Sebastian: Front and Back End Developer (Main Developer)
+
+Created the front end.
+Checked the back end.
+Implemented Google authentication, cache, etc.
+
+Sharon Lynn: Project Manager
+
+Managed Trello and documentation.
+Helped with front end.
+Implemented NUSMods processing.
+
+Patricia Wong Xi Wei: Designer
+
+Designed the logo, thus branding.
+Designed the page layouts.
+Provided the colour palette.
+
+Liu Yang: Back End Developer
+
+Created REST API.
+Implemented TIMI's schedule processing.

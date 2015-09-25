@@ -1,6 +1,10 @@
 
 let createDetails = () => {
-  return { restrict: 'E', templateUrl: __dirname + '/create-details.html' };
+  return { restrict: 'E', templateUrl: __dirname + '/create-details.html',
+    link(scope) {
+      scope.$parent.initAutocomplete();
+    }
+  };
 };
 
 let createLink = () => {

@@ -46,7 +46,17 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
 
   $scope.next = () => {
     save();
-    if ($scope.step == 3) {
+    if ($scope.step == 1) {
+      $scope.isError.deadline = $scope.newEvent.deadline < moment().valueOf();
+      $scope.isError.title = $scope.newEvent.name.length <= 0;
+      if ($scope.newEvent.name.length <= 0 || $scope.isError.deadline == true) return;
+    } else if ($scope.step == 2) {
+      $scope.isError.timeslots = $scope.newEvent.timeslots.length <= 0;
+      if ($scope.newEvent.timeslots.length <= 0) return;
+    } else if ($scope.step == 3) {
+      console.log(_.keys($scope.newEvent.participants).length <= 0);
+      $scope.isError.participants = _.keys($scope.newEvent.participants).length <= 0;
+      if ($scope.isError.participants) return;
       $scope.createEvent();
     }
     $scope.step = Math.min($scope.step + 1, 4);
@@ -104,6 +114,7 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
       timeEnd: $scope.timepicker.endValue
     };
     $scope.newEvent.timeslots.unshift(slot);
+    $scope.isError.timeslots = false;
   };
 
   $scope.removeTimeslot = function(slot) {
@@ -116,6 +127,7 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
   };
 
   $scope.clickedMethod = function(callback) {
+    $scope.isError.participants = false;
     if (!_.includes($scope.newEvent.participants, callback.item.id))
       $scope.newEvent.participants[callback.item.id] = callback.item;
   };
@@ -168,7 +180,8 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
       if(val == undefined) return;
       $scope.timepicker.startValue = val;
 
-      $scope.timepicker.invalid = $scope.timepicker.endValue < $scope.timepicker.startValue;
+      $scope.timepicker.invalid = $scope.timepicker.endValue < $scope.timepicker.startValue &&
+                                  $scope.timepicker.endValue - $scope.timepicker.startValue < $scope.timepickerDuration;
     }
   };
 
@@ -182,7 +195,8 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
       $scope.timepicker.endValue = val;
 
       console.log($scope.timepicker);
-      $scope.timepicker.invalid = $scope.timepicker.endValue < $scope.timepicker.startValue;
+      $scope.timepicker.invalid = $scope.timepicker.endValue < $scope.timepicker.startValue &&
+                                  $scope.timepicker.endValue - $scope.timepicker.startValue < $scope.timepickerDuration;
     }
   };
 
@@ -257,7 +271,7 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
 
   let placeSearch, autocomplete;
 
-  let initAutocomplete = () => {
+  $scope.initAutocomplete = function() {
     // Create the autocomplete object, restricting the search to geographical
     // location types.
     autocomplete = new google.maps.places.Autocomplete(
@@ -266,18 +280,16 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
 
     // When the user selects an address from the dropdown, populate the address
     // fields in the form.
-    autocomplete.addListener('place_changed', () => {
+    autocomplete.addListener('place_changed', function() {
       $scope.newEvent.latitude = autocomplete.getPlace().geometry.location.lat();
       $scope.newEvent.longitude = autocomplete.getPlace().geometry.location.lng();
       $scope.newEvent.location = autocomplete.getPlace().name;
     });
   }
 
-  initAutocomplete();
-
   // Bias the autocomplete object to the user's geographical location,
   // as supplied by the browser's 'navigator.geolocation' object.
-  $scope.geolocate = () => {
+  $scope.geolocate = function() {
     $scope.toggleAutocompleteOnFocus('true');
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function(position) {
@@ -295,6 +307,14 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
   };
 
   $scope.isError = {
-    deadline: false
+    deadline: false,
+    title: false,
+    timeslots: false,
+    participants: false
+  };
+
+  $scope.checkIsValidTitle = (title) => {
+    $scope.isError.title = $scope.newEvent.name.length <= 0;
+    return $scope.isError.title;
   };
 };

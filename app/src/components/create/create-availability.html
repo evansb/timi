@@ -3,6 +3,11 @@
     <h3 class='positive'>Add Available Dates</h3>
   </div>
 </div>
+<div class="row">
+  <div class='col text-center'>
+    <p class='positive'>TIMI will automatically generate timeslots based on you and your invitees' calendars.</p>
+  </div>
+</div>
 
 <div class='row'>
   <label class='col-50 text-right'>
@@ -54,6 +59,13 @@
         ng-click='clearTimeslot()'>
       Clear All
     </button>
+  </div>
+</div>
+<div class="row" ng-show='isError.timeslots'>
+  <div class="col text-center">
+    <div class="timi-invalid">
+      Please indicate the available timeslots for the event.
+    </div>
   </div>
 </div>
 
