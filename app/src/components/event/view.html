@@ -16,7 +16,10 @@
     <div class="padding-top">
       <timi-event-header></timi-event-header>
     </div>
-    <div class="list padding-medium" ng-show="event.isPending">
+    <div class="list padding-medium">
+      <div class="text-center" ng-show="!event.isPending">
+        <p class="dark">You have indicated your availability</p>
+      </div>
       <timi-slot-card ng-repeat="slot in event.timeslots" ng-model="slot">
       </timi-slot-card>
     </div>
