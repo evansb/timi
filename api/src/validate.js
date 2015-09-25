@@ -73,6 +73,12 @@ exports.userInfo = {
   }
 };
 
+exports.eventInfo = {
+  params: {
+    eventId: idSchema.required()
+  }
+};
+
 exports.myEventsAvailabilities = {
   params: {
     eventId: idSchema.required()

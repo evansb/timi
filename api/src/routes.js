@@ -89,12 +89,7 @@ module.exports = [
       tags: ['api'],
       description: 'Get details of an event',
       auth: 'jwt',
-      validate: {
-        params: {
-          eventId: Joi.number()
-            .description('The event ID')
-        }
-      },
+      validate: validate.eventInfo,
       handler: EventController.getEvent
     }
   },
