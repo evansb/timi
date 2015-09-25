@@ -46,7 +46,12 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
 
   $scope.next = () => {
     save();
-    if ($scope.step == 3) {
+    if ($scope.step == 1) {
+      if ($scope.newEvent.name.length <= 0 || $scope.isError.deadline == true) return;
+    } else if ($scope.step == 2) {
+      if ($scope.newEvent.timeslots.length <= 0) return;
+    } else if ($scope.step == 3) {
+      if ($scope.newEvent.participants.length <= 0) return;
       $scope.createEvent();
     }
     $scope.step = Math.min($scope.step + 1, 4);
@@ -168,7 +173,8 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
       if(val == undefined) return;
       $scope.timepicker.startValue = val;
 
-      $scope.timepicker.invalid = $scope.timepicker.endValue < $scope.timepicker.startValue;
+      $scope.timepicker.invalid = $scope.timepicker.endValue < $scope.timepicker.startValue &&
+                                  $scope.timepicker.endValue - $scope.timepicker.startValue < $scope.timepickerDuration;
     }
   };
 
@@ -182,7 +188,8 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
       $scope.timepicker.endValue = val;
 
       console.log($scope.timepicker);
-      $scope.timepicker.invalid = $scope.timepicker.endValue < $scope.timepicker.startValue;
+      $scope.timepicker.invalid = $scope.timepicker.endValue < $scope.timepicker.startValue &&
+                                  $scope.timepicker.endValue - $scope.timepicker.startValue < $scope.timepickerDuration;
     }
   };
 
