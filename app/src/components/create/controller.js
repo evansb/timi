@@ -47,6 +47,8 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
   $scope.next = () => {
     save();
     if ($scope.step == 1) {
+      $scope.isError.deadline = $scope.newEvent.deadline < moment().valueOf();
+      $scope.isError.title = $scope.newEvent.name.length <= 0;
       if ($scope.newEvent.name.length <= 0 || $scope.isError.deadline == true) return;
     } else if ($scope.step == 2) {
       if ($scope.newEvent.timeslots.length <= 0) return;
@@ -302,6 +304,12 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
   };
 
   $scope.isError = {
-    deadline: false
+    deadline: false,
+    title: false
+  };
+
+  $scope.checkIsValidTitle = (title) => {
+    $scope.isError.title = $scope.newEvent.name.length <= 0;
+    return $scope.isError.title;
   };
 };

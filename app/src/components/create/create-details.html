@@ -11,10 +11,11 @@
                name='title'
                placeholder='Title'
                ng-model='newEvent.name'
-               validation='required:alt=Title is required.'
-               validation-error-to='title-error'/>
+               ng-change='checkIsValidTitle()'/>
       </label>
-      <span id='title-error' class='timi-invalid'></span>
+      <div ng-show='isError.title'>
+        <span id='title-error' class='timi-invalid'>Email is required.</span>
+      </div>
       <label class='item item-input'>
         <input type='text'
                name='location'
