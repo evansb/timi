@@ -153,7 +153,7 @@ export default class {
         let fullyParticipated = await event.isFullyParticipated();
         if(fullyParticipated) {
           let participants = await event.getParticipants();
-          Mailer.sendConfirmationEmail(request.server.plugins.mailer, event, participants);
+          Mailer.sendScheduleEmail(request.server.plugins.mailer, event, participants);
         }
       }
     } catch(err) {
@@ -227,30 +227,6 @@ export default class {
         reply(availabilities);
       }
     } catch (err) {
-      reply(err.isBoom ? err : Boom.badImplementation(err));
-    }
-  }
-  static async createConfirmations(request, reply) {
-    let eventId = request.params.eventId;
-    let confirmations = request.payload;
-    try {
-      let user = await _getUserById(getUserId(request));
-      let permitted = await _permit(user, eventId);
-      let event = await _getEventById(eventId);
-      let fullyParticipated = await event.isFullyParticipated();
-      if(!fullyParticipated) {
-        reply(Boom.badRequest('This event is still in polling stage'));
-      } else {
-        let top3 = await event.top3();
-        let result = await transactions.newConfirmations(permitted, eventId, top3, confirmations);
-        reply(result);
-        let fullyConfirmed = await event.isFullyConfirmed();
-        if(fullyConfirmed) {
-          let participants = await event.getParticipants();
-          Mailer.sendScheduleEmail(request.server.plugins.mailer, event, participants);
-        }
-      }
-    } catch(err) {
       reply(err.isBoom ? err : Boom.badImplementation(err));
     }
   }

@@ -104,7 +104,7 @@ export default class {
     }
   }
 
-  static async create(request, reply) {
+  static async signUp(request, reply) {
     try {
       let newUser = new User(request.payload, { hasTimestamps: true });
       let user = await newUser.trySave();
@@ -117,6 +117,10 @@ export default class {
     } catch(err) {
       reply(err.isBoom ? err : Boom.badImplementation(err));
     }
+  }
+
+  static async create(request, reply) {
+    reply('sfddfs').redirect('/api/me/signup').rewritable(false);
   }
 
   static async getUser(request, reply) {
