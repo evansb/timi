@@ -3,7 +3,7 @@ export default ($scope, $state, $auth, $timi, $rootScope) => {
   $scope.user = {};
 
   $scope.backToHome = () => {
-      $state.go('home')
+    $state.go('home')
   };
 
   $rootScope.$on('meFetched', (e, me) => {
