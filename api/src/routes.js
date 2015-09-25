@@ -35,7 +35,7 @@ module.exports = [
       notes: 'Sample payload: { "email": "hello@example.com", "password": "helloworld", "name": "hello"}',
       auth: false,
       validate: validate.newUser,
-      handler: UserController.create
+      handler: UserController.signUp
     }
   },
   {
