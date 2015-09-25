@@ -271,7 +271,7 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
 
   let placeSearch, autocomplete;
 
-  let initAutocomplete = () => {
+  $scope.initAutocomplete = function() {
     // Create the autocomplete object, restricting the search to geographical
     // location types.
     autocomplete = new google.maps.places.Autocomplete(
@@ -280,18 +280,16 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
 
     // When the user selects an address from the dropdown, populate the address
     // fields in the form.
-    autocomplete.addListener('place_changed', () => {
+    autocomplete.addListener('place_changed', function() {
       $scope.newEvent.latitude = autocomplete.getPlace().geometry.location.lat();
       $scope.newEvent.longitude = autocomplete.getPlace().geometry.location.lng();
       $scope.newEvent.location = autocomplete.getPlace().name;
     });
   }
 
-  initAutocomplete();
-
   // Bias the autocomplete object to the user's geographical location,
   // as supplied by the browser's 'navigator.geolocation' object.
-  $scope.geolocate = () => {
+  $scope.geolocate = function() {
     $scope.toggleAutocompleteOnFocus('true');
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function(position) {
