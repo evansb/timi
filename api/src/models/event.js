@@ -1,13 +1,20 @@
-import bookshelf    from '../config/bookshelf';
-import Timeslot     from './timeslot';
-import User         from './user';
-import Promise      from 'bluebird';
+import bookshelf     from '../config/bookshelf';
+import Timeslot      from './timeslot';
+import User          from './user';
+import Availability  from './availability';
+import Promise       from 'bluebird';
 
 
 var Event = bookshelf.model('Event', {
   tableName: 'events',
   timeslots: function () {
     return this.hasMany('Timeslot', 'event_id');
+  },
+  availabilities: function () {
+    return this.hasMany('Availability').through('Timeslot');
+  },
+  availabilitiesForUser: function (user) {
+    return this.availabilities().query('where', 'user_id', '=', user.get('id')).fetch();
   },
   getTimeslots: function () {
     return this.timeslots().fetch();

@@ -141,20 +141,15 @@ export default class {
     let eventId = request.params.eventId;
     let availabilities = request.payload;
     try {
-      let user = await _getUserById(getUserId(request))
+      let user = await _getUserById(getUserId(request));
       let permitted = await _permit(user, eventId);
-      let hasParticipated = await user.hasParticipated(eventId);
-      if(hasParticipated) {
-        reply(Boom.conflict('You have submitted your availabilities before'));
-      } else {
-        let event = await _getEventById(eventId);
-        let result = await transactions.newAvailabilities(permitted, eventId, availabilities);
-        reply(result);
-        let fullyParticipated = await event.isFullyParticipated();
-        if(fullyParticipated) {
-          let participants = await event.getParticipants();
-          Mailer.sendScheduleEmail(request.server.plugins.mailer, event, participants);
-        }
+      let event = await _getEventById(eventId);
+      let result = await transactions.newAvailabilities(permitted, event, availabilities);
+      reply(result);
+      let fullyParticipated = await event.isFullyParticipated();
+      if(fullyParticipated) {
+        let participants = await event.getParticipants();
+        Mailer.sendScheduleEmail(request.server.plugins.mailer, event, participants);
       }
     } catch(err) {
       reply(err.isBoom ? err : Boom.badImplementation(err));
@@ -164,7 +159,7 @@ export default class {
   static async getEvent(request, reply) {
     let eventId = request.params.eventId;
     try {
-      let user = await _getUserById(getUserId(request));
+      let user = await _getUserById(1);
       let permitted = await _permit(user, eventId);
       let event = await _getEventById(eventId);
       reply(event.toJSON());

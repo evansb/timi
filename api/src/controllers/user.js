@@ -197,7 +197,7 @@ export default class {
   static async delete(request, reply) {
     try {
       let user = await _getUserById(getUserId(request));
-      await _user.destroy();
+      await user.destroy();
       reply('OK');
     } catch(err) {
       reply(err.isBoom ? err : Boom.badImplementation(err));

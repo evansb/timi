@@ -34,19 +34,28 @@ exports.newEvent = (eventParams, timeslots, participants) => {
   });
 };
 
-exports.newAvailabilities = (user, eventId, availabilities) => {
+exports.newAvailabilities = (user, event, availabilities) => {
+  let eventId = event.get('id');
   let userId = user.get('id');
   return bookshelf.transaction((t) => {
-    return Promise.map(availabilities, (availability) => {
-      return Timeslot.where({id: availability.timeslot_id, event_id: eventId}).fetch()
-        .then((timeslot) => {
-          if (!timeslot) {
-            return Promise.reject(Boom.notFound('Timeslot does not belong to this event'));
-          } else {
-            return new Availability(availability, {hasTimestamps: true}).save('user_id', userId, {transacting: t});
-          }
+    return event.availabilitiesForUser(user)
+      .then((oldAvailabilities) => {
+        return Promise.map(oldAvailabilities.toArray(), (oldAvailability) => {
+          oldAvailability.where({user_id: userId, timeslot_id: oldAvailability.get('timeslot_id')}).destroy({transacting: t});
         });
-    })
+      })
+      .then(() => {
+        return Promise.map(availabilities, (availability) => {
+          return Timeslot.where({id: availability.timeslot_id, event_id: eventId}).fetch()
+            .then((timeslot) => {
+              if (!timeslot) {
+                return Promise.reject(Boom.notFound('Timeslot does not belong to this event'));
+              } else {
+                return new Availability(availability, {hasTimestamps: true}).save('user_id', userId, {transacting: t});
+              }
+            });
+        })
+      })
       .then(() => availabilities.length > 0 ? user.going(eventId) : user.notGoing(eventId));
   });
 };
