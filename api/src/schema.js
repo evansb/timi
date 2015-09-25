@@ -11,7 +11,7 @@ export default function () {
     .createTable('users', (t) => {
       t.increments().primary();
       t.string('email').unique().notNullable();
-      t.string('password').notNullable();
+      t.string('password');
       t.string('name');
       t.string('profile_url');
       t.string('nusmods');
@@ -22,7 +22,7 @@ export default function () {
       t.increments().primary();
       t.string('name').notNullable();
       t.string('location');
-      t.datetime('deadline');
+      t.datetime('deadline').notNullable();
       t.integer('owner_id').unsigned()
         .notNullable()
         .references('users.id')
@@ -37,7 +37,6 @@ export default function () {
       t.integer('user_id').unsigned().notNullable().references('users.id').onDelete('cascade').onUpdate('cascade');
       t.boolean('important').notNullable().defaultTo(false);
       t.boolean('participated');
-      t.boolean('confirmed').notNullable().defaultTo(false);
       t.timestamps();
       t.primary(['event_id', 'user_id']);
     })
@@ -56,10 +55,4 @@ export default function () {
       t.timestamps();
       t.primary(['user_id', 'timeslot_id']);
     })
-    .createTable('confirmations', (t) => {
-      t.integer('user_id').unsigned().notNullable().references('users.id').onDelete('cascade').onUpdate('cascade');
-      t.integer('timeslot_id').unsigned().notNullable().references('timeslots.id').onDelete('cascade').onUpdate('cascade');
-      t.timestamps();
-      t.primary(['user_id', 'timeslot_id']);
-    });
 }

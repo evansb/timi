@@ -133,7 +133,7 @@ export default class {
           email: profile.email,
           password: profile.sub,
           google_id: profile.sub
-        }
+        };
         let newUser = new User(nu, {hasTimestamps: true});
         let user = await newUser.trySave();
         if (!user) {
