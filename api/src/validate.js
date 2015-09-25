@@ -2,19 +2,20 @@ import Joi from 'joi';
 
 var emailSchema = Joi.string().email().required();
 var idSchema = Joi.number().integer().positive();
-var passwordSchema = Joi.string().min(4).max(50).required();
+var passwordSchema = Joi.string().alphanum().min(8).max(30).required();
+var nameSchema = Joi.string().alphanum().max(30);
 
 var userSchema = Joi.object().keys({
   email: emailSchema,
   password: passwordSchema,
-  name: Joi.string().max(30),
-  nusmods: Joi.string().max(30),
+  name: nameSchema,
+  nusmods: Joi.string().uri().max(25)
 });
 
 var updateUserSchema = Joi.object().keys({
   email: emailSchema,
-  name: Joi.string().max(30),
-  nusmods: Joi.string().max(30)
+  name: nameSchema,
+  nusmods: Joi.string().uri().max(25)
 });
 
 var rangeSchema = Joi.object().keys({
@@ -30,24 +31,22 @@ var participantSchema = Joi.object().keys({
 });
 
 var eventSchema = Joi.object().keys({
-  name: Joi.string().max(50).required(),
+  name: nameSchema.required(),
   deadline: Joi.date().min(new Date()),
-  duration: Joi.number().integer().positive().required().min(600000).max(86400000),
-  location: Joi.string().max(50),
-  latitude: Joi.number(),
-  longitude: Joi.number(),
+  duration: Joi.number().integer().positive().required().multiple(60000).min(600000).max(86400000),
+  location: Joi.string().alphanum().max(50),
+  latitude: Joi.number().min(-90).max(90),
+  longitude: Joi.number().min(-180).max(180),
   ranges: Joi.array().items(rangeSchema).min(1).max(10).unique().required(),
   participants: Joi.array().items(participantSchema).min(1).unique().required()
 });
 
 var availabilitySchema = Joi.object().keys({
-  timeslot_id: Joi.number().integer().positive().required(),
+  timeslot_id: idSchema.required(),
   weight: Joi.number().integer().positive().required()
 });
 
 var availabilitiesSchema = Joi.array().items(availabilitySchema);
-
-var confirmationsSchema = Joi.array().items(idSchema);
 
 exports.userLogin = {
   payload: {
@@ -121,11 +120,4 @@ exports.eventTimeslotAvailabilities = {
     eventId: idSchema.required(),
     timeslotId: idSchema.required()
   }
-};
-
-exports.newConfirmations = {
-  params: {
-    eventId: idSchema.required()
-  },
-  payload: confirmationsSchema
 };

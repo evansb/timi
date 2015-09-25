@@ -1,8 +1,20 @@
 
-export default ($scope, $timi, $notification, $state, $auth, $http) => {
+export default ($scope, $timi, $notification, $state, $auth, $http, $Offline) => {
   if ($auth.isAuthenticated()) {
     $state.go('home');
   }
+
+  $scope.loginEnabled = ($Offline.state == 'up');
+
+  $Offline.on('up', () => {
+    $scope.loginEnabled = true;
+    $scope.$apply();
+  })
+
+  $Offline.on('down', () => {
+    $scope.loginEnabled = false;
+    $scope.$apply();
+  })
 
   $scope.login = async () => {
     try {

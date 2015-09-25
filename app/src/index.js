@@ -7,6 +7,7 @@ import 'angular-resource';
 import 'angular-local-storage';
 import 'angular-ui-router';
 import 'satellizer';
+import 'offline';
 import 'ionic';
 import 'ionic-timepicker';
 import 'ion-autocomplete';
@@ -19,6 +20,17 @@ import startup        from './startup';
 import common         from './common';
 import components     from './components';
 
+let statusUrl = (window.location.hostname == 'localhost')?
+  'http://localhost:8000/api/status': 'http://timiapp.me/api/status';
+
+Offline.options = {
+  checks: {xhr: {url: statusUrl }},
+  checkOnLoad: true,
+  interceptRequests: true,
+  requests: true,
+  game: false
+};
+
 let app = angular.module('timi', [
   'ionic',
   'ionic-timepicker',
@@ -30,7 +42,11 @@ let app = angular.module('timi', [
   'LocalStorageModule'
 ]);
 
+app.service('$Offline', function() { return Offline; });
+
 app.config(function ($translateProvider) {
+  window.setInterval(() => Offline.check(), 3000);
+
   $translateProvider.useStaticFilesLoader({
     prefix: '/bower_components/angular-validation-ghiscoding/locales/validation/',
     suffix: '.json'

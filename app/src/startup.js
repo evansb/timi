@@ -1,8 +1,9 @@
 
 import _ from 'lodash';
+import 'offline';
 
 // Work which should be performed when the injector is done loading all modules.
-export default function($ionicPlatform, $auth, $rootScope, $state) {
+export default function($ionicPlatform, $auth, $rootScope, $state, $window) {
   let defaultStatusBar = () => {
       if (window.StatusBar) {
         StatusBar.styleDefault;
