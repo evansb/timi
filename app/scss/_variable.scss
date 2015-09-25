@@ -1,0 +1,35 @@
+
+$primary1:                        #ffffff;
+$primary2:                        #ee554c;
+$primary3:                        #ffde39;
+$primary4:                        #c3c3c3;
+$primary5:                        #a3a0a0;
+$primary6:                        #58585b;
+
+// Basic
+$light:                           $primary1 !default;
+$positive:                        $primary2 !default;
+$energized:                       $primary2 !default;
+$assertive:                       $primary2 !default;
+$balanced:                        $primary3 !default;
+$stable:                          $primary4 !default;
+$royal:                           $primary5 !default;
+$dark:                            $primary6 !default;
+
+// Base
+$base-background-color:           $primary1 !default;
+
+// Font
+$font-family-sans-serif:          "Open Sans Medium", sans-serif !default;
+$font-family-light-sans-serif:    "Open Sans Regular", sans-serif-light !default;
+$font-family-serif:               serif !default;
+$font-family-monospace:           monospace !default;
+
+// Checkbox
+$checkbox-off-border-default:     $energized !default;
+$checkbox-on-bg-default:          $energized !default;
+$checkbox-on-border-default:      $energized !default;
+
+$item-avatar-width:               80px !default;
+$item-avatar-height:              80px !default;
+$item-avatar-border-radius:       50% !default;
