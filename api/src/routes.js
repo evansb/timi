@@ -28,6 +28,17 @@ module.exports = [
   },
   {
     method: 'POST',
+    path: '/api/auth/google',
+    config: {
+      tags: ['api'],
+      description: 'Log in a user with Google+',
+      notes: 'Sample payload: { "email": "hello@example.com", "password": "helloworld" }',
+      auth: false,
+      handler: UserController.loginGoogle
+    }
+  },
+  {
+    method: 'POST',
     path: '/api/me/signup',
     config: {
       tags: ['api'],
