@@ -7,7 +7,10 @@ export default ($scope, $timi, $notification, $state, $auth, $http, $Offline) =>
   $scope.loginEnabled = ($Offline.state == 'up');
 
   $Offline.on('up', () => { $scope.loginEnabled = true; })
-  $Offline.on('down', () => { $scope.loginEnabled = false; })
+  $Offline.on('down', () => {
+    $scope.loginEnabled = false;
+    console.log("Down");
+  })
 
   $scope.login = async () => {
     try {
