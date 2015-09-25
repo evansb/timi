@@ -34,41 +34,28 @@ exports.newEvent = (eventParams, timeslots, participants) => {
   });
 };
 
-exports.newAvailabilities = (user, eventId, availabilities) => {
+exports.newAvailabilities = (user, event, availabilities) => {
+  let eventId = event.get('id');
   let userId = user.get('id');
   return bookshelf.transaction((t) => {
-    return Promise.map(availabilities, (availability) => {
-      return Timeslot.where({id: availability.timeslot_id, event_id: eventId}).fetch()
-        .then((timeslot) => {
-          if (!timeslot) {
-            return Promise.reject(Boom.notFound('Timeslot does not belong to this event'));
-          } else {
-            return new Availability(availability, {hasTimestamps: true}).save('user_id', userId, {transacting: t});
-          }
+    return event.availabilitiesForUser(user)
+      .then((oldAvailabilities) => {
+        return Promise.map(oldAvailabilities.toArray(), (oldAvailability) => {
+          oldAvailability.where({user_id: userId, timeslot_id: oldAvailability.get('timeslot_id')}).destroy({transacting: t});
         });
-    })
+      })
+      .then(() => {
+        return Promise.map(availabilities, (availability) => {
+          return Timeslot.where({id: availability.timeslot_id, event_id: eventId}).fetch()
+            .then((timeslot) => {
+              if (!timeslot) {
+                return Promise.reject(Boom.notFound('Timeslot does not belong to this event'));
+              } else {
+                return new Availability(availability, {hasTimestamps: true}).save('user_id', userId, {transacting: t});
+              }
+            });
+        })
+      })
       .then(() => availabilities.length > 0 ? user.going(eventId) : user.notGoing(eventId));
-  });
-};
-
-exports.newConfirmations = (user, eventId, top3, timeslots) => {
-  let userId = user.get('id');
-  let top3Id = top3.map((timeslot) => timeslot.get('id'));
-  return bookshelf.transaction((t) => {
-    return Promise.map(timeslots, (timeslotId) => {
-      if (top3Id.indexOf(timeslotId) < 0) {
-        return Promise.reject(Boom.notFound('Timeslot does not in confirmation options'));
-      } else {
-        return Confirmation.where({user_id: userId, timeslot_id: timeslotId}).fetch()
-          .then((ts) => {
-            if (ts) {
-              return Promise.reject(Boom.conflict('You have confirmed it'));
-            } else {
-              return new Confirmation({timeslot_id: timeslotId}, {hasTimestamps: true}).save('user_id', userId, {transacting: t});
-            }
-          });
-      }
-    })
-      .then(() => user.confirm(eventId));
   });
 };
