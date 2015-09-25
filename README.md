@@ -1,4 +1,7 @@
-# Timi
+# TIMI
+Get your time right with TIMI!
+
+URL: timiapp.me
 
 Timi is a mobile app that finds your team a meeting time based on your
 team's schedule and your defined constraints.
@@ -36,36 +39,37 @@ $ cd app && gulp
 $ ionic serve
 ```
 
-# CS3216 2015/16 Assignment 3 Group 01
-Get your time right with TIMI!
-timiapp.me
+# Members
+**CS3216 2015/16 Assignment 3 Group 01**
 
-Evan Sebastian | A0112054Y
-Sharon Lynn | A0112171Y
-Patricia Wong Xi Wei | A0099112H
-Liu Yang | A0133920N
+| Name | Matric
+|------|-------
+| Evan Sebastian | A0112054Y
+| Sharon Lynn | A0112171Y
+| Patricia Wong Xi Wei | A0099112H
+| Liu Yang | A0133920N
 
-Contributions:
+## Contributions
 
-Evan Sebastian: Front and Back End Developer (Main Developer)
+**Evan Sebastian**: Front and Back End Developer (Main Developer)
 
-Created the front end.
-Checked the back end.
-Implemented Google authentication, cache, etc.
+- Created the front end.
+- Checked the back end.
+- Implemented Google authentication, cache, etc.
 
-Sharon Lynn: Project Manager
+**Sharon Lynn**: Project Manager
 
-Managed Trello and documentation.
-Helped with front end.
-Implemented NUSMods processing.
+- Managed Trello and documentation.
+- Helped with front end.
+- Implemented NUSMods processing.
 
-Patricia Wong Xi Wei: Designer
+**Patricia Wong Xi Wei**: Designer
 
-Designed the logo, thus branding.
-Designed the page layouts.
-Provided the colour palette.
+- Designed the logo, thus branding.
+- Designed the page layouts.
+- Provided the colour palette.
 
-Liu Yang: Back End Developer
+**Liu Yang**: Back End Developer
 
-Created REST API.
-Implemented TIMI's schedule processing.
+- Created REST API.
+- Implemented TIMI's schedule processing.
