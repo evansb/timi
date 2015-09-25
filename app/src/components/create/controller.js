@@ -51,9 +51,12 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
       $scope.isError.title = $scope.newEvent.name.length <= 0;
       if ($scope.newEvent.name.length <= 0 || $scope.isError.deadline == true) return;
     } else if ($scope.step == 2) {
+      $scope.isError.timeslots = $scope.newEvent.timeslots.length <= 0;
       if ($scope.newEvent.timeslots.length <= 0) return;
     } else if ($scope.step == 3) {
-      if ($scope.newEvent.participants.length <= 0) return;
+      console.log(_.keys($scope.newEvent.participants).length <= 0);
+      $scope.isError.participants = _.keys($scope.newEvent.participants).length <= 0;
+      if ($scope.isError.participants) return;
       $scope.createEvent();
     }
     $scope.step = Math.min($scope.step + 1, 4);
@@ -111,6 +114,7 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
       timeEnd: $scope.timepicker.endValue
     };
     $scope.newEvent.timeslots.unshift(slot);
+    $scope.isError.timeslots = false;
   };
 
   $scope.removeTimeslot = function(slot) {
@@ -123,6 +127,7 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
   };
 
   $scope.clickedMethod = function(callback) {
+    $scope.isError.participants = false;
     if (!_.includes($scope.newEvent.participants, callback.item.id))
       $scope.newEvent.participants[callback.item.id] = callback.item;
   };
@@ -305,7 +310,9 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
 
   $scope.isError = {
     deadline: false,
-    title: false
+    title: false,
+    timeslots: false,
+    participants: false
   };
 
   $scope.checkIsValidTitle = (title) => {

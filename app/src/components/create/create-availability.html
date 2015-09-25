@@ -61,6 +61,13 @@
     </button>
   </div>
 </div>
+<div class="row" ng-show='isError.timeslots'>
+  <div class="col text-center">
+    <div class="timi-invalid">
+      Please indicate the available timeslots for the event.
+    </div>
+  </div>
+</div>
 
 <div class="list">
   <timi-availability-card ng-repeat="slot in newEvent.timeslots" ng-model="slot">
