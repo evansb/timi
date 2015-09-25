@@ -53,7 +53,7 @@ var Event = bookshelf.model('Event', {
   },
   getParticipants: function () {
     return this.participants()
-               .withPivot(['important', 'participated', 'confirmed']).fetch();
+               .withPivot(['important', 'participated']).fetch();
   },
   goingParticipants: function () {
     return this.participants().query({

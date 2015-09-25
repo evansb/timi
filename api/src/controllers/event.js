@@ -165,7 +165,7 @@ export default class {
   static async getEvent(request, reply) {
     let eventId = request.params.eventId;
     try {
-      let user = await _getUserById(1);
+      let user = await _getUserById(getUserId(request));
       let permitted = await _permit(user, eventId);
       let event = await _getEventById(eventId);
       reply(event.toJSON());
