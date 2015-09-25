@@ -168,7 +168,8 @@ export default class {
       let user = await _getUserById(getUserId(request));
       let permitted = await _permit(user, eventId);
       let event = await _getEventById(eventId);
-      reply(event.toJSON());
+      let result = await event.getResult();
+      reply({event: event.toJSON(), result: result});
     } catch (err) {
       reply(err.isBoom ? err : Boom.badImplementation(err));
     }
