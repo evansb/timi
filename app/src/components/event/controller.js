@@ -69,6 +69,14 @@ export default ($scope, $state, $stateParams, $timi, $rootScope, $Offline) => {
     $state.go('home');
   });
 
+  $scope.getList = () => {
+    if (moment($scope.event.deadline).diff(moment()) > 0) {
+      return $scope.event.timeslots;
+    } else {
+      return $scope.event.result;
+    }
+  }
+
   $scope.selectTimeSlot = (id) => {
     if (!$scope.event.isPending) {
       return;

@@ -20,7 +20,7 @@
       <div class="text-center" ng-show="!event.isPending">
         <p class="dark">You have indicated your availability</p>
       </div>
-      <timi-slot-card ng-repeat="slot in event.timeslots" ng-model="slot">
+      <timi-slot-card ng-repeat="slot in getList()" ng-model="slot">
       </timi-slot-card>
     </div>
   </ion-content>
