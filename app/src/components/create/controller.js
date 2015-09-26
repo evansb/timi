@@ -107,6 +107,7 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
     .add(time, 'seconds').format('HH:mm');
 
   $scope.addTimeslot = function() {
+    if ($scope.timepicker.invalid || $scope.datepicker.invalid) return;
     let slot = {
       dateStart: $scope.datepicker.startValue,
       dateEnd: $scope.datepicker.endValue,
@@ -157,6 +158,7 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
     callback: function(val) {
       if(val == undefined) return;
       $scope.datepicker.startValue = val;
+      pickerCheck();
     }
   };
 
@@ -168,6 +170,7 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
     callback: function(val) {
       if(val == undefined) return;
       $scope.datepicker.endValue = val;
+      pickerCheck();
     }
   };
 
@@ -179,9 +182,7 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
     callback: function(val) {
       if(val == undefined) return;
       $scope.timepicker.startValue = val;
-
-      $scope.timepicker.invalid = $scope.timepicker.endValue < $scope.timepicker.startValue &&
-                                  $scope.timepicker.endValue - $scope.timepicker.startValue < $scope.timepickerDuration;
+      pickerCheck();
     }
   };
 
@@ -193,10 +194,23 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
     callback: function(val) {
       if(val == undefined) return;
       $scope.timepicker.endValue = val;
+      pickerCheck();
+    }
+  };
 
-      console.log($scope.timepicker);
-      $scope.timepicker.invalid = $scope.timepicker.endValue < $scope.timepicker.startValue &&
-                                  $scope.timepicker.endValue - $scope.timepicker.startValue < $scope.timepickerDuration;
+  $scope.pickerInvalidMsg = '';
+  let pickerCheck = () => {
+    if ((moment().startOf('day').valueOf() + $scope.timepicker.startValue*1000) < moment().valueOf()) {
+      $scope.timepicker.invalid = true;
+      $scope.pickerInvalidMsg = 'Time has already passed.';
+    } else if ($scope.timepicker.endValue < $scope.timepicker.startValue) {
+      $scope.timepicker.invalid = true;
+      $scope.pickerInvalidMsg = 'End time should be after start time.';
+    } else if ($scope.timepicker.endValue - $scope.timepicker.startValue < $scope.timepickerDuration) {
+      $scope.timepicker.invalid = true;
+      $scope.pickerInvalidMsg = 'Start to end time should be larger than event duration.';
+    } else {
+      $scope.timepicker.invalid = false;
     }
   };
 

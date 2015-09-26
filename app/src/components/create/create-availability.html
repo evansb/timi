@@ -41,9 +41,9 @@
     </ionic-timepicker>
   </label>
 </div>
-<div class="row" ng-show='timepicker.invalid'>
+<div class="row" ng-show='timepicker.invalid || datepicker.invalid'>
   <div class="col text-center">
-    <span id='timerange-error' class="timi-invalid">End time should be after start time</span>
+    <span id='timerange-error' class="timi-invalid">{{ pickerInvalidMsg }}</span>
   </div>
 </div>
 
