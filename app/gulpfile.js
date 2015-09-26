@@ -95,4 +95,10 @@ gulp.task('git-check', function(done) {
   done();
 });
 
+gulp.task('compress', function() {
+  return gulp.src('dist/app.js')
+    .pipe(uglify())
+    .pipe(gulp.dest('dist'));
+});
+
 gulp.task('default', ['sass', 'browserify', 'watch', 'serve']);
