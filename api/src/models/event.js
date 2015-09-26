@@ -35,12 +35,12 @@ var Event = bookshelf.model('Event', {
         return Promise.map(timeslots.toArray(), (ts) => {
           return ts.allImportantAvailable().
             then((result) => {
-              ts.availableForAllImportant = result;
-              return ts;
+              let json = ts.toJSON();
+              json.availableForAllImportant = result;
+              return json;
           });
         })
-      })
-      .then((timeslots) => timeslots.filter((ts) => ts.availableForAllImportant));
+      });
   },
   owner: function () {
     return this.belongsTo('User', 'owner_id');
