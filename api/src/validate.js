@@ -2,8 +2,8 @@ import Joi from 'joi';
 
 var emailSchema = Joi.string().email().required();
 var idSchema = Joi.number().integer().positive();
-var passwordSchema = Joi.string().alphanum().min(8).max(30).required();
-var nameSchema = Joi.string().alphanum().max(30);
+var passwordSchema = Joi.string().min(8).max(30).required();
+var nameSchema = Joi.string().max(30);
 
 var userSchema = Joi.object().keys({
   email: emailSchema,
