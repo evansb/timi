@@ -36,7 +36,6 @@ src/components/signup/view.html
 dist/app.min.css
 
 https://fonts.googleapis.com/css?family=Open+Sans:400,700,600,300
-http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css
 
 #javascript files
 https://maps.googleapis.com/maps-api-v3/api/js/22/6/common.js
