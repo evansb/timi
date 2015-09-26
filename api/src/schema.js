@@ -2,7 +2,6 @@ import bookshelf from './config/bookshelf';
 
 export default function () {
   return bookshelf.knex.schema
-    .dropTableIfExists('confirmations')
     .dropTableIfExists('availabilities')
     .dropTableIfExists('events_users')
     .dropTableIfExists('timeslots')

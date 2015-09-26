@@ -5,7 +5,6 @@ import Event from './models/event';
 import Timeslot from './models/timeslot';
 import EventUser from './models/event_user';
 import Availability from './models/availability';
-import Confirmation from './models/confirmation';
 import Boom from 'boom';
 
 exports.newEvent = (eventParams, timeslots, participants) => {
