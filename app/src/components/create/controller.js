@@ -178,7 +178,7 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
   $scope.timepickerStart = {
     inputEpochTime: $scope.timepicker.startValue,
     titleLabel: 'Start Time',
-    step: 1,
+    step: 5,
     setButtonType: 'button-energized',
     callback: function(val) {
       if(val == undefined) return;
@@ -190,7 +190,7 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
   $scope.timepickerEnd = {
     inputEpochTime: $scope.timepicker.endValue,
     titleLabel: 'End Time',
-    step: 1,
+    step: 5,
     setButtonType: 'button-energized',
     callback: function(val) {
       if(val == undefined) return;
@@ -259,7 +259,7 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
   $scope.timepickerDuration = {
     inputEpochTime: 3600,
     titleLabel: 'Duration',
-    step: 5,
+    step: 10,
     setButtonType: 'button-energized',
     callback: function(val) {
       if (val === undefined) return;
