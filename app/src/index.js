@@ -72,7 +72,7 @@ app.config(($httpProvider, $authProvider) => {
   $authProvider.baseUrl = (window.location.hostname == 'localhost')?
     'http://localhost:8000/api': 'http://timiapp.me/api';
   $authProvider.loginUrl = '/me/login';
-  $authProvider.signupUrl = '/users';
+  $authProvider.signupUrl = '/me/signup';
   $authProvider.unlinkUrl = '/me/logout';
   $httpProvider.defaults.withCredentials = true;
   $authProvider.google({
