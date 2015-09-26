@@ -93,10 +93,11 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
   $scope.getUser = function(query) {
     return {
       users: $scope.users.filter((user) => {
-        return (user.name.toLowerCase()
-          .search(query.toLowerCase()) != -1) ||
-          (user.email.toLowerCase()
-          .search(query.toLowerCase()) != -1);
+        let userName = (user.name === null) ? user.name : user.name.toLowerCase();
+        let nameSearch = userName.search(query.toLowerCase()) != -1;
+        let emailSearch = user.email.toLowerCase().search(query.toLowerCase()) != -1;
+
+        return nameSearch || emailSearch;
       })
     };
   };
