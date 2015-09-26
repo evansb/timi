@@ -159,6 +159,9 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
     callback: function(val) {
       if(val == undefined) return;
       $scope.datepicker.startValue = val;
+      if ($scope.datepicker.from < $scope.datepicker.startValue) {
+        $scope.datepicker.endValue = $scope.datepicker.from = $scope.datepicker.startValue;
+      }
       pickerCheck();
     }
   };
