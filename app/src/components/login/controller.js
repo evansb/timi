@@ -27,8 +27,8 @@ $Offline) => {
         $http.defaults.headers.common.Authorization = user.token;
         $state.go('home');
       } catch (err) {
-        let message = 'Invalid username/password';
-        $notification.send({ type: 'modal', message: message});
+        console.log("here");
+        $notification.showPopup('Invalid username/password', 'Please try again');
       }
     } else {
       $Offline.showPopup();
@@ -42,10 +42,9 @@ $Offline) => {
         $http.defaults.headers.common.Authorization = user.token;
         $state.go('home');
       } catch (err) {
-        let message = 'Invalid username/password';
-        $notification.send({ type: 'modal', message: message});
+        $notification.showPopup('Invalid username/password', 'Please try again');
       }
-    } else {  
+    } else {
       $Offline.showPopup();
     }
   }
