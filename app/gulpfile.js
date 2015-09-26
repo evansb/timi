@@ -95,7 +95,25 @@ gulp.task('git-check', function(done) {
   done();
 });
 
-gulp.task('compress', function() {
+gulp.task('dist', function() {
+  var config = {
+    packageCache: {},
+    cache: {},
+    entries: ['./src/index.js'],
+    debug: true
+  };
+  var babelifyConfig = { only: /src/, experimental: true };
+  var bundler = browserify(config);
+  var rebundle = function() {
+    console.log('Rebundling...');
+    bundler.transform(babelify.configure(babelifyConfig))
+      .transform(debowerify)
+      .bundle()
+      .on('error', gutil.log.bind(gutil, 'browserify error'))
+      .pipe(source('app.js'))
+      .pipe(gulp.dest('./dist'))
+  };
+  rebundle();
   return gulp.src('dist/app.js')
     .pipe(uglify())
     .pipe(gulp.dest('dist'));
