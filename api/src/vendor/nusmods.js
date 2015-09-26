@@ -3,6 +3,8 @@ import Promise from 'bluebird';
 import unshortener from 'unshortener';
 import Url from 'url';
 import request from 'request';
+import Boom from 'boom';
+
 
 let expandP = Promise.promisify(unshortener.expand);
 let requestP = Promise.promisify(request);
@@ -30,10 +32,10 @@ class NUSMods {
       let responses = await Promise.all(requests);
       let modules = responses.map(response => JSON.parse(response[0].body));
       let result = _.flatten(_.zipWith(moduleClass, modules, (mc, module) =>
-              _.filter(module, o => o.ClassNo === mc[1])))
+              _.filter(module, o => o.ClassNo === mc[1])));
       return result;
     } catch (err) {
-      console.log(err);
+      throw Boom.badRequest('Invalid NUSMods link');
     }
   }
 }
