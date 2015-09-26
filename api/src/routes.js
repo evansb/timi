@@ -88,13 +88,8 @@ module.exports = [
     config: {
       tags: ['api'],
       description: 'Get details of an event',
-      auth: 'jwt',
-      validate: {
-        params: {
-          eventId: Joi.number()
-            .description('The event ID')
-        }
-      },
+      auth: false,
+      validate: validate.eventInfo,
       handler: EventController.getEvent
     }
   },
@@ -117,7 +112,7 @@ module.exports = [
           '"participants": [{"id": 1, "registered": true, "important": true}, ' +
       '                     {"id": 2, "registered": true, "important": false}] ' +
         '}',
-      auth: 'jwt',
+      auth: false,
       validate: validate.newEvent,
       handler: EventController.create
     }
@@ -130,7 +125,7 @@ module.exports = [
       tags: ['api'],
       description: 'Indicate availabilities for specified event',
       notes: 'Sample payload: [{"timeslot_id": 7, "weight": 10}, {"timeslot_id": 8, "weight": 1}]',
-      auth: 'jwt',
+      auth: false,
       validate: validate.newAvailabilities,
       handler: EventController.createAvailabilities
     }

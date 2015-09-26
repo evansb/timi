@@ -2,10 +2,11 @@ import Promise    from 'bluebird';
 import Boom       from 'boom';
 import Bcrypt     from 'bcrypt';
 import JWT        from 'jsonwebtoken';
-import _request    from 'request';
+import _request   from 'request';
 import qs         from 'querystring';
 import User       from '../models/user';
 import Buffer     from 'buffer';
+import NUSMods    from '../vendor/nusmods';
 
 let compare = Promise.promisify(Bcrypt.compare);
 let post = Promise.promisify(_request.post);
@@ -152,8 +153,17 @@ export default class {
   }
 
   static async signUp(request, reply) {
+    let payload = request.payload;
     try {
-      let newUser = new User(request.payload, {hasTimestamps: true});
+      let nusmods = payload.nusmods;
+
+      if(nusmods === '') {
+        payload.nusmods = null;
+      } else if(payload.nusmods) {
+        await new NUSMods(payload.nusmods).scrap();
+      }
+
+      let newUser = new User(payload, {hasTimestamps: true});
       let user = await newUser.trySave();
       if (!user) {
         throw Boom.badRequest('User with this email exists');
@@ -222,6 +232,12 @@ export default class {
     let payload = request.payload;
     try {
       let user = await _getUserById(getUserId(request));
+      let nusmods = payload.nusmods;
+      if(nusmods === '') {
+        payload.nusmods = null;
+      } else if(payload.nusmods) {
+        await new NUSMods(payload.nusmods).scrap();
+      }
       let updated = await user.update(payload);
       reply(updated);
     } catch (err) {
