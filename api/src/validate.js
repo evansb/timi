@@ -9,13 +9,15 @@ var userSchema = Joi.object().keys({
   email: emailSchema,
   password: passwordSchema,
   name: nameSchema,
-  nusmods: Joi.string().uri().max(25)
+  nusmods: Joi.string().allow('').uri().max(25),
+  profile_url: Joi.string().allow('').uri().max(25)
 });
 
 var updateUserSchema = Joi.object().keys({
   email: emailSchema,
   name: nameSchema,
-  nusmods: Joi.string().uri().max(25)
+  nusmods: Joi.string().allow('').uri().max(25),
+  profile_url: Joi.string().allow('').uri()
 });
 
 var rangeSchema = Joi.object().keys({
