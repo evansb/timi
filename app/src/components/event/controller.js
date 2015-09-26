@@ -1,12 +1,24 @@
 import moment from 'moment';
 import _ from 'lodash';
 
-export default ($scope, $state, $stateParams, $timi, $rootScope) => {
+export default ($scope, $state, $stateParams, $timi, $rootScope, $Offline) => {
   if (!$stateParams.eventId) {
     $state.go('/home');
   }
 
   $scope.event = {};
+  $scope.isOnline = true;
+
+  $Offline.on('up', () => {
+    $scope.isOnline = true;
+    $timi.getActiveUser();
+    $scope.$apply();
+  });
+
+  $Offline.on('down', () => {
+    $scope.isOnline = false;
+    $scope.$apply();
+  });
 
   $rootScope.$on('meFetched', (e, me) => {
     $scope.userId = me.id;
@@ -34,12 +46,16 @@ export default ($scope, $state, $stateParams, $timi, $rootScope) => {
   };
 
   $scope.submitAvailability = () => {
-    let availability =
-      _($scope.event.timeslots)
-        .filter(slot => slot.isSelected)
-        .map(slot => { return { timeslot_id: slot.id, weight: 10 }; })
-        .value();
-    $timi.submitAvailability($scope.event.id, availability);
+    if ($scope.isOnline) {
+      let availability =
+        _($scope.event.timeslots)
+          .filter(slot => slot.isSelected)
+          .map(slot => { return { timeslot_id: slot.id, weight: 10 }; })
+          .value();
+      $timi.submitAvailability($scope.event.id, availability);
+    } else {
+      $Offline.showPopup();
+    }
   }
 
   $scope.selected = 0;

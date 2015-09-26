@@ -11,10 +11,11 @@
                name='title'
                placeholder='Title'
                ng-model='newEvent.name'
-               validation='required'
-               validation-error-to='title-error'/>
+               ng-change='checkIsValidTitle()'/>
       </label>
-      <span id='title-error' class='validation text-danger'></span>
+      <div ng-show='isError.title'>
+        <span id='title-error' class='timi-invalid'>Event title is required.</span>
+      </div>
       <label class='item item-input'>
         <input type='text'
                name='location'
@@ -38,7 +39,7 @@
 </div>
 <div class="row">
   <div class="col text-center">
-    <h4 class='positive'>Indicate By</h4>
+    <h4 class='positive'>Invitees' Response Deadline</h4>
   </div>
 </div>
 <div class="timi-inline-form">

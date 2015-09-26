@@ -254,9 +254,7 @@ module.exports = [
     config: {
       tags: ['api'],
       description: 'Update the information of the current user',
-      notes: 'Sample payload: { "email": "hello@example.com", "password": "newhelloworld", "name": "hello"}',
       auth: 'jwt',
-      validate: validate.updateUser,
       handler: UserController.updateCurrent
     }
   },

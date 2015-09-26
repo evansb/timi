@@ -75,10 +75,6 @@ let mapToGoogleC = (calenders) => {
   return calenders.map((_) => _[2]).filter((c) => c !== null);
 };
 
-let hasDuplicates = (array) => {
-  return (new Set(array)).size !== array.length;
-};
-
 let calculateTimeslots = async (duration, ranges, userCalenders) => {
   // get those should not be removed: either important or no calender
   let normalNoCanlentder = userCalenders.normal.filter((_) => _[1]===null && _[2]===null);
@@ -98,7 +94,7 @@ let calculateTimeslots = async (duration, ranges, userCalenders) => {
     timeslots = await generateTimeslots(duration, ranges, mapToNUSMods(thisRound), mapToGoogleC(thisRound));
   }
   return {timeslots: timeslots, nonFulfilled: nonFulfilledOptional};
-};
+}
 
 
 export default class {
@@ -121,23 +117,21 @@ export default class {
         participantsParams.push({id: userId, registered: true, important: false});
       }
 
-      if(hasDuplicates(participantsParams.map((_) => _.id))) {
-        reply(Boom.badRequest('Duplicated participants'));
+      let calenders = await fetchCalender(participantsParams);
+      let calculated = await calculateTimeslots(duration, ranges, calenders);
+
+      let timeslots = calculated.timeslots;
+
+      if(timeslots.length === 0) {
+        reply('Sorry, there is no possible timeslots for this event');
       } else {
-        let calenders = await fetchCalender(participantsParams);
-        let calculated = await calculateTimeslots(duration, ranges, calenders);
-
-        let timeslots = calculated.timeslots;
-
-        if(timeslots.length === 0) {
-          reply('Sorry, there is no possible timeslots for this event');
-        } else {
-          let event = await transactions.newEvent(eventParams, timeslots, participantsParams);
-          event = await _getEventById(event.get('id'));
-          reply({ event: event, nonFulfillUser: calculated.nonFulfilled}).code(201);
-          let participants = await event.getParticipants();
-          Mailer.sendInvitationEmail(request.server.plugins.mailer, event, user, participants);
-        }
+        let event = await transactions.newEvent(eventParams, timeslots, participantsParams);
+        event = await _getEventById(event.get('id'));
+        let eventResp = event.toJSON();
+        eventResp.nonFulfillUser = calculated.nonFulfilled;
+        reply(eventResp).code(201);
+        let participants = await event.getParticipants();
+        Mailer.sendInvitationEmail(request.server.plugins.mailer, event, user, participants);
       }
     } catch(err) {
       reply(err.isBoom ? err : Boom.badImplementation(err));
@@ -148,23 +142,21 @@ export default class {
     let eventId = request.params.eventId;
     let availabilities = request.payload;
     try {
-      let user = await _getUserById(1);
+      let user = await _getUserById(getUserId(request));
       let permitted = await _permit(user, eventId);
       let event = await _getEventById(eventId);
       let deadline = event.get('deadline');
 
       if(deadline !== null && deadline <= new Date()) {
-        reply(Boom.methodNotAllowed('This event has been scheduled already'));
-      } else if(hasDuplicates(availabilities.map((_) => _.timeslot_id))) {
-        reply(Boom.badRequest('Duplicated timeslots'));
+        reply(Boom.methodNotAllowed('This event has been scheduled already'))
       } else {
-          let result = await transactions.newAvailabilities(permitted, event, availabilities);
-          reply(result);
-          let fullyParticipated = await event.isFullyParticipated();
-          if(fullyParticipated) {
-            let participants = await event.getParticipants();
-            Mailer.sendScheduleEmail(request.server.plugins.mailer, event, participants);
-          }
+        let result = await transactions.newAvailabilities(permitted, event, availabilities);
+        reply(result);
+        let fullyParticipated = await event.isFullyParticipated();
+        if(fullyParticipated) {
+          let participants = await event.getParticipants();
+          Mailer.sendScheduleEmail(request.server.plugins.mailer, event, participants);
+        }
       }
     } catch(err) {
       reply(err.isBoom ? err : Boom.badImplementation(err));
@@ -178,7 +170,9 @@ export default class {
       let permitted = await _permit(user, eventId);
       let event = await _getEventById(eventId);
       let result = await event.getResult();
-      reply({event: event.toJSON(), result: result});
+      let eventResp = event.toJSON();
+      eventResp.result = result;
+      reply(eventResp);
     } catch (err) {
       reply(err.isBoom ? err : Boom.badImplementation(err));
     }

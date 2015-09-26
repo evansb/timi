@@ -18,6 +18,7 @@ export default function($ionicPlatform, $auth, $rootScope, $state, $window) {
     hideAccessoryBar();
     defaultStatusBar();
   });
+
   $rootScope.$on('$stateChangeStart', function(e, to) {
     if (!_.includes(['login', 'signup', 'forgot'], to.name) &&
           !$auth.isAuthenticated()) {

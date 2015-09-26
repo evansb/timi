@@ -49,11 +49,7 @@ export default function($resource, $rootScope) {
     });
   };
 
-  this.User = resource('/users', {}, {
-    signup: {
-      method: 'POST',
-      withCredentials: false
-    }
+  this.User = resource('/users/:id', { id: '@id' }, {
   });
 
   this.Self = resource('/me/:verb', { verb: '' }, {
@@ -68,8 +64,23 @@ export default function($resource, $rootScope) {
       params: {
         verb: 'logout'
       }
+    },
+    signup: {
+      method: 'POST',
+      params: {
+        verb: 'signup'
+      }
+    },
+    update: {
+      method: 'PUT'
     }
   });
+
+  this.updateUser = (user) => {
+    this.Self.update(user, () => {
+      this.getActiveUser();
+    });
+  }
 
   this.getActiveUser = () => {
     try {

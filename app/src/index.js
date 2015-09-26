@@ -42,7 +42,17 @@ let app = angular.module('timi', [
   'LocalStorageModule'
 ]);
 
-app.service('$Offline', function() { return Offline; });
+app.service('$Offline', function($ionicPopup) {
+  Offline.showPopup = (scope) => {
+    $ionicPopup.alert({
+      title: 'You are Offline',
+      template: '<p>This operation requires internet connection. <br/>'
+        + 'Please try again once you are online</p>',
+      scope: scope
+    });
+  };
+  return Offline;
+});
 
 app.config(function ($translateProvider) {
   window.setInterval(() => Offline.check(), 3000);
@@ -62,7 +72,7 @@ app.config(($httpProvider, $authProvider) => {
   $authProvider.baseUrl = (window.location.hostname == 'localhost')?
     'http://localhost:8000/api': 'http://timiapp.me/api';
   $authProvider.loginUrl = '/me/login';
-  $authProvider.signupUrl = '/users';
+  $authProvider.signupUrl = '/me/signup';
   $authProvider.unlinkUrl = '/me/logout';
   $httpProvider.defaults.withCredentials = true;
   $authProvider.google({

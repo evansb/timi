@@ -9,28 +9,17 @@
   </ion-header-bar>
 
   <ion-content>
-    <div class="text-center">
-      <div class="avatar-outer">
-        <div class="item-avatar item-avatar-centered">
-          <img src="../../../assets/logo.png">
-        </div>
-      </div>
-        <h3>{{user.name}}</h3>
-      </div>
+    <div class="text-center padding-medium">
+      <h3>{{user.name}}</h3>
+    </div>
     <div class="list">
       <div class="item item-divider">
         Schedule Data
       </div>
-      <a class="item" href="#">
+      <a class="item" ng-click="showNUSModsDialog()">
         NUSMods
         <span class="item-note">
-          http://modsn.us/racU2
-        </span>
-      </a>
-      <a class="item" href="#">
-        Google Calendar
-        <span class="item-note">
-          Not connected
+          {{user.nusmods}}
         </span>
       </a>
       <div class="item item-divider">

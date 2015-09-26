@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import moment from 'moment';
 
-export default ($scope, $state, $timi, $rootScope) => {
+export default ($scope, $state, $timi, $rootScope, $Offline) => {
   $scope.contexts = [
     {
       idx: 0,
@@ -28,8 +28,13 @@ export default ($scope, $state, $timi, $rootScope) => {
   $scope.form = { idx: '0' };
 
   $scope.goToCreate = () => {
-    $state.go('create');
+    if ($scope.isOnline) {
+      $state.go('create');
+    } else {
+      $Offline.showPopup($scope);
+    }
   };
+
   $scope.goToSetting = () => {
     $state.go('settings');
   };
@@ -39,6 +44,18 @@ export default ($scope, $state, $timi, $rootScope) => {
 
   $scope.invites = [];
   $scope.scheduled = [];
+  $scope.isOnline = true;
+
+  $Offline.on('up', () => {
+    $scope.isOnline = true;
+    $timi.fetchMyEvents();
+    $scope.$apply();
+  });
+
+  $Offline.on('down', () => {
+    $scope.isOnline = false;
+    $scope.$apply();
+  });
 
   $rootScope.$on('myEvents', (e, myEvents) => {
     let me = $timi.Self.get(() => {
