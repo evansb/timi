@@ -10,6 +10,16 @@ dist/app.js
 assets/logo.png
 assets/br_down.png
 
+assets/apple-touch-icon-114x114.png
+assets/apple-touch-icon-120x120.png
+assets/apple-touch-icon-144x144.png
+assets/apple-touch-icon-152x152.png
+assets/apple-touch-icon-180x180.png
+assets/apple-touch-icon-57x57.png
+assets/apple-touch-icon-72x72.png
+assets/apple-touch-icon-76x76.png
+assets/apple-touch-icon.png
+
 src/common/timi-availability-card.html
 src/common/timi-event-card.html
 src/common/timi-event-header.html
