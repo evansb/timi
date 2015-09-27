@@ -93,10 +93,11 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
   $scope.getUser = function(query) {
     return {
       users: $scope.users.filter((user) => {
-        let userName = (user.name === null) ? user.name : user.name.toLowerCase();
-        let nameSearch = userName.search(query.toLowerCase()) != -1;
+        let nameSearch;
+        if (user.name) {
+          nameSearch = user.name.toLowerCase().search(query.toLowerCase()) != -1;
+        }
         let emailSearch = user.email.toLowerCase().search(query.toLowerCase()) != -1;
-
         return nameSearch || emailSearch;
       })
     };
@@ -242,9 +243,6 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
       if (val === undefined) return;
       let dayPart = (+moment($scope.newEvent.deadline).startOf('day'));
       $scope.newEvent.deadline = dayPart + (val * 1000);
-
-      console.log($scope.newEvent.deadline);
-      console.log(moment().valueOf());
       $scope.isError.deadline = $scope.newEvent.deadline < moment().valueOf();
     }
   };
