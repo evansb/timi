@@ -6,6 +6,7 @@ import Mailer            from '../mailer';
 import JWT               from 'jsonwebtoken';
 import generateTimeslots from '../calculation';
 import Promise           from 'bluebird';
+import schedule          from 'node-schedule';
 
 let _permit = async (user, eventId) => {
   let result = await user.belongToEvent(eventId);
@@ -132,6 +133,9 @@ export default class {
         reply(eventResp).code(201);
         let participants = await event.getParticipants();
         Mailer.sendInvitationEmail(request.server.plugins.mailer, event, user, participants);
+        schedule.scheduleJob(eventParams.deadline, function(){
+          Mailer.sendScheduleEmail(request.server.plugins.mailer, event, participants);
+        });
       }
     } catch(err) {
       reply(err.isBoom ? err : Boom.badImplementation(err));
@@ -152,11 +156,6 @@ export default class {
       } else {
         let result = await transactions.newAvailabilities(permitted, event, availabilities);
         reply(result);
-        let fullyParticipated = await event.isFullyParticipated();
-        if(fullyParticipated) {
-          let participants = await event.getParticipants();
-          Mailer.sendScheduleEmail(request.server.plugins.mailer, event, participants);
-        }
       }
     } catch(err) {
       reply(err.isBoom ? err : Boom.badImplementation(err));
