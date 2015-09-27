@@ -57,6 +57,12 @@ export default ($scope, $state, $timi, $rootScope, $Offline) => {
     $scope.$apply();
   });
 
+  $rootScope.$on('logout', () => {
+    $scope.invites = [];
+    $scope.scheduled = [];
+    $scope.owned = [];
+  });
+
   $rootScope.$on('myEvents', (e, myEvents) => {
     let me = $timi.Self.get(() => {
       let myEvents2 = myEvents.map(event => {

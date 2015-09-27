@@ -90,6 +90,11 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
     $scope.next();
   });
 
+  $rootScope.$on('logout', () => {
+    $scope,newEvent = {};  
+    localStorageService.remove('newEvent');
+  });
+
   $scope.getUser = function(query) {
     return {
       users: $scope.users.filter((user) => {

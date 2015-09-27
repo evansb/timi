@@ -38,6 +38,7 @@ export default ($scope, $state, $auth, $timi, $rootScope, $ionicPopup) => {
   };
 
   $scope.logout = () => {
+    $rootScope.$broadcast('logout');
     $auth.logout();
     $state.go('login');
   };
