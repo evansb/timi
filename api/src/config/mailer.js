@@ -14,7 +14,7 @@ exports.options = {
     engines: {
       html: {
         module: Handlebars.create(),
-        path: Path.join(__dirname, '../../src/email')
+        path: Path.join(__dirname, '../../email')
       }
     }
   }
