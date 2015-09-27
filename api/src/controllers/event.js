@@ -172,8 +172,10 @@ export default class {
       let result = await event.getResult();
       let eventResp = event.toJSON();
       let timeslots = await user.availableForEvent(eventId);
+      let isFullyParticipated = await event.isFullyParticipated();
       eventResp.result = result;
-      eventResp.myAvailableTimeslots = timeslots;
+      eventResp.myAvailableTimeslots = timeslots.toArray();
+      eventResp.isFullyParticipated = isFullyParticipated;
       reply(eventResp);
     } catch (err) {
       reply(err.isBoom ? err : Boom.badImplementation(err));

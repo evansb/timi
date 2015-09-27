@@ -91,8 +91,9 @@ var Event = bookshelf.model('Event', {
     });
   },
   isFullyParticipated: function() {
-    return this.hasMany('EventUser').query('where', 'participated', '=', null).count()
-      .then((count) => parseInt(count) < 1);
+    return this.hasMany('EventUser').fetch()
+      .then((eus) => Promise.map(eus.toArray(), (eu) => eu.toJSON().participated))
+      .then((p) => p.filter((a) => a === null).length < 1);
   },
   top3: function() {
     return this.getResult().then((result) => result.toArray().slice(0, 3));
