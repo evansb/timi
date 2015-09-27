@@ -91,7 +91,7 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
   });
 
   $rootScope.$on('logout', () => {
-    $scope,newEvent = {};  
+    $scope.newEvent = {};  
     localStorageService.remove('newEvent');
   });
 
