@@ -171,7 +171,9 @@ export default class {
       let event = await _getEventById(eventId);
       let result = await event.getResult();
       let eventResp = event.toJSON();
+      let timeslots = await user.availableForEvent(eventId);
       eventResp.result = result;
+      eventResp.myAvailableTimeslots = timeslots;
       reply(eventResp);
     } catch (err) {
       reply(err.isBoom ? err : Boom.badImplementation(err));
