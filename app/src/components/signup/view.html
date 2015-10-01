@@ -51,6 +51,9 @@
                        validation-error-to='password-confirmation-error'>
               </label>
               <span id='password-confirmation-error' class='timi-invalid'></span>
+              <div class='row' ng-show="mismatch">
+                <span class='timi-invalid'>Password mismatch</span>
+              </div>
             </div>
           </div>
         </div>

@@ -19,18 +19,14 @@ export default ($scope, $notification, $state, $auth, $http, $Offline) => {
 
   $scope.signup = async () => {
     if (!$scope.isOnline) { $Offline.showPopup(); return; }
-    if (!$scope.email) {
-      let message = 'Invalid email address';
-      $notification.send({ type: 'modal', message: message});
-    } else if ($scope.password && $scope.password.length < 8 || $scope.password && $scope.password.length > 30) {
-      let message = 'Password must be at least 8 characters and at most 30 characters';
-      $notification.send({ type: 'modal', message: message});
-    } else if ($scope.name && $scope.name.length > 30) {
-      let message = 'Name must be at most 30 characters';
-      $notification.send({ type: 'modal', message: message});
-    } else if ($scope.password && $scope.passwordConfirm && $scope.password !== $scope.passwordConfirm) {
-      let message = 'Password confirmation mismatch, please check';
-      $notification.send({ type: 'modal', message: message});
+
+    $scope.isError = !$scope.email ||
+                     !$scope.password || $scope.password.length < 8 || $scope.password.length > 30
+                     !$scope.name || $scope.name.length > 30;
+    $scope.mismatch = !$scope.passwordConfirm || $scope.passwordConfirm !== $scope.password;
+
+    if ($scope.isError == true || $scope.mismatch == true) {
+      return;
     } else {
       try {
         let user = await $auth.signup({
@@ -46,8 +42,7 @@ export default ($scope, $notification, $state, $auth, $http, $Offline) => {
         $state.go('home');
       } catch(err) {
         if (err.status === 400) {
-          let message = 'A user with that email already exists. try login?';
-          $notification.send({ type: 'modal', message: message});
+          $notification.showPopup('A user with that email already exists. try login?');
         }
       }
     }

@@ -27,8 +27,7 @@ $Offline) => {
         $http.defaults.headers.common.Authorization = user.token;
         $state.go('home');
       } catch (err) {
-        console.log("here");
-        $notification.showPopup('Invalid username/password', 'Please try again');
+        $notification.showPopup('Invalid email/password', 'Please try again');
       }
     } else {
       $Offline.showPopup();
