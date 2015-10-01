@@ -10,11 +10,13 @@
         <input type='text'
                name='title'
                placeholder='Title'
+               validation='max_len:30:alt=Maximum 30 characters long.|required:alt=Required.'
+               validation-error-to='title-error'
                ng-model='newEvent.name'
                ng-change='checkIsValidTitle()'/>
       </label>
-      <div ng-show='isError.title'>
-        <span id='title-error' class='timi-invalid'>Event title is required.</span>
+      <div class='row' ng-show="isError.title">
+        <span id='title-error' class='timi-invalid'></span>
       </div>
       <label class='item item-input'>
         <input type='text'

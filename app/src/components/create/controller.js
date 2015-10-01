@@ -48,8 +48,8 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
     save();
     if ($scope.step == 1) {
       $scope.isError.deadline = $scope.newEvent.deadline < moment().valueOf();
-      $scope.isError.title = $scope.newEvent.name.length <= 0;
-      if ($scope.newEvent.name.length <= 0 || $scope.isError.deadline == true) return;
+      $scope.isError.title = $scope.newEvent.name.length <= 0 || $scope.newEvent.name.length > 30;
+      if ($scope.isError.title == true || $scope.isError.deadline == true) return;
     } else if ($scope.step == 2) {
       $scope.isError.timeslots = $scope.newEvent.timeslots.length <= 0;
       if ($scope.newEvent.timeslots.length <= 0) return;
