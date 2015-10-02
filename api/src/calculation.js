@@ -87,6 +87,7 @@ let split = (timeString) => {
 
 let getClassesInThisDay = (dateString, allClasses) => {
   let date = new Date((new Date(dateString)).getTime() + tz);
+  console.log(tz);
   let dayText = dayMap[date.getDay()];
   let weekText = getWeekText(date);
   let intervals = [];
