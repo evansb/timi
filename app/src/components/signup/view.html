@@ -18,28 +18,25 @@
                        ng-model="email"
                        placeholder="Email"
                        name='email'
-                       validation='email:alt=Invalid email.|required:alt=Required.'
                        validation-error-to='email-error'>
               </label>
-              <span id='email-error' class='timi-invalid'></span>
+              <!--<span id='email-error' class='timi-invalid'></span>-->
               <label class="item item-input item-stacked-label">
                 <input type="text"
                        ng-model="name"
                        placeholder="Name"
                        name='name'
-                       validation='max_len:30:alt=Maximum 30 characters long.|required:alt=Required.'
                        validation-error-to='name-error'>
               </label>
-              <span id='name-error' class='timi-invalid'></span>
+              <!--<span id='name-error' class='timi-invalid'></span>-->
               <label class="item item-input item-stacked-label">
                 <input type="password"
                        ng-model="password"
                        placeholder="Password"
                        name='password'
-                       validation='min_len:8:alt=Minimum 8 characters long.|max_len:30:alt=Maximum 30 characters long.|required:alt=Required.'
                        validation-error-to='password-error'>
               </label>
-              <span id='password-error' class='timi-invalid'></span>
+              <!--<span id='password-error' class='timi-invalid'></span>-->
               <label class="item item-input item-stacked-label">
                 <input type="password"
                        ng-model="passwordConfirm"
@@ -47,10 +44,7 @@
                        name='passwordConfirm'
                        validation-error-to='password-confirmation-error'>
               </label>
-              <span id='password-confirmation-error' class='timi-invalid'></span>
-              <div class='row' ng-show="mismatch">
-                <span class='timi-invalid'>Password mismatch</span>
-              </div>
+              <!--<span id='password-confirmation-error' class='timi-invalid'></span>-->
             </div>
           </div>
         </div>

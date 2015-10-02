@@ -21,18 +21,23 @@ export default ($scope, $notification, $state, $auth, $http, $Offline) => {
     if (!$scope.isOnline) { $Offline.showPopup(); return; }
 
     if (!$scope.email) {
-      return;
-      //$notification.showPopup('Please type in valid email');
-    } else if (!$scope.password || $scope.password.length < 8 || $scope.password.length > 30) {
-      return;
-      //$notification.showPopup('Password must be at least 8 characters and at most 30 characters');
-    } else if (!$scope.name || $scope.name.length > 30){
-      return;
-      //$notification.showPopup('Name is required and must be at most 30 characters');
+      let message = 'Invalid email address';
+      $notification.send({ type: 'modal', message: message});
+    } else if (!$scope.name) {
+      let message = 'Name is required';
+      $notification.send({ type: 'modal', message: message});
+    } else if ($scope.name.length > 30){
+      let message = 'Name should be at most 30 characters';
+      $notification.send({ type: 'modal', message: message});
+    } else if (!$scope.password ){
+      let message = 'Password is required';
+      $notification.send({ type: 'modal', message: message});
+    } else if ($scope.password.length < 8 || $scope.password.length > 30) {
+      let message = 'Password should be at least 8 characters and at most 30 characters';
+      $notification.send({ type: 'modal', message: message});
     } else if (!$scope.passwordConfirm || $scope.passwordConfirm !== $scope.password) {
-      return;
-      $scope.mismatch = true;
-      //$notification.showPopup('Password confirmation mismatch');
+      let message = 'Password and confirmation mismatch';
+      $notification.send({ type: 'modal', message: message});
     } else {
       try {
         let user = await $auth.signup({
@@ -48,7 +53,8 @@ export default ($scope, $notification, $state, $auth, $http, $Offline) => {
         $state.go('home');
       } catch(err) {
         if (err.status === 400) {
-          $notification.showPopup('A user with that email already exists. try login?');
+          let message = 'A user with that email already exists. try login?';
+          $notification.send({ type: 'modal', message: message});
         }
       }
     }
