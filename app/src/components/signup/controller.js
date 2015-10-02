@@ -21,13 +21,18 @@ export default ($scope, $notification, $state, $auth, $http, $Offline) => {
     if (!$scope.isOnline) { $Offline.showPopup(); return; }
 
     if (!$scope.email) {
-      $notification.showPopup('Please type in valid email');
+      return;
+      //$notification.showPopup('Please type in valid email');
     } else if (!$scope.password || $scope.password.length < 8 || $scope.password.length > 30) {
-      $notification.showPopup('Password must be at least 8 characters and at most 30 characters');
+      return;
+      //$notification.showPopup('Password must be at least 8 characters and at most 30 characters');
     } else if (!$scope.name || $scope.name.length > 30){
-      $notification.showPopup('Name is required and must be at most 30 characters');
+      return;
+      //$notification.showPopup('Name is required and must be at most 30 characters');
     } else if (!$scope.passwordConfirm || $scope.passwordConfirm !== $scope.password) {
-      $notification.showPopup('Password confirmation mismatch');
+      return;
+      $scope.mismatch = true;
+      //$notification.showPopup('Password confirmation mismatch');
     } else {
       try {
         let user = await $auth.signup({

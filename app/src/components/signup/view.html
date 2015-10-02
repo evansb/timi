@@ -22,30 +22,27 @@
                        validation-error-to='email-error'>
               </label>
               <span id='email-error' class='timi-invalid'></span>
-              <label class="item item-input item-stacked-label name">
+              <label class="item item-input item-stacked-label">
                 <input type="text"
                        ng-model="name"
-                       ng-required="true"
                        placeholder="Name"
                        name='name'
                        validation='max_len:30:alt=Maximum 30 characters long.|required:alt=Required.'
                        validation-error-to='name-error'>
               </label>
               <span id='name-error' class='timi-invalid'></span>
-              <label class="item item-input item-stacked-label password">
+              <label class="item item-input item-stacked-label">
                 <input type="password"
                        ng-model="password"
-                       ng-required="true"
                        placeholder="Password"
                        name='password'
                        validation='min_len:8:alt=Minimum 8 characters long.|max_len:30:alt=Maximum 30 characters long.|required:alt=Required.'
                        validation-error-to='password-error'>
               </label>
               <span id='password-error' class='timi-invalid'></span>
-              <label class="item item-input item-stacked-label password-confirmation">
+              <label class="item item-input item-stacked-label">
                 <input type="password"
                        ng-model="passwordConfirm"
-                       ng-required="true"
                        placeholder="Password Confirmation"
                        name='passwordConfirm'
                        validation-error-to='password-confirmation-error'>
