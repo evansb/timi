@@ -121,6 +121,9 @@ let f = async (duration, ranges, NUSModsLinks, GCs) => {
     groupedRanges[date] = mergeIntervals(groupedRanges[date]);
   }
 
+  console.log('after group');
+  console.log(groupedRanges);
+
   // 2. pre-process NUSMods
 
   let allClasses = await getAllClasses(NUSModsLinks);
@@ -132,6 +135,8 @@ let f = async (duration, ranges, NUSModsLinks, GCs) => {
     let input = groupedRanges[date];
     let classInThisDay = getClassesInThisDay(date, allClasses);
     let availableIntervalsInThisDay = reverseIntervals(new Date(date), classInThisDay);
+    console.log(date);
+    console.log(availableIntervalsInThisDay);
 
     // you can follow the above, get GC events in this day, use merged intervals format, and reverse it
 
