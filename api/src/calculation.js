@@ -9,6 +9,8 @@ import getWeekText from './calendar';
 
 let dayMap = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
+let tz = (new Date().getTimezoneOffset())*60000;
+
 // Definition of interval: a pair(array of length 2) of JS Date object,
 //                         their date must be the same, and interval[0] should be less than interval[1]
 
@@ -84,7 +86,7 @@ let split = (timeString) => {
 };
 
 let getClassesInThisDay = (dateString, allClasses) => {
-  let date = new Date(dateString);
+  let date = new Date((new Date(dateString)).getTime() + tz);
   let dayText = dayMap[date.getDay()];
   let weekText = getWeekText(date);
   let intervals = [];
@@ -92,8 +94,7 @@ let getClassesInThisDay = (dateString, allClasses) => {
 
   allClasses.forEach((cls) => {
     if(cls.DayText === dayText && weekText.indexOf(cls.WeekText) >=0) {
-      let datetime = {date: new Date(dateString), start: split(cls.StartTime), end: split(cls.EndTime)};
-      console.log(datetime);
+      let datetime = {date: date, start: split(cls.StartTime), end: split(cls.EndTime)};
       intervals.push(generateInterval(datetime));
     }
   });
