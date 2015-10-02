@@ -88,10 +88,12 @@ let getClassesInThisDay = (dateString, allClasses) => {
   let dayText = dayMap[date.getDay()];
   let weekText = getWeekText(date);
   let intervals = [];
+  console.log(date);
 
   allClasses.forEach((cls) => {
     if(cls.DayText === dayText && weekText.indexOf(cls.WeekText) >=0) {
       let datetime = {date: new Date(dateString), start: split(cls.StartTime), end: split(cls.EndTime)};
+      console.log(datetime);
       intervals.push(generateInterval(datetime));
     }
   });
@@ -136,6 +138,7 @@ let f = async (duration, ranges, NUSModsLinks, GCs) => {
     let classInThisDay = getClassesInThisDay(date, allClasses);
     let availableIntervalsInThisDay = reverseIntervals(new Date(date), classInThisDay);
     console.log(date);
+    console.log(classInThisDay);
     console.log(availableIntervalsInThisDay);
 
     // you can follow the above, get GC events in this day, use merged intervals format, and reverse it
