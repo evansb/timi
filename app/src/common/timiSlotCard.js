@@ -10,6 +10,7 @@ export default () => {
       $scope.month3 = (date) => moment(date).format('MMM');
       $scope.day2 = (date) => moment(date).format('DD');
       $scope.niceDay = (da) => {
+        console.log(da);
         let date = moment(da);
         return date.format('dddd').toUpperCase();
       };
