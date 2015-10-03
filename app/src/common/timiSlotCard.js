@@ -10,20 +10,29 @@ export default () => {
     transclude: true,
     templateUrl: __dirname + '/timi-slot-card.html',
     controller: ($scope) => {
-      $scope.month3 = (date) => moment(new Date(date - serverTz - localTz)).format('MMM');
-      $scope.day2 = (date) => moment(new Date(date - serverTz - localTz)).format('DD');
-      $scope.niceDay = (da) => {
-        let date = moment(new Date(da - serverTz - localTz));
-        return date.format('dddd').toUpperCase();
+      $scope.month3 = (date) => {
+        var newDate = new Date((new Date(date)).getTime() - serverTz - localTz);
+        return moment(newDate).format('MMM');
       };
-      $scope.hourMinute = (date) => moment(new Date(date - serverTz - localTz)).format('hh:mm');
+      $scope.day2 = (date) => {
+        var newDate = new Date((new Date(date)).getTime() - serverTz - localTz);
+        return moment(newDate).format('DD');
+      };
+      $scope.niceDay = (date) => {
+        var newDate = new Date((new Date(date)).getTime() - serverTz - localTz);
+        return moment(newDate).format('dddd').toUpperCase();
+      };
+      $scope.hourMinute = (date) => {
+        var newDate = new Date((new Date(date)).getTime() - serverTz - localTz);
+        return moment(newDate).format('hh:mm');
+      };
       $scope.getParentClass = () => {
         if (!$scope.$parent.event.isPending) {
           return 'timi-slot-disabled';
         } else {
           return 'timi-slot'
         }
-      }
+      };
       $scope.getClass = () => {
         if (!$scope.$parent.event.isPending) {
           return 'dark';
