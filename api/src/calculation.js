@@ -156,6 +156,8 @@ let f = async (duration, ranges, NUSModsLinks, GCs) => {
   }
 
   let intersections = overlappingPairs.map(findIntersection);
+  console.log('intersections');
+  console.log(intersections);
 
   // 4. padding and splitting
   let finalResult = [];
@@ -174,6 +176,8 @@ let f = async (duration, ranges, NUSModsLinks, GCs) => {
       }
     }
   });
+  console.log('final');
+  console.log(finalResult);
   return finalResult;
 };
 
