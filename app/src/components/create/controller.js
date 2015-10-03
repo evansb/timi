@@ -12,7 +12,7 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
     timeslots: $scope.newEvent.timeslots || [],
     duration: $scope.newEvent.duration || 3600000,
     participants: $scope.newEvent.participants || {},
-    deadline: $scope.newEvent.deadline || moment().add(1, 'hours').startOf('hour').valueOf()
+    deadline: $scope.newEvent.deadline || moment().add(1, 'days').startOf('days').valueOf()
   };
 
   localStorageService.set('newEvent', $scope.newEvent);
