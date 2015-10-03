@@ -91,7 +91,7 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
   });
 
   $rootScope.$on('logout', () => {
-    $scope.newEvent = {};  
+    $scope.newEvent = {};
     localStorageService.remove('newEvent');
   });
 
@@ -104,6 +104,8 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
         }
         let emailSearch = user.email.toLowerCase().search(query.toLowerCase()) != -1;
         return nameSearch || emailSearch;
+      }).map((user) => {
+        return { id: user.id, info: user.name + ' <'+ user.email + '>'};
       })
     };
   };
