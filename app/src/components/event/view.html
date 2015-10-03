@@ -17,8 +17,14 @@
       <timi-event-header></timi-event-header>
     </div>
     <div class="list padding-medium">
-      <div class="text-center" ng-show="!event.isPending">
-        <p class="dark">You have indicated your availability</p>
+      <div class="text-center" ng-show="event.isScheduled">
+        <p class="dark">This poll has ended.<br/>The results of this poll are shown</p>
+      </div>
+      <div class="text-center" ng-show="!event.isScheduled && !event.isPending">
+        <p class="dark">This poll is still pending.<br/>You have indicated your availability.</p>
+      </div>
+      <div class="text-center" ng-show="!event.isScheduled && event.isPending">
+        <p class="positive">This poll is still pending.<br/>Please indicate your availability.</p>
       </div>
       <timi-slot-card ng-repeat="slot in getList()" ng-model="slot">
       </timi-slot-card>

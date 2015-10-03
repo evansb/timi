@@ -78,7 +78,7 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
         return {
           id: par.id,
           registered: true,
-          important: par.important || false
+          important: false
         };
       })
     };

@@ -5,21 +5,21 @@ export default ($scope, $state, $timi, $rootScope, $Offline) => {
   $scope.contexts = [
     {
       idx: 0,
-      title: 'Event Invites',
+      title: 'Pending Events',
       get: () => {
         return $scope.invites;
       }
     },
     {
       idx: 1,
-      title: 'Scheduled Events',
+      title: 'Events with Results',
       get: () => {
         return $scope.scheduled;
       }
     },
     {
       idx: 2,
-      title: 'Your Events',
+      title: 'My Events',
       get: () => {
         return $scope.owned;
       }

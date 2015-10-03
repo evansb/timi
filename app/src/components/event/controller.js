@@ -28,6 +28,7 @@ export default ($scope, $state, $stateParams, $timi, $rootScope, $Offline) => {
   $rootScope.$on('eventFetched', (e, event) => {
     let unconfirmed = _.pluck(event.pendingParticipants, 'id');
     $scope.event = event;
+    $scope.event.isScheduled = moment($scope.event.deadline).diff(moment()) < 0;
     $scope.event.isPending = _.includes(unconfirmed, $scope.userId);
   });
 
