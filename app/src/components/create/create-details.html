@@ -27,6 +27,7 @@
                ng-model='newEvent.location'
                id='autocomplete'
                ng-focus='geolocate()'
+               ng-click="autocompleteOnBlur()"
                ng-blur='autocompleteOnBlur()'/>
       </label>
       <label class='item item-input'>
