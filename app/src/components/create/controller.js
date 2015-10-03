@@ -64,22 +64,23 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
 
   $scope.createEvent = () => {
     let ranges = _($scope.newEvent.timeslots).map(slotToRequest).flatten();
-    let { name, deadline, participants, latitude, longitude,
+    let { name, deadline, participants, location, latitude, longitude,
       duration } = $scope.newEvent;
     let newEvent = {
       name: name,
       deadline: moment(deadline).toDate(),
       ranges: ranges,
       duration: duration,
+      location: location,
+      latitude: latitude,
+      longitude: longitude,
       participants: _.map(participants, (par) => {
         return {
           id: par.id,
           registered: true,
           important: par.important || false
         };
-      }),
-      latitude: 0.0,
-      longitude: 0.0
+      })
     };
     $timi.createEvent(newEvent);
   }
@@ -128,7 +129,6 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
   };
 
   $scope.removeTimeslot = function(slot) {
-    console.log("Clicked");
     _.remove($scope.newEvent.timeslots, (slot2) => slot2 == slot);
   };
 
@@ -334,6 +334,13 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
         autocomplete.setBounds(circle.getBounds());
       });
     }
+    let container = document.getElementsByClassName('pac-container');
+    // disable ionic data tab
+    angular.element(container).attr('data-tap-disabled', 'true');
+    // leave input field if google-address-entry is selected
+    angular.element(container).on("click", function(){
+      document.getElementById('autocomplete').blur();
+    });
   };
 
   $scope.isError = {
