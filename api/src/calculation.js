@@ -112,7 +112,9 @@ let f = async (duration, ranges, NUSModsLinks, GCs) => {
   // (a). group ranges by date
   let groupedRanges = {};
   ranges.map((range) => {
-    let date = Moment(new Date(range.date).getTime() + tz).format('YYYY-MM-DD');
+    let newDate = new Date(range.date).getTime() + tz;
+    range.date = newDate;
+    let date = Moment(newDate).format('YYYY-MM-DD');
     if (groupedRanges[date] === undefined) {
       groupedRanges[date] = [];
     }
