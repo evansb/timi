@@ -1,7 +1,23 @@
 <div class="timi-person-card">
   <div class="row">
-    <ion-checkbox ng-model="participant.important">
-      {{ participant.info }}
-    </ion-checkbox>
+    <div class="col col-75">
+      <div class="row">
+        <div class="col item name-big">
+          {{ participant.name }}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col item">
+          <{{ participant.email }}>
+        </div>
+      </div>
+    </div>
+    <div class="col col-center">
+      <div class="x-icon">
+        <button ng-click="removeParticipant(participant)" class="button button-clear">
+          <i class="icon ion-close-round"></i>
+        </button>
+      </div>
+    </div>
   </div>
 </div>

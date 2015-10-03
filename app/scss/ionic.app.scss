@@ -180,6 +180,10 @@ body.pg-loaded > .inner {
   @extend .card;
   margin-top: 10px;
   margin-bottom: 10px;
+
+  .name-big {
+    font-size: 1.3em;
+  }
 }
 
 .timi-create-link {

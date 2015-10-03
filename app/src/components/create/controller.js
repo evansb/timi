@@ -106,7 +106,7 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
         let emailSearch = user.email.toLowerCase().search(query.toLowerCase()) != -1;
         return nameSearch || emailSearch;
       }).map((user) => {
-        return { id: user.id, info: user.name + ' <'+ user.email + '>'};
+        return { id: user.id, info: user.name + ' <'+ user.email + '>', name: user.name, email: user.email};
       })
     };
   };
@@ -140,6 +140,11 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
     $scope.isError.participants = false;
     if (!_.includes($scope.newEvent.participants, callback.item.id))
       $scope.newEvent.participants[callback.item.id] = callback.item;
+  };
+
+  $scope.removeParticipant = function(p) {
+    let id = p.id.toString();
+    delete $scope.newEvent.participants[id];
   };
 
   $scope.backToHome = () => {
