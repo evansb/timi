@@ -39,10 +39,11 @@ let generateInterval = (r) => {
 // other wise this function does not produce correct answer
 let reverseIntervals = (date, intervals) => {
   let length = intervals.length;
+  let newDate = new Date(date.getTime() + tz);
 
   let reversedIntervals = [];
-  let startOfThisDay = Moment(date).startOf('day').toDate();
-  let startOfNextDay = Moment(date).add(1, 'days').startOf('day').toDate();
+  let startOfThisDay = Moment(newDate).startOf('day').toDate();
+  let startOfNextDay = Moment(newDate).add(1, 'days').startOf('day').toDate();
 
   if(length === 0) {
     reversedIntervals.push([startOfThisDay, startOfNextDay]);
@@ -87,11 +88,9 @@ let split = (timeString) => {
 
 let getClassesInThisDay = (dateString, allClasses) => {
   let date = new Date((new Date(dateString)).getTime() + tz);
-  console.log(tz);
   let dayText = dayMap[date.getDay()];
   let weekText = getWeekText(date);
   let intervals = [];
-  console.log(date);
 
   allClasses.forEach((cls) => {
     if(cls.DayText === dayText && weekText.indexOf(cls.WeekText) >=0) {
@@ -139,8 +138,10 @@ let f = async (duration, ranges, NUSModsLinks, GCs) => {
     let input = groupedRanges[date];
     let classInThisDay = getClassesInThisDay(date, allClasses);
     let availableIntervalsInThisDay = reverseIntervals(new Date(date), classInThisDay);
+    console.log('class in this day');
     console.log(date);
     console.log(classInThisDay);
+    console.log('reversed');
     console.log(availableIntervalsInThisDay);
 
     // you can follow the above, get GC events in this day, use merged intervals format, and reverse it
