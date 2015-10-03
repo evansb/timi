@@ -24,7 +24,7 @@ export default () => {
       };
       $scope.hourMinute = (date) => {
         var newDate = new Date((new Date(date)).getTime() - serverTz - localTz);
-        return moment(newDate).format('hh:mm');
+        return moment(newDate).format('HH:mm');
       };
       $scope.getParentClass = () => {
         if (!$scope.$parent.event.isPending) {
