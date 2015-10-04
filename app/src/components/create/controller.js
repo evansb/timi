@@ -261,7 +261,7 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
   $scope.timepickerDeadline = {
     inputEpochTime: ((new Date()).getHours() + 1) * 3600,
     titleLabel: 'Time',
-    step: 1,
+    step: 5,
     setButtonType: 'button-energized',
     callback: function(val) {
       if (val === undefined) return;
@@ -284,7 +284,7 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
   $scope.timepickerDuration = {
     inputEpochTime: 3600,
     titleLabel: 'Duration',
-    step: 10,
+    step: 5,
     setButtonType: 'button-energized',
     callback: function(val) {
       if (val === undefined) return;
