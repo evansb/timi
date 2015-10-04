@@ -1,4 +1,4 @@
-<div class='timi-create-link text-center'>
+<div class='timi-create-link text-center' ng-show="!isError.result">
   <i class='icon ion-checkmark-circled positive'></i>
   <h3 class='positive'>All Done!</h3>
   <p> Your event has been created successfuly.
@@ -6,6 +6,45 @@
     <br/> TIMI will summarise their availabilities at
     <br/> <strong>Invitees' Response Deadline</strong>
     <br/> Have a nice day!
+  </p>
+  <button class="button button-light"
+          ng-click="backToHome()">
+    Back to Home
+  </button>
+</div>
+
+<div class='timi-create-link text-center' ng-show="isError.result == 404">
+  <h3 class='positive'>No possible timeslots</h3>
+  <p> Sorry, based on the timetable of the invitees
+    <br/> and the time range you specified, there is no
+    <br/> possible timeslots to schedule this event,
+    <br/> please make adjustment to the time ranges.
+  </p>
+  <button class="button button-light"
+          ng-click="backToHome()">
+    Back to Home
+  </button>
+</div>
+
+<div class='timi-create-link text-center' ng-show="isError.result == 405">
+  <h3 class='positive'>Too many timeslots</h3>
+  <p> Sorry, based on the timetable of the invitees
+    <br/> and the time range you specified, there are
+    <br/> more than 100 possible timeslots, which will
+    <br/> cost much time for the invitees to select their
+    <br/> availabilities, please narrow down time ranges
+    <br/>
+  </p>
+  <button class="button button-light"
+          ng-click="backToHome()">
+    Back to Home
+  </button>
+</div>
+
+<div class='timi-create-link text-center' ng-show="isError.result && isError.result != 404 && isError.result != 405">
+  <h3 class='positive'>Unexpected error!</h3>
+  <p> Sorry, unexpected error happened
+    <br/> please check your input
   </p>
   <button class="button button-light"
           ng-click="backToHome()">

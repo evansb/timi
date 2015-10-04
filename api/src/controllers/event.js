@@ -123,8 +123,10 @@ export default class {
 
       let timeslots = calculated.timeslots;
 
-      if(timeslots.length === 0) {
-        reply('Sorry, there is no possible timeslots for this event');
+      if (timeslots.length <= 0) {
+        reply(Boom.notFound('Sorry, there is no possible timeslots for this event'));
+      } else if (timeslots.length >=100) {
+        reply(Boom.methodNotAllowed('This event has too many timeslots'));
       } else {
         let event = await transactions.newEvent(eventParams, timeslots, participantsParams);
         event = await _getEventById(event.get('id'));

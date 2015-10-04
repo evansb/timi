@@ -82,7 +82,12 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
         };
       })
     };
-    $timi.createEvent(newEvent);
+    $timi.Event.create(newEvent, (event) => {
+      $rootScope.$broadcast('eventCreated', event);
+      $scope.isError.result = false;
+    }, (err) => {
+      $scope.isError.result = err.status;
+    });
   }
 
   $rootScope.$on('eventCreated', () => {
