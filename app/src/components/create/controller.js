@@ -178,10 +178,10 @@ export default ($scope, $state, $timi, $rootScope, localStorageService, $ionicPo
       $scope.datepicker.invalid = false;
     }
 
-    if ((moment($scope.datepicker.startValue).startOf('day').valueOf()+$scope.timepicker.startValue*1000) < moment().valueOf()) {
+    if ((moment($scope.datepicker.startValue).startOf('day').valueOf()+$scope.timepicker.startValue*1000) <= moment().valueOf()) {
       $scope.timepicker.invalid = true;
       $scope.pickerInvalidMsg = 'Time has already passed.';
-    } else if ($scope.timepicker.endValue < $scope.timepicker.startValue) {
+    } else if ($scope.timepicker.endValue <= $scope.timepicker.startValue) {
       $scope.timepicker.invalid = true;
       $scope.pickerInvalidMsg = 'End time should be after start time.';
     } else if ($scope.timepicker.endValue - $scope.timepicker.startValue < $scope.timepickerDuration) {
