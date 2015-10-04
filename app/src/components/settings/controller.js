@@ -1,5 +1,5 @@
 
-export default ($scope, $state, $auth, $timi, $rootScope, $ionicPopup) => {
+export default ($scope, $state, $auth, $timi, $rootScope, $ionicPopup, $notification) => {
   $scope.user = {};
 
   $scope.backToHome = () => {
@@ -8,6 +8,7 @@ export default ($scope, $state, $auth, $timi, $rootScope, $ionicPopup) => {
 
   $rootScope.$on('meFetched', (e, me) => {
     $scope.user = me;
+    $scope.previousLink = me.nusmods;
   });
 
   $scope.showNUSModsDialog = function() {
@@ -29,10 +30,18 @@ export default ($scope, $state, $auth, $timi, $rootScope, $ionicPopup) => {
       ]
     });
     myPopup.then((res) => {
-      $scope.user.nusmods = res;
-      $timi.updateUser({
+      let user = {
         id: $scope.user.id,
-        nusmods: $scope.user.nusmods
+        nusmods: res
+      };
+      $timi.Self.update(user, (response) => {
+        $timi.getActiveUser();
+        $scope.user.nusmods = response.nusmods || "";
+      }, (e) => {
+        if (e.status == 400) {
+          $notification.showPopup('Invalid NUSMods short link');
+          $scope.user.nusmods = $scope.previousLink;
+        }
       });
     });
   };

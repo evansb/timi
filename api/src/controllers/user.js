@@ -233,12 +233,12 @@ export default class {
     try {
       let user = await _getUserById(getUserId(request));
       let nusmods = payload.nusmods;
-      if(nusmods === '') {
-        payload.nusmods = null;
+      if(nusmods == '') {
+        var update = await user.save({nusmods: null}, {method: 'update', patch: true});
       } else if(payload.nusmods) {
         await new NUSMods(payload.nusmods).scrap();
+        var updated = await user.update(payload);
       }
-      let updated = await user.update(payload);
       reply(updated);
     } catch (err) {
       reply(err.isBoom ? err : Boom.badImplementation(err));
